@@ -75,3 +75,12 @@ Tell the user:
 ## Optional
 
 `src/dev_scout/` is for CI only. Do not require `pip install`, terminal commands, or **any API keys** for the user.
+
+## Cursor Cloud specific instructions
+
+This section is for the optional Python harness in `src/dev_scout/` (CI helper only). The user-facing product is the chat loop above and needs none of this.
+
+- **Dependencies live in a `.venv`.** System Python (3.12) is externally managed (Debian), so the startup update script installs the package with `[dev]` extras into `.venv`. Run tools via `. .venv/bin/activate` or call `.venv/bin/<tool>` directly. Reinstall deps with `.venv/bin/pip install -e ".[dev]"`.
+- **No console-script entry point.** Run the CLI as a module: `python -m dev_scout.cli <command>` (e.g. `doctor`, `week`). `dev-scout` is not on `PATH`.
+- **Tests / build:** `pytest -q` is the whole build+test (see `.github/workflows/ci.yml`). Lint (`ruff check .`) is available via the `[dev]` extras but is not run in CI and currently reports pre-existing findings.
+- **Run offline with fixtures.** The pipeline needs no network or API keys when given `--fixtures`, e.g. `python -m dev_scout.cli week --week 2099-W01 --fixtures`. It writes into `runs/<week>/` in the repo working tree (the `DEV_SCOUT_RUNS_DIR` env var is not honored by the CLI — only the test suite monkeypatches `runs_dir`). Use a throwaway week like `2099-W01` and `git checkout -- runs/` afterward to avoid committing regenerated artifacts.
