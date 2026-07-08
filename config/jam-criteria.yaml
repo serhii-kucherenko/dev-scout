@@ -1,0 +1,19 @@
+require_source_url: true
+require_how_to_steps: true
+min_steps: 3
+require_evidence: true
+
+valid_benefits:
+  - speed
+  - robustness
+  - both
+
+valid_setup_costs:
+  - minutes
+  - hours
+  - days
+
+reject_without:
+  - source_url
+  - how_to_steps
+  - evidence

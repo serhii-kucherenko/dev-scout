@@ -1,0 +1,19 @@
+allowed_hosts:
+  - github.com
+  - github.io
+  - raw.githubusercontent.com
+  - docs.cursor.com
+  - cursor.com
+  - vercel.com
+  - anthropic.com
+  - openai.com
+  - google.dev
+  - huggingface.co
+  - news.ycombinator.com
+  - arxiv.org
+  - medium.com
+  - dev.to
+  - substack.com
+
+max_urls_per_run: 40
+request_timeout_seconds: 30

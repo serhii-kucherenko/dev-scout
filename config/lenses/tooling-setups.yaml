@@ -1,0 +1,12 @@
+id: tooling-setups
+question: "What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?"
+benefit: both
+required_evidence: "repo or docs with setup steps"
+keywords:
+  - mcp
+  - cli
+  - ide
+  - cursor
+  - setup
+  - workflow
+  - tool

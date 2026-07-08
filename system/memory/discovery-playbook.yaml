@@ -1,0 +1,27 @@
+source_tiers:
+  primary:
+    description: "Papers, repos, official changelogs, docs"
+    weight: 1.0
+  secondary:
+    description: "Technical blogs with data or reproducible steps"
+    weight: 0.8
+  discussion:
+    description: "HN, Twitter, Reddit — corroboration only"
+    weight: 0.4
+
+expand_rules:
+  on_cite_repo: true
+  on_cite_paper: true
+  max_expand_per_run: 10
+
+stop_rules:
+  max_urls_primary: 25
+  max_urls_secondary: 15
+  max_urls_discussion: 10
+
+lens_search_templates:
+  ship-faster: "{query} measured PR velocity OR time saved"
+  build-robust: "{query} fewer bugs OR eval harness"
+  tooling-setups: "{query} setup guide OR README"
+  production-patterns: "{query} production deploy case study"
+  model-workflows: "{query} cost latency benchmark coding"

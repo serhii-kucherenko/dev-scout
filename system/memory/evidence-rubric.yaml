@@ -1,0 +1,20 @@
+grades:
+  A:
+    description: "Primary source with named metric or reproducible repo"
+    min_score: 90
+  B:
+    description: "Secondary source with clear how-to and outcome"
+    min_score: 75
+  C:
+    description: "Useful how-to but weak or uncorroborated evidence"
+    min_score: 55
+  D:
+    description: "Discussion or hype — not promoted to jam"
+    min_score: 0
+
+signals:
+  has_metric: 25
+  has_repo_link: 20
+  has_how_to_steps: 20
+  corroborated: 20
+  primary_tier: 15

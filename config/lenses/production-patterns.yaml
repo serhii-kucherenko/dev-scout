@@ -1,0 +1,11 @@
+id: production-patterns
+question: "What deploy, observability, or rollback patterns shipped from real teams?"
+benefit: robustness
+required_evidence: "named production outcome"
+keywords:
+  - deploy
+  - production
+  - observability
+  - rollback
+  - staging
+  - shipped

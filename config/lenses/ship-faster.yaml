@@ -1,0 +1,12 @@
+id: ship-faster
+question: "What agent loops, codegen, or review automation shipped with measured speed gains?"
+benefit: speed
+required_evidence: "time saved, PR velocity, or benchmark"
+keywords:
+  - agent
+  - loop
+  - codegen
+  - review
+  - velocity
+  - faster
+  - throughput

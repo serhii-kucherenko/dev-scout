@@ -1,0 +1,16 @@
+min_jam_items: 5
+min_ab_grade: 5
+min_corroborated: 2
+min_lenses_with_findings: 3
+max_fluff_ratio: 0.2
+
+fluff_keywords:
+  - "ultimate guide"
+  - "roadmap to"
+  - "organize your"
+  - "10 tips"
+  - "without metrics"
+
+require_source_url: true
+require_how_to_steps: true
+min_steps: 3

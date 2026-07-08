@@ -1,0 +1,4 @@
+recipient: serhii@untetherlabs.com
+mode: draft
+subject_template: "Dev Scout {week} — {top_count} ways to ship faster / build safer"
+provider: resend

@@ -1,0 +1,27 @@
+version: 1
+
+feeds:
+  - name: hn_algolia
+    url: "https://hn.algolia.com/api/v1/search_by_date?tags=story&query=AI+development"
+    tier: discussion
+  - name: github_changelog
+    url: "https://github.blog/changelog/feed/"
+    tier: primary
+
+search_seeds:
+  ship-faster:
+    - "cursor agent loop PR velocity 2026"
+    - "AI code review automation benchmark"
+  build-robust:
+    - "AI testing harness production bugs"
+    - "LLM eval guardrails CI"
+  tooling-setups:
+    - "MCP server development workflow setup"
+  production-patterns:
+    - "AI assisted deploy rollback observability"
+  model-workflows:
+    - "coding model cost latency comparison 2026"
+
+github_queries:
+  - "agent harness stars:>100 pushed:>2026-06-01"
+  - "MCP server developer tools stars:>50"

@@ -1,0 +1,20 @@
+tiers:
+  primary:
+    domains:
+      - github.com
+      - docs.cursor.com
+      - arxiv.org
+  secondary:
+    domains:
+      - dev.to
+      - medium.com
+      - substack.com
+  discussion:
+    domains:
+      - news.ycombinator.com
+      - reddit.com
+      - x.com
+
+expand_on_patterns:
+  - "github.com/"
+  - "arxiv.org/"
