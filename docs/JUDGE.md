@@ -1,17 +1,19 @@
 # Judge
 
-Research must pass before any digest or email.
+Agent checks research in chat before writing digest or email.
 
-## Checks
+## Checks (`config/judge.yaml`)
 
 - ≥5 promotable JamItems (grade A/B, source + steps)
 - ≥2 corroborated items
 - ≥3 lenses with findings
-- No fluff (keywords in `config/judge.yaml`)
+- No fluff keywords without evidence
 
-## Output
+## Agent writes
 
-- `04-judge/verdict.json` — `sufficient: true|false`
-- `04-judge/gaps.md` — what to research next
+- `04-judge/verdict.json` — `{ "sufficient": true|false, "gaps": [...] }`
+- `04-judge/gaps.md` if fail
 
-If insufficient, write `feedback-NNN.md` and re-run discovery.
+If insufficient → `feedback-NNN.md` from `templates/feedback.md` → re-research.
+
+**Never** write `05-report/` or `06-email/` until sufficient.

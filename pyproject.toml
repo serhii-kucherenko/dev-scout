@@ -19,9 +19,6 @@ dependencies = [
 dev = ["pytest>=8.3.0", "ruff>=0.8.0"]
 extract = ["trafilatura>=2.0.0"]
 
-[project.scripts]
-dev-scout = "dev_scout.cli:app"
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

@@ -1,14 +1,18 @@
 # Collection
 
-1. **Discover** writes `01-research/discover/fetch-plan.json`
-2. **Collect** fetches each URL → `raw/`, `extracted/`, `excerpts.jsonl`
+Agent workflow in chat:
+
+1. **Discover** — write `01-research/discover/fetch-plan.json` from web search results
+2. **Collect** — fetch each URL, append to `01-research/excerpts.jsonl`
 
 Allowed hosts: `config/governance/data-boundaries.yaml`.
 
-Each excerpt record:
+Excerpt record format:
 
 ```json
 {"url": "...", "title": "...", "text": "...", "lens_id": "...", "tier": "primary"}
 ```
 
-Manual excerpts: append to `excerpts.jsonl` (document in `RUN.md`).
+Optional: save HTML in `01-research/raw/` (gitignored).
+
+Manual excerpts: append to `excerpts.jsonl` and note in `RUN.md`.

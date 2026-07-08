@@ -1,6 +1,6 @@
 # Research methodology
 
-Dev Scout exists to **research and scout** practical improvements for software development: speed, robustness, and production readiness.
+Dev Scout is a **chat-driven harness**. The Cursor agent researches the web and writes files — no CLI.
 
 ## Jam
 
@@ -11,16 +11,16 @@ A finding is only promoted if it is **jam**:
 - **Evidence** (metric, benchmark, named outcome)
 - Benefit: `speed`, `robustness`, or `both`
 
-See `config/jam-criteria.yaml` and `system/memory/evidence-rubric.yaml`.
+See `config/jam-criteria.yaml`, `templates/jam-item.example.json`, and `system/memory/evidence-rubric.yaml`.
 
-## Weekly flow
+## Weekly flow (in chat)
 
-1. Set research questions in `GOAL.md`
+1. User kickoff → agent reads [CHAT-LOOP.md](CHAT-LOOP.md)
 2. Discover sources from playbook + `config/sources.yaml`
-3. Collect and extract excerpts
-4. Run lenses (`config/lenses/`)
-5. Corroborate claims
-6. Judge sufficiency
+3. Collect excerpts → `01-research/excerpts.jsonl`
+4. Run lenses → `01-research/lenses/<id>/output.json`
+5. Corroborate → `01-research/corroboration.json`
+6. Judge → `04-judge/verdict.json`
 7. If pass → digest + email; if fail → feedback and re-research
 
 ## Research memory

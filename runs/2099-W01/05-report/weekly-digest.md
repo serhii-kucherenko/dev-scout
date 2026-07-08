@@ -128,8 +128,4 @@ Actionable jam for faster, more robust development.
 ## Skipped
 
 - Model routing cost latency benchmark 2026: missing link, steps, or grade
-- Model routing cost latency benchmark 2026: missing link, steps, or grade
-- Model routing cost latency benchmark 2026: missing link, steps, or grade
-- Model routing cost latency benchmark 2026: missing link, steps, or grade
-- Model routing cost latency benchmark 2026: missing link, steps, or grade
 - HN discussion corroborates agent loops: missing link, steps, or grade

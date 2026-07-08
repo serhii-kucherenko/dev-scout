@@ -9,7 +9,7 @@
 
 ## Judge
 - Sufficient: True
-- Promoted jam: 15
+- Promoted jam: 6
 
 ## Resume
 Research: `dev-scout discover|collect|lens|corroborate|coverage`

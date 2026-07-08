@@ -1,0 +1,25 @@
+---
+description: Dev Scout weekly research loop — chat-driven, file-based harness
+alwaysApply: true
+---
+
+# Dev Scout — chat loop
+
+This repo is a **chat-driven research harness**, not a CLI tool. The user runs the loop in Cursor chat.
+
+## When the user asks to scout, research, run the loop, or get this week's jam
+
+1. Read [AGENTS.md](AGENTS.md) and [docs/CHAT-LOOP.md](docs/CHAT-LOOP.md)
+2. Determine ISO week (`YYYY-Www`) and work under `runs/YYYY-Www/`
+3. Execute the research loop by **writing files** and **using web research tools** — do not tell the user to run terminal commands
+4. Use agent-reach / web search / fetch for discovery and corroboration per [docs/DISCOVERY-PLAYBOOK.md](docs/DISCOVERY-PLAYBOOK.md)
+5. Never write digest or email until judge criteria in `config/judge.yaml` pass
+6. End by pointing the user to `runs/YYYY-Www/06-email/email-draft.md`
+
+## Jam rules
+
+Every promoted finding needs: `source_url`, `how_to_steps` (≥3), evidence grade A or B, benefit (`speed` / `robustness` / `both`). See `config/jam-criteria.yaml`.
+
+## Resume
+
+If `runs/YYYY-Www/RUN.md` exists, read it and continue from the listed stage.

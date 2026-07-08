@@ -1,23 +1,13 @@
 # Delivery
 
-Output layer only — runs after judge pass.
+Agent writes output files after judge pass:
 
-## Draft mode (default)
+- `05-report/weekly-digest.md` — full jam cookbook
+- `06-email/email-draft.md` — scannable brief for the user
+- `06-email/email-draft.json` — structured copy (optional)
 
-Writes `06-email/email-draft.md` and `email-draft.json`.
+Email structure: see [CHAT-LOOP.md](CHAT-LOOP.md).
 
-## Send mode
+Tell the user where to read the draft. No send automation required in v1 — user copies from markdown or requests send in a follow-up chat.
 
-Set `config/delivery.yaml`:
-
-```yaml
-mode: send
-```
-
-Requires `RESEND_API_KEY` and `DELIVERY_FROM` in `.env`.
-
-```bash
-dev-scout compose-email
-dev-scout send --dry-run
-dev-scout send
-```
+Optional: `config/delivery.yaml` for future email integration.

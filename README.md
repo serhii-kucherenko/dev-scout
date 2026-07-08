@@ -2,67 +2,59 @@
 
 [![CI](https://github.com/serhii-kucherenko/dev-scout/actions/workflows/ci.yml/badge.svg)](https://github.com/serhii-kucherenko/dev-scout/actions/workflows/ci.yml)
 
-Weekly research harness that scouts the web for better ways to **ship faster** and **build more robust** software with AI-assisted development — then delivers **real jam**: source links, how-tos, and setup steps.
+Weekly **chat-driven** research harness: open in Cursor, run the loop in chat, get **real jam** — source links, how-tos, and setup steps for faster, more robust AI-assisted development.
 
-Personal research tool. Not a newsletter generator.
+No CLI required.
+
+## How to use
+
+1. **Open this repo in Cursor** as your project root
+2. **Start a chat** and paste:
+
+```
+Run this week's dev scout research loop.
+Read AGENTS.md and docs/CHAT-LOOP.md first.
+Find practical ways to ship faster and build more robust software with AI-assisted dev.
+Deliver jam with source links and how-tos when judge passes.
+```
+
+3. The agent researches the web, writes artifacts under `runs/YYYY-Www/`, and points you to the email draft when done
+
+**Continue later:**
+
+```
+Continue the dev scout loop for runs/YYYY-Www/. Read RUN.md and pick up where we left off.
+```
+
+## What you get
+
+| File | What it is |
+|------|------------|
+| `runs/YYYY-Www/06-email/email-draft.md` | Scannable weekly brief — start here |
+| `runs/YYYY-Www/05-report/weekly-digest.md` | Full cookbook with all links and steps |
+| `runs/YYYY-Www/01-research/` | Auditable research trail |
 
 ## Mission
 
-Learn new practical workflows each week: agent harnesses, tooling setups, testing patterns, and production practices that move real metrics. Research is the core; email and digest are how the jam reaches you.
-
-## Quick start
-
-```bash
-cd ~/Projects/dev-scout
-python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
-cp .env.example .env   # optional keys for search, LLM, email send
-
-dev-scout doctor
-dev-scout week --fixtures   # smoke run with fixture data
-```
-
-## Weekly workflow
-
-```bash
-dev-scout week                    # full pipeline for current ISO week
-# Read runs/YYYY-Www/06-email/email-draft.md
-# Full detail: runs/YYYY-Www/05-report/weekly-digest.md
-dev-scout send --dry-run          # optional, when delivery.mode = send
-```
-
-## CLI reference
-
-| Command | Layer | Purpose |
-|---------|-------|---------|
-| `discover` | Research | Build fetch plan from playbook + sources |
-| `collect` | Research | Fetch sources, build excerpts |
-| `lens --all` | Research | Run research lenses on excerpts |
-| `corroborate` | Research | Grade claim support |
-| `coverage` | Research | Research health report |
-| `judge` | Research | Sufficiency + jam quality gate |
-| `week` | Orchestrator | Full weekly run |
-| `loop --goal-file GOAL.md` | Orchestrator | Re-research until sufficient |
-| `report` | Output | Full weekly digest (after judge pass) |
-| `compose-email` | Output | Email draft with top jam |
-| `send` | Output | Deliver via Resend (optional) |
-
-Add `--json` to any command for agent-friendly output.
+Learn new practical workflows each week: agent harnesses, tooling setups, testing patterns, production practices that move real metrics. **Research is the core** — email and digest are outputs, not the product.
 
 ## Repo layout
 
 ```
-config/          lenses, sources, judge rules, delivery
-system/memory/   discovery playbook, evidence rubric
-docs/            research methodology + agent loop
-runs/YYYY-Www/   weekly artifacts (research → digest → email)
-data/            cross-week findings ledger
-src/dev_scout/   Python package
+AGENTS.md           ← agent entry (Cursor reads this)
+docs/CHAT-LOOP.md   ← stage-by-stage chat loop
+templates/          ← GOAL, feedback, jam examples
+config/             ← lenses, judge rules, sources
+runs/YYYY-Www/      ← weekly artifacts
+data/findings.json  ← cross-week memory
+src/dev_scout/      ← CI helpers only (optional)
 ```
 
 ## For agents
 
-Start with [AGENTS.md](AGENTS.md) and [docs/RESEARCH.md](docs/RESEARCH.md). Never compose email until `judge` passes.
+Everything runs in chat. See [AGENTS.md](AGENTS.md) and [docs/CHAT-LOOP.md](docs/CHAT-LOOP.md).
+
+Never write digest or email until judge criteria in `config/judge.yaml` pass.
 
 ## License
 

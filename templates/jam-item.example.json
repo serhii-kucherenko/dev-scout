@@ -1,0 +1,20 @@
+{
+  "id": "ship-faster-1",
+  "title": "Ralph-style agent loop with verify step",
+  "why": "Reduces review cycles with explicit sufficiency checks before merge",
+  "benefit": "speed",
+  "source_url": "https://github.com/example/repo",
+  "how_to_url": "https://github.com/example/repo#setup",
+  "how_to_steps": [
+    "Clone the repo and read the verify criteria docs",
+    "Add a GOAL.md with sufficiency rules for your team",
+    "Run one feature branch through the loop",
+    "Track PR review rounds for one week"
+  ],
+  "setup_cost": "hours",
+  "evidence": "Team reported 2x PR throughput in primary post",
+  "evidence_grade": "A",
+  "lens_id": "ship-faster",
+  "corroboration": "supported",
+  "try_monday": "Add verify step to one agent workflow on a small PR"
+}
