@@ -1,0 +1,108 @@
+{
+  "subject": "Dev Scout 2026-W28 — 5 ways to ship faster / build safer",
+  "to": "serhii@untetherlabs.com",
+  "body_text": "Dev Scout — 2026-W28\n\nThis week: practical ways to ship faster and build safer.\n\n1. MCP servers for IDE workflows (both)\n   Why: What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?\n   Source: https://github.com/modelcontextprotocol/servers\n   How-to: https://github.com/modelcontextprotocol/servers\n   Steps:\n     1. Open the source: https://github.com/modelcontextprotocol/servers\n     2. Skim for prerequisites and install commands\n     3. Apply the workflow on a small branch before team rollout\n     4. Measure cycle time or defect rate for one week\n   Try Monday: Open the source: https://github.com/modelcontextprotocol/servers\n\n2. Claude Code CLI setup (both)\n   Why: What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?\n   Source: https://github.com/anthropics/claude-code\n   How-to: https://github.com/anthropics/claude-code\n   Steps:\n     1. Open the source: https://github.com/anthropics/claude-code\n     2. Skim for prerequisites and install commands\n     3. Apply the workflow on a small branch before team rollout\n     4. Measure cycle time or defect rate for one week\n   Try Monday: Open the source: https://github.com/anthropics/claude-code\n\n3. Eval harness for LLM regressions (robustness)\n   Why: What testing, eval harnesses, or guardrails reduced bugs or outage risk?\n   Source: https://github.com/openai/evals\n   How-to: https://github.com/openai/evals\n   Steps:\n     1. Open the source: https://github.com/openai/evals\n     2. Skim for prerequisites and install commands\n     3. Apply the workflow on a small branch before team rollout\n     4. Measure cycle time or defect rate for one week\n   Try Monday: Open the source: https://github.com/openai/evals\n\n4. Ralph loop agent harness (speed)\n   Why: What agent loops, codegen, or review automation shipped with measured speed gains?\n   Source: https://github.com/vercel-labs/ralph-loop-agent\n   How-to: https://github.com/vercel-labs/ralph-loop-agent\n   Steps:\n     1. Open the source: https://github.com/vercel-labs/ralph-loop-agent\n     2. Skim for prerequisites and install commands\n     3. Apply the workflow on a small branch before team rollout\n     4. Measure cycle time or defect rate for one week\n   Try Monday: Open the source: https://github.com/vercel-labs/ralph-loop-agent\n\n5. LangGraph production deploy patterns (robustness)\n   Why: What deploy, observability, or rollback patterns shipped from real teams?\n   Source: https://github.com/langchain-ai/langgraph\n   How-to: https://github.com/langchain-ai/langgraph\n   Steps:\n     1. Open the source: https://github.com/langchain-ai/langgraph\n     2. Skim for prerequisites and install commands\n     3. Apply the workflow on a small branch before team rollout\n     4. Measure cycle time or defect rate for one week\n   Try Monday: Open the source: https://github.com/langchain-ai/langgraph\n\nMore in the full digest: runs/2026-W28/05-report/weekly-digest.md\n",
+  "body_html": null,
+  "top_items": [
+    {
+      "id": "tooling-setups-2",
+      "title": "MCP servers for IDE workflows",
+      "why": "What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?",
+      "benefit": "both",
+      "source_url": "https://github.com/modelcontextprotocol/servers",
+      "how_to_url": "https://github.com/modelcontextprotocol/servers",
+      "how_to_steps": [
+        "Open the source: https://github.com/modelcontextprotocol/servers",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "repo or docs with setup steps",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "corroboration": "weak",
+      "try_monday": "Open the source: https://github.com/modelcontextprotocol/servers"
+    },
+    {
+      "id": "tooling-setups-5",
+      "title": "Claude Code CLI setup",
+      "why": "What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?",
+      "benefit": "both",
+      "source_url": "https://github.com/anthropics/claude-code",
+      "how_to_url": "https://github.com/anthropics/claude-code",
+      "how_to_steps": [
+        "Open the source: https://github.com/anthropics/claude-code",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "repo or docs with setup steps",
+      "evidence_grade": "B",
+      "lens_id": "tooling-setups",
+      "corroboration": "weak",
+      "try_monday": "Open the source: https://github.com/anthropics/claude-code"
+    },
+    {
+      "id": "build-robust-3",
+      "title": "Eval harness for LLM regressions",
+      "why": "What testing, eval harnesses, or guardrails reduced bugs or outage risk?",
+      "benefit": "robustness",
+      "source_url": "https://github.com/openai/evals",
+      "how_to_url": "https://github.com/openai/evals",
+      "how_to_steps": [
+        "Open the source: https://github.com/openai/evals",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "fewer bugs, caught regressions, or eval score",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "corroboration": "weak",
+      "try_monday": "Open the source: https://github.com/openai/evals"
+    },
+    {
+      "id": "ship-faster-1",
+      "title": "Ralph loop agent harness",
+      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
+      "benefit": "speed",
+      "source_url": "https://github.com/vercel-labs/ralph-loop-agent",
+      "how_to_url": "https://github.com/vercel-labs/ralph-loop-agent",
+      "how_to_steps": [
+        "Open the source: https://github.com/vercel-labs/ralph-loop-agent",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "time saved, PR velocity, or benchmark",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "corroboration": "weak",
+      "try_monday": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
+    },
+    {
+      "id": "production-patterns-6",
+      "title": "LangGraph production deploy patterns",
+      "why": "What deploy, observability, or rollback patterns shipped from real teams?",
+      "benefit": "robustness",
+      "source_url": "https://github.com/langchain-ai/langgraph",
+      "how_to_url": "https://github.com/langchain-ai/langgraph",
+      "how_to_steps": [
+        "Open the source: https://github.com/langchain-ai/langgraph",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "named production outcome",
+      "evidence_grade": "B",
+      "lens_id": "production-patterns",
+      "corroboration": "weak",
+      "try_monday": "Open the source: https://github.com/langchain-ai/langgraph"
+    }
+  ]
+}

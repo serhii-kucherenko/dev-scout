@@ -1,0 +1,25 @@
+{
+  "lens_id": "production-patterns",
+  "items": [
+    {
+      "id": "production-patterns-6",
+      "title": "LangGraph production deploy patterns",
+      "why": "What deploy, observability, or rollback patterns shipped from real teams?",
+      "benefit": "robustness",
+      "source_url": "https://github.com/langchain-ai/langgraph",
+      "how_to_url": "https://github.com/langchain-ai/langgraph",
+      "how_to_steps": [
+        "Open the source: https://github.com/langchain-ai/langgraph",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "named production outcome",
+      "evidence_grade": "B",
+      "lens_id": "production-patterns",
+      "corroboration": "weak",
+      "try_monday": "Open the source: https://github.com/langchain-ai/langgraph"
+    }
+  ]
+}

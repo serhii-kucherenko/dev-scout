@@ -1,0 +1,10 @@
+{
+  "build-robust-3": "supported",
+  "model-workflows-7": "supported",
+  "production-patterns-6": "supported",
+  "ship-faster-1": "supported",
+  "ship-faster-4": "supported",
+  "ship-faster-8": "unsupported",
+  "tooling-setups-2": "supported",
+  "tooling-setups-5": "supported"
+}

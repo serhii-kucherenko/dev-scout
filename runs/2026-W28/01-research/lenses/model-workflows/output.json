@@ -1,0 +1,25 @@
+{
+  "lens_id": "model-workflows",
+  "items": [
+    {
+      "id": "model-workflows-7",
+      "title": "Model routing cost latency benchmark 2026",
+      "why": "What model routing or cost/latency choices improve dev workflows?",
+      "benefit": "speed",
+      "source_url": "https://example.com/dev-scout/model-workflows/7",
+      "how_to_url": null,
+      "how_to_steps": [
+        "Open the source: search://model-workflows/coding model cost latency benchmark 2026",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "pricing, eval, or latency numbers",
+      "evidence_grade": "C",
+      "lens_id": "model-workflows",
+      "corroboration": "weak",
+      "try_monday": "Open the source: search://model-workflows/coding model cost latency benchmark 2026"
+    }
+  ]
+}

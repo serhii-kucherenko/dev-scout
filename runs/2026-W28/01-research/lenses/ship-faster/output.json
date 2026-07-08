@@ -1,0 +1,65 @@
+{
+  "lens_id": "ship-faster",
+  "items": [
+    {
+      "id": "ship-faster-1",
+      "title": "Ralph loop agent harness",
+      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
+      "benefit": "speed",
+      "source_url": "https://github.com/vercel-labs/ralph-loop-agent",
+      "how_to_url": "https://github.com/vercel-labs/ralph-loop-agent",
+      "how_to_steps": [
+        "Open the source: https://github.com/vercel-labs/ralph-loop-agent",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "time saved, PR velocity, or benchmark",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "corroboration": "weak",
+      "try_monday": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
+    },
+    {
+      "id": "ship-faster-4",
+      "title": "Cursor agent workflow docs",
+      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
+      "benefit": "speed",
+      "source_url": "https://docs.cursor.com/agent",
+      "how_to_url": null,
+      "how_to_steps": [
+        "Open the source: https://docs.cursor.com/agent",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "time saved, PR velocity, or benchmark",
+      "evidence_grade": "B",
+      "lens_id": "ship-faster",
+      "corroboration": "weak",
+      "try_monday": "Open the source: https://docs.cursor.com/agent"
+    },
+    {
+      "id": "ship-faster-8",
+      "title": "HN discussion corroborates agent loops",
+      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
+      "benefit": "speed",
+      "source_url": "https://news.ycombinator.com/item?id=agent-corroboration",
+      "how_to_url": null,
+      "how_to_steps": [
+        "Open the source: https://news.ycombinator.com/item?id=agent-corroboration",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "time saved, PR velocity, or benchmark",
+      "evidence_grade": "D",
+      "lens_id": "ship-faster",
+      "corroboration": "weak",
+      "try_monday": "Open the source: https://news.ycombinator.com/item?id=agent-corroboration"
+    }
+  ]
+}

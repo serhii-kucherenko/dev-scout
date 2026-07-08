@@ -1,0 +1,25 @@
+{
+  "lens_id": "build-robust",
+  "items": [
+    {
+      "id": "build-robust-3",
+      "title": "Eval harness for LLM regressions",
+      "why": "What testing, eval harnesses, or guardrails reduced bugs or outage risk?",
+      "benefit": "robustness",
+      "source_url": "https://github.com/openai/evals",
+      "how_to_url": "https://github.com/openai/evals",
+      "how_to_steps": [
+        "Open the source: https://github.com/openai/evals",
+        "Skim for prerequisites and install commands",
+        "Apply the workflow on a small branch before team rollout",
+        "Measure cycle time or defect rate for one week"
+      ],
+      "setup_cost": "hours",
+      "evidence": "fewer bugs, caught regressions, or eval score",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "corroboration": "weak",
+      "try_monday": "Open the source: https://github.com/openai/evals"
+    }
+  ]
+}

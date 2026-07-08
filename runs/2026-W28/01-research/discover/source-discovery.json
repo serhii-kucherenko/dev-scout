@@ -1,0 +1,98 @@
+{
+  "week": "2026-W28",
+  "url_count": 17,
+  "urls": [
+    {
+      "url": "https://github.com/vercel-labs/ralph-loop-agent",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "fixture"
+    },
+    {
+      "url": "https://github.com/modelcontextprotocol/servers",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "fixture"
+    },
+    {
+      "url": "https://github.com/openai/evals",
+      "tier": "primary",
+      "lens_id": "build-robust",
+      "reason": "fixture"
+    },
+    {
+      "url": "https://docs.cursor.com/agent",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "fixture"
+    },
+    {
+      "url": "https://github.com/anthropics/claude-code",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "fixture"
+    },
+    {
+      "url": "https://github.com/langchain-ai/langgraph",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "fixture"
+    },
+    {
+      "url": "search://model-workflows/coding model cost latency benchmark 2026",
+      "tier": "secondary",
+      "lens_id": "model-workflows",
+      "reason": "fixture"
+    },
+    {
+      "url": "https://github.com/openai/evals",
+      "tier": "secondary",
+      "reason": "prior_jam"
+    },
+    {
+      "url": "https://github.com/vercel-labs/ralph-loop-agent",
+      "tier": "secondary",
+      "reason": "prior_jam"
+    },
+    {
+      "url": "https://github.com/openai/evals",
+      "tier": "secondary",
+      "reason": "prior_jam"
+    },
+    {
+      "url": "https://github.com/vercel-labs/ralph-loop-agent",
+      "tier": "secondary",
+      "reason": "prior_jam"
+    },
+    {
+      "url": "https://github.com/modelcontextprotocol/servers",
+      "tier": "secondary",
+      "reason": "prior_jam"
+    },
+    {
+      "url": "https://github.com/langchain-ai/langgraph",
+      "tier": "secondary",
+      "reason": "prior_jam"
+    },
+    {
+      "url": "https://docs.cursor.com/agent",
+      "tier": "secondary",
+      "reason": "prior_jam"
+    },
+    {
+      "url": "https://github.com/langchain-ai/langgraph",
+      "tier": "secondary",
+      "reason": "prior_jam"
+    },
+    {
+      "url": "https://docs.cursor.com/agent",
+      "tier": "secondary",
+      "reason": "prior_jam"
+    },
+    {
+      "url": "https://github.com/anthropics/claude-code",
+      "tier": "secondary",
+      "reason": "prior_jam"
+    }
+  ]
+}
