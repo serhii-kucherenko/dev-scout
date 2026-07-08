@@ -4,7 +4,7 @@
 
 Weekly **chat-driven** research harness: open in Cursor, run the loop in chat, get **real jam** — source links, how-tos, and setup steps for faster, more robust AI-assisted development.
 
-No CLI required.
+**No CLI. No API keys.** Uses your Cursor subscription only. See [docs/SUBSCRIPTIONS.md](docs/SUBSCRIPTIONS.md).
 
 ## How to use
 
@@ -43,6 +43,7 @@ Learn new practical workflows each week: agent harnesses, tooling setups, testin
 ```
 AGENTS.md           ← agent entry (Cursor reads this)
 docs/CHAT-LOOP.md   ← stage-by-stage chat loop
+docs/SUBSCRIPTIONS.md ← no API keys; Cursor + agent-reach only
 templates/          ← GOAL, feedback, jam examples
 config/             ← lenses, judge rules, sources
 runs/YYYY-Www/      ← weekly artifacts

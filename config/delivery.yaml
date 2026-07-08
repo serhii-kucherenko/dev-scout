@@ -1,4 +1,6 @@
 recipient: serhii@untetherlabs.com
 mode: draft
 subject_template: "Dev Scout {week} — {top_count} ways to ship faster / build safer"
-provider: resend
+
+# Email is written to runs/YYYY-Www/06-email/email-draft.md in chat.
+# No send integration — user copies from markdown. No API keys required.

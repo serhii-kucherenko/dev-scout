@@ -1,6 +1,6 @@
 # Chat loop — how to run Dev Scout in Cursor
 
-No CLI. Open this repo in Cursor and drive the loop from chat. The agent writes artifacts under `runs/YYYY-Www/`.
+No CLI. No API keys. Open this repo in Cursor and drive the loop from chat.
 
 ## Kickoff prompts (copy into chat)
 
@@ -55,14 +55,20 @@ Update `RUN.md` after each stage so the next chat session can resume.
 
 ---
 
-## Discovery tools (in chat)
+## Discovery tools (subscriptions only)
 
-Use whatever is available in the agent session:
+**No API keys.** Use:
 
-- Web search / Exa
-- **agent-reach** for Twitter, Reddit, HN, GitHub (corroboration)
-- `gh search repos` when shell is needed for GitHub only
-- Direct URL fetch for primary sources
+| Tool | For |
+|------|-----|
+| **Cursor web search** | Broad discovery |
+| **agent-reach** | Twitter, Reddit, HN, GitHub, articles |
+| **`gh search`** | GitHub repos/releases (if `gh auth` exists) |
+| **Web fetch** | Primary sources from fetch plan |
+
+See [SUBSCRIPTIONS.md](SUBSCRIPTIONS.md) and [DISCOVERY-PLAYBOOK.md](DISCOVERY-PLAYBOOK.md).
+
+Do **not** ask the user for OpenAI, Anthropic, Exa, or Resend keys.
 
 Respect `config/governance/data-boundaries.yaml`.
 

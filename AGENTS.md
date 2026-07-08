@@ -5,10 +5,11 @@
 ## Read first
 
 1. [docs/CHAT-LOOP.md](docs/CHAT-LOOP.md) — stage-by-stage loop
-2. [docs/RESEARCH.md](docs/RESEARCH.md) — mission and jam criteria
-3. [docs/DISCOVERY-PLAYBOOK.md](docs/DISCOVERY-PLAYBOOK.md) — how to search
-4. `runs/YYYY-Www/GOAL.md` or copy from [templates/GOAL.md](templates/GOAL.md)
-5. `runs/YYYY-Www/RUN.md` if resuming
+2. [docs/SUBSCRIPTIONS.md](docs/SUBSCRIPTIONS.md) — no API keys; use Cursor + agent-reach
+3. [docs/RESEARCH.md](docs/RESEARCH.md) — mission and jam criteria
+4. [docs/DISCOVERY-PLAYBOOK.md](docs/DISCOVERY-PLAYBOOK.md) — how to search
+5. `runs/YYYY-Www/GOAL.md` or copy from [templates/GOAL.md](templates/GOAL.md)
+6. `runs/YYYY-Www/RUN.md` if resuming
 
 ## Your job
 
@@ -44,11 +45,21 @@ Update `RUN.md` after every stage.
 - No meta fluff, listicles without links, hype without how-to
 - See `config/jam-criteria.yaml` and `templates/jam-item.example.json`
 
-## Discovery
+## Discovery (subscriptions only — no API keys)
 
-- Web search / Exa for primary and secondary sources
-- **agent-reach** for discussion corroboration (HN, Twitter, Reddit, GitHub)
-- Respect `config/governance/data-boundaries.yaml`
+Use only what the user already pays for. **Never ask for OpenAI, Anthropic, Exa, or other API keys.**
+
+| Tool | Use |
+|------|-----|
+| **This Cursor chat** | Analysis, lenses, judge, writing outputs |
+| **Cursor web search** | Discover sources |
+| **agent-reach** | HN, Reddit, Twitter, GitHub, articles (use agent-reach skill when available) |
+| **`gh search`** | GitHub repos/issues if `gh` is authenticated |
+| **Web fetch** | Read primary sources |
+
+Full details: [docs/DISCOVERY-PLAYBOOK.md](docs/DISCOVERY-PLAYBOOK.md) and [docs/SUBSCRIPTIONS.md](docs/SUBSCRIPTIONS.md).
+
+Respect `config/governance/data-boundaries.yaml`.
 
 ## When judge fails
 
@@ -63,4 +74,4 @@ Tell the user:
 
 ## Optional
 
-`src/dev_scout/` is for CI only. Do not require `pip install` or terminal commands for the user.
+`src/dev_scout/` is for CI only. Do not require `pip install`, terminal commands, or **any API keys** for the user.
