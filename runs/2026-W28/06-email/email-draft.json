@@ -1,108 +1,113 @@
 {
-  "subject": "Dev Scout 2026-W28 — 5 ways to ship faster / build safer",
+  "subject": "Dev Scout 2026-W28 - 5 ways to ship faster and build safer",
   "to": "serhii@untetherlabs.com",
-  "body_text": "Dev Scout — 2026-W28\n\nThis week: practical ways to ship faster and build safer.\n\n1. MCP servers for IDE workflows (both)\n   Why: What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?\n   Source: https://github.com/modelcontextprotocol/servers\n   How-to: https://github.com/modelcontextprotocol/servers\n   Steps:\n     1. Open the source: https://github.com/modelcontextprotocol/servers\n     2. Skim for prerequisites and install commands\n     3. Apply the workflow on a small branch before team rollout\n     4. Measure cycle time or defect rate for one week\n   Try Monday: Open the source: https://github.com/modelcontextprotocol/servers\n\n2. Claude Code CLI setup (both)\n   Why: What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?\n   Source: https://github.com/anthropics/claude-code\n   How-to: https://github.com/anthropics/claude-code\n   Steps:\n     1. Open the source: https://github.com/anthropics/claude-code\n     2. Skim for prerequisites and install commands\n     3. Apply the workflow on a small branch before team rollout\n     4. Measure cycle time or defect rate for one week\n   Try Monday: Open the source: https://github.com/anthropics/claude-code\n\n3. Eval harness for LLM regressions (robustness)\n   Why: What testing, eval harnesses, or guardrails reduced bugs or outage risk?\n   Source: https://github.com/openai/evals\n   How-to: https://github.com/openai/evals\n   Steps:\n     1. Open the source: https://github.com/openai/evals\n     2. Skim for prerequisites and install commands\n     3. Apply the workflow on a small branch before team rollout\n     4. Measure cycle time or defect rate for one week\n   Try Monday: Open the source: https://github.com/openai/evals\n\n4. Ralph loop agent harness (speed)\n   Why: What agent loops, codegen, or review automation shipped with measured speed gains?\n   Source: https://github.com/vercel-labs/ralph-loop-agent\n   How-to: https://github.com/vercel-labs/ralph-loop-agent\n   Steps:\n     1. Open the source: https://github.com/vercel-labs/ralph-loop-agent\n     2. Skim for prerequisites and install commands\n     3. Apply the workflow on a small branch before team rollout\n     4. Measure cycle time or defect rate for one week\n   Try Monday: Open the source: https://github.com/vercel-labs/ralph-loop-agent\n\n5. LangGraph production deploy patterns (robustness)\n   Why: What deploy, observability, or rollback patterns shipped from real teams?\n   Source: https://github.com/langchain-ai/langgraph\n   How-to: https://github.com/langchain-ai/langgraph\n   Steps:\n     1. Open the source: https://github.com/langchain-ai/langgraph\n     2. Skim for prerequisites and install commands\n     3. Apply the workflow on a small branch before team rollout\n     4. Measure cycle time or defect rate for one week\n   Try Monday: Open the source: https://github.com/langchain-ai/langgraph\n\nMore in the full digest: runs/2026-W28/05-report/weekly-digest.md\n",
+  "body_text": "Dev Scout - 2026-W28\n\nThis week's jam is about moving review earlier, routing to cheaper default models, and hardening agent systems before they reach prod.\n\n1. Run Bugbot before you push (both)\n   Why: Move review left so the same agent catches bugs on the diff before the PR roundtrip starts.\n   Evidence: Cursor says Bugbot is over 3x faster, 22% cheaper, finds 10% more bugs per review, and 90% of runs now finish in under 3 minutes.\n   Source: https://cursor.com/blog/bugbot-updates-june-2026\n   Try Monday: Enable Bugbot on one active repo and require its check on draft PRs for one week.\n\n2. Make GPT-5 mini the default coding workhorse (both)\n   Why: A cheap high-skill default model lets teams save the expensive model for cases where verification says more horsepower is actually needed.\n   Evidence: OpenAI reports GPT-5 mini scores 71.0% on SWE-bench Verified and 71.6% on Aider polyglot while costing $0.25 per 1M input tokens and $2 per 1M output tokens.\n   Source: https://openai.com/index/introducing-gpt-5-for-developers/\n   Try Monday: Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails.\n\n3. Treat system-prompt edits like code changes (robustness)\n   Why: Prompt tweaks can silently degrade code quality, so they need the same gating discipline as production code.\n   Evidence: Anthropic reports that one verbosity instruction caused a 3% drop on both Opus 4.6 and 4.7 in a broader evaluation set, and it immediately reverted the change.\n   Source: https://www.anthropic.com/engineering/april-23-postmortem\n   Try Monday: Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites.\n\n4. Design containment at the environment layer first (robustness)\n   Why: Sandbox and egress boundaries keep failures bounded even when the model, a tool, or a user prompt goes off the rails.\n   Evidence: Anthropic says its Claude Code sandbox cut permission prompts by 84%, auto mode catches about 83% of overeager behaviors, and Gray Swan prompt-injection success is roughly 0.1% on single attempts.\n   Source: https://www.anthropic.com/engineering/how-we-contain-claude\n   Try Monday: Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs.\n\n5. Use always-on cloud agents for review, triage, and incident chores (both)\n   Why: Background automations keep review and maintenance work moving without waiting for someone to open the IDE.\n   Evidence: Cursor says Bugbot-like automations run thousands of times a day and have caught millions of bugs; its internal security-review automation has caught multiple vulnerabilities and critical bugs; Runlayer says the setup helps them move faster than teams five times their size.\n   Source: https://cursor.com/blog/automations\n   Try Monday: Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings.\n\nFull detail: runs/2026-W28/05-report/weekly-digest.md\n",
   "body_html": null,
   "top_items": [
     {
-      "id": "tooling-setups-2",
-      "title": "MCP servers for IDE workflows",
-      "why": "What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?",
+      "id": "ship-faster-2026w28-bugbot-prepush",
+      "title": "Run Bugbot before you push",
+      "why": "Move review left so the same agent catches bugs on the diff before the PR roundtrip starts.",
       "benefit": "both",
-      "source_url": "https://github.com/modelcontextprotocol/servers",
-      "how_to_url": "https://github.com/modelcontextprotocol/servers",
+      "source_url": "https://cursor.com/blog/bugbot-updates-june-2026",
+      "how_to_url": "https://cursor.com/docs/bugbot",
       "how_to_steps": [
-        "Open the source: https://github.com/modelcontextprotocol/servers",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Connect the repository to Cursor and enable Bugbot for the repo in the dashboard.",
+        "Run /review or /review-bugbot locally before pushing so the agent inspects the exact diff first.",
+        "Turn on incremental review or mention-only mode to keep feedback focused on new commits.",
+        "Require the Cursor Bugbot check in branch protection once the team trusts the signal."
       ],
       "setup_cost": "hours",
-      "evidence": "repo or docs with setup steps",
-      "evidence_grade": "A",
-      "lens_id": "tooling-setups",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/modelcontextprotocol/servers"
-    },
-    {
-      "id": "tooling-setups-5",
-      "title": "Claude Code CLI setup",
-      "why": "What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?",
-      "benefit": "both",
-      "source_url": "https://github.com/anthropics/claude-code",
-      "how_to_url": "https://github.com/anthropics/claude-code",
-      "how_to_steps": [
-        "Open the source: https://github.com/anthropics/claude-code",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
-      ],
-      "setup_cost": "hours",
-      "evidence": "repo or docs with setup steps",
-      "evidence_grade": "B",
-      "lens_id": "tooling-setups",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/anthropics/claude-code"
-    },
-    {
-      "id": "build-robust-3",
-      "title": "Eval harness for LLM regressions",
-      "why": "What testing, eval harnesses, or guardrails reduced bugs or outage risk?",
-      "benefit": "robustness",
-      "source_url": "https://github.com/openai/evals",
-      "how_to_url": "https://github.com/openai/evals",
-      "how_to_steps": [
-        "Open the source: https://github.com/openai/evals",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
-      ],
-      "setup_cost": "hours",
-      "evidence": "fewer bugs, caught regressions, or eval score",
-      "evidence_grade": "A",
-      "lens_id": "build-robust",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/openai/evals"
-    },
-    {
-      "id": "ship-faster-1",
-      "title": "Ralph loop agent harness",
-      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
-      "benefit": "speed",
-      "source_url": "https://github.com/vercel-labs/ralph-loop-agent",
-      "how_to_url": "https://github.com/vercel-labs/ralph-loop-agent",
-      "how_to_steps": [
-        "Open the source: https://github.com/vercel-labs/ralph-loop-agent",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
-      ],
-      "setup_cost": "hours",
-      "evidence": "time saved, PR velocity, or benchmark",
+      "evidence": "Cursor says Bugbot is over 3x faster, 22% cheaper, finds 10% more bugs per review, and 90% of runs now finish in under 3 minutes.",
       "evidence_grade": "A",
       "lens_id": "ship-faster",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/docs/bugbot",
+      "try_monday": "Enable Bugbot on one active repo and require its check on draft PRs for one week."
     },
     {
-      "id": "production-patterns-6",
-      "title": "LangGraph production deploy patterns",
-      "why": "What deploy, observability, or rollback patterns shipped from real teams?",
-      "benefit": "robustness",
-      "source_url": "https://github.com/langchain-ai/langgraph",
-      "how_to_url": "https://github.com/langchain-ai/langgraph",
+      "id": "model-workflows-2026w28-gpt5-mini-default",
+      "title": "Make GPT-5 mini the default coding workhorse",
+      "why": "A cheap high-skill default model lets teams save the expensive model for cases where verification says more horsepower is actually needed.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/introducing-gpt-5-for-developers/",
+      "how_to_url": "https://openai.com/index/introducing-gpt-5-for-developers/",
       "how_to_steps": [
-        "Open the source: https://github.com/langchain-ai/langgraph",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Set gpt-5-mini as the default model for routine implementation, repo Q and A, and PR-sized coding tasks.",
+        "Keep the loop verification-based so you escalate only when tests fail, tool use gets messy, or the task stalls.",
+        "Use lower verbosity for tight edit loops and increase it only when you need fuller plans or explanations.",
+        "Track solve rate and spend side by side for mini-default versus full-model escalations."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "OpenAI reports GPT-5 mini scores 71.0% on SWE-bench Verified and 71.6% on Aider polyglot while costing $0.25 per 1M input tokens and $2 per 1M output tokens.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_monday": "Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails."
+    },
+    {
+      "id": "build-robust-2026w28-prompt-change-guardrails",
+      "title": "Treat system-prompt edits like code changes",
+      "why": "Prompt tweaks can silently degrade code quality, so they need the same gating discipline as production code.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/april-23-postmortem",
+      "how_to_url": "https://www.anthropic.com/engineering/april-23-postmortem",
+      "how_to_steps": [
+        "Run a broad per-model eval suite for every prompt change that affects an agent or coding workflow.",
+        "Use ablations to isolate which prompt line changes quality, latency, or token use.",
+        "Soak the change before full rollout if it trades off intelligence versus speed or cost.",
+        "Roll out gradually and revert immediately if the broader eval set regresses."
       ],
       "setup_cost": "hours",
-      "evidence": "named production outcome",
-      "evidence_grade": "B",
+      "evidence": "Anthropic reports that one verbosity instruction caused a 3% drop on both Opus 4.6 and 4.7 in a broader evaluation set, and it immediately reverted the change.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "corroboration": "supported",
+      "corroboration_url": "https://news.ycombinator.com/item?id=47878905",
+      "try_monday": "Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites."
+    },
+    {
+      "id": "production-patterns-2026w28-containment-first",
+      "title": "Design containment at the environment layer first",
+      "why": "Sandbox and egress boundaries keep failures bounded even when the model, a tool, or a user prompt goes off the rails.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "how_to_url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "how_to_steps": [
+        "Choose the isolation pattern that matches the user and task: ephemeral container, workspace sandbox, or sealed VM.",
+        "Default to network deny and limit writes to the workspace or explicitly mounted paths.",
+        "Keep credentials outside the sandbox and pass only scoped session tokens inside.",
+        "Delay project-local config parsing until after trust is established, and inspect tool output before it reaches model context."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic says its Claude Code sandbox cut permission prompts by 84%, auto mode catches about 83% of overeager behaviors, and Gray Swan prompt-injection success is roughly 0.1% on single attempts.",
+      "evidence_grade": "A",
       "lens_id": "production-patterns",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/langchain-ai/langgraph"
+      "corroboration_url": null,
+      "try_monday": "Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs."
+    },
+    {
+      "id": "tooling-setups-2026w28-automations",
+      "title": "Use always-on cloud agents for review, triage, and incident chores",
+      "why": "Background automations keep review and maintenance work moving without waiting for someone to open the IDE.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/automations",
+      "how_to_url": "https://cursor.com/docs/cloud-agent/automations",
+      "how_to_steps": [
+        "Create a new automation from the Agents Window, cursor.com/automations, or the /automate skill.",
+        "Pick a trigger such as pull request opened, CI completed, Slack, webhook, or cron.",
+        "Write the prompt and enable only the tools it needs, such as PR comments, Slack, MCP, or memories.",
+        "Choose whether it should run against one repo, multiple repos, or no repo, then save and activate it."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says Bugbot-like automations run thousands of times a day and have caught millions of bugs; its internal security-review automation has caught multiple vulnerabilities and critical bugs; Runlayer says the setup helps them move faster than teams five times their size.",
+      "evidence_grade": "B",
+      "lens_id": "tooling-setups",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/docs/cloud-agent/automations",
+      "try_monday": "Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings."
     }
   ]
 }

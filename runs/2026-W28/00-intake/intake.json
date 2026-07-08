@@ -3,7 +3,9 @@
   "goal_present": true,
   "prior_findings": 15,
   "prior_weeks": [
-    "2099-W01",
-    "2026-W28"
+    "2099-W01"
+  ],
+  "notes": [
+    "Rebuilt the existing 2026-W28 run because the prior artifact set contained placeholder-style evidence and unverifiable links."
   ]
 }

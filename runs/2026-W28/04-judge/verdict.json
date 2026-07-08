@@ -1,16 +1,12 @@
 {
   "sufficient": true,
-  "promoted_count": 15,
-  "ab_count": 15,
+  "promoted_count": 10,
+  "ab_count": 10,
   "corroborated_count": 6,
   "lenses_with_findings": 5,
   "gaps": [],
   "skipped": [
-    "Model routing cost latency benchmark 2026: missing link, steps, or grade",
-    "Model routing cost latency benchmark 2026: missing link, steps, or grade",
-    "Model routing cost latency benchmark 2026: missing link, steps, or grade",
-    "Model routing cost latency benchmark 2026: missing link, steps, or grade",
-    "Model routing cost latency benchmark 2026: missing link, steps, or grade",
-    "HN discussion corroborates agent loops: missing link, steps, or grade"
+    "Official GitHub MCP server: strong setup docs, but weaker measured outcome evidence than the promoted set.",
+    "How Anthropic teams use Claude Code: useful workflow anecdotes, but lower-evidence than the promoted operational sources."
   ]
 }

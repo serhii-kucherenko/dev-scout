@@ -1,16 +1,15 @@
 # Run 2026-W28
 
 ## Research
-- URLs planned: 17
-- URLs fetched: 0
-- Excerpts: 8
+- URLs planned: 15
+- URLs fetched: 15
+- Excerpts: 15
 - Lenses with findings: 5
-- Corroboration rate: 0.875
+- Corroboration rate: 0.6
 
 ## Judge
 - Sufficient: True
-- Promoted jam: 15
+- Promoted jam: 10
 
 ## Resume
-Research: `dev-scout discover|collect|lens|corroborate|coverage`
-Output (after judge pass): `dev-scout report|compose-email|send`
+Completed through learning. Next action is to use the digest and email draft.

@@ -1,7 +1,18 @@
 {
   "week": "2026-W28",
-  "prior_week": "2026-W28",
-  "new_count": 0,
-  "promoted_count": 6,
-  "new_item_ids": []
+  "prior_week": null,
+  "new_count": 10,
+  "promoted_count": 10,
+  "new_item_ids": [
+    "ship-faster-2026w28-bugbot-prepush",
+    "ship-faster-2026w28-semantic-search",
+    "tooling-setups-2026w28-automations",
+    "tooling-setups-2026w28-codex-cli",
+    "build-robust-2026w28-prompt-change-guardrails",
+    "build-robust-2026w28-regression-suite",
+    "production-patterns-2026w28-containment-first",
+    "production-patterns-2026w28-ai-gateway-fallbacks",
+    "model-workflows-2026w28-gpt5-mini-default",
+    "model-workflows-2026w28-prompt-caching"
+  ]
 }

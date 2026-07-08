@@ -2,24 +2,46 @@
   "lens_id": "model-workflows",
   "items": [
     {
-      "id": "model-workflows-7",
-      "title": "Model routing cost latency benchmark 2026",
-      "why": "What model routing or cost/latency choices improve dev workflows?",
-      "benefit": "speed",
-      "source_url": "https://example.com/dev-scout/model-workflows/7",
-      "how_to_url": null,
+      "id": "model-workflows-2026w28-gpt5-mini-default",
+      "title": "Make GPT-5 mini the default coding workhorse",
+      "why": "A cheap high-skill default model lets teams save the expensive model for cases where verification says more horsepower is actually needed.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/introducing-gpt-5-for-developers/",
+      "how_to_url": "https://openai.com/index/introducing-gpt-5-for-developers/",
       "how_to_steps": [
-        "Open the source: search://model-workflows/coding model cost latency benchmark 2026",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Set gpt-5-mini as the default model for routine implementation, repo Q and A, and PR-sized coding tasks.",
+        "Keep the loop verification-based so you escalate only when tests fail, tool use gets messy, or the task stalls.",
+        "Use lower verbosity for tight edit loops and increase it only when you need fuller plans or explanations.",
+        "Track solve rate and spend side by side for mini-default versus full-model escalations."
       ],
-      "setup_cost": "hours",
-      "evidence": "pricing, eval, or latency numbers",
-      "evidence_grade": "C",
+      "setup_cost": "minutes",
+      "evidence": "OpenAI reports GPT-5 mini scores 71.0% on SWE-bench Verified and 71.6% on Aider polyglot while costing $0.25 per 1M input tokens and $2 per 1M output tokens.",
+      "evidence_grade": "A",
       "lens_id": "model-workflows",
       "corroboration": "weak",
-      "try_monday": "Open the source: search://model-workflows/coding model cost latency benchmark 2026"
+      "corroboration_url": null,
+      "try_monday": "Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails."
+    },
+    {
+      "id": "model-workflows-2026w28-prompt-caching",
+      "title": "Cache stable repo context instead of resending it every turn",
+      "why": "Repeated codebase context is expensive and slow; caching it turns long-running coding loops into faster, cheaper interactions.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/news/prompt-caching",
+      "how_to_url": "https://www.anthropic.com/news/prompt-caching",
+      "how_to_steps": [
+        "Put stable prompt material first, such as system policy, coding standards, tool schema, and repo summary.",
+        "Reuse that exact prefix across turns and agent tool loops, appending only the new task delta at the end.",
+        "Apply caching first to codebase Q and A, autocomplete, and multi-turn debugging sessions that resend long context.",
+        "Measure time to first token and input-token cost before and after the change."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic says prompt caching cuts cost by up to 90% and latency by up to 85%; one 100k-token prompt dropped from 11.5s to 2.4s time-to-first-token.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_monday": "Cache the stable repo and policy prefix in one high-volume coding assistant and compare TTFT and spend over a day."
     }
   ]
 }

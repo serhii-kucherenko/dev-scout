@@ -2,24 +2,46 @@
   "lens_id": "production-patterns",
   "items": [
     {
-      "id": "production-patterns-6",
-      "title": "LangGraph production deploy patterns",
-      "why": "What deploy, observability, or rollback patterns shipped from real teams?",
+      "id": "production-patterns-2026w28-containment-first",
+      "title": "Design containment at the environment layer first",
+      "why": "Sandbox and egress boundaries keep failures bounded even when the model, a tool, or a user prompt goes off the rails.",
       "benefit": "robustness",
-      "source_url": "https://github.com/langchain-ai/langgraph",
-      "how_to_url": "https://github.com/langchain-ai/langgraph",
+      "source_url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "how_to_url": "https://www.anthropic.com/engineering/how-we-contain-claude",
       "how_to_steps": [
-        "Open the source: https://github.com/langchain-ai/langgraph",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Choose the isolation pattern that matches the user and task: ephemeral container, workspace sandbox, or sealed VM.",
+        "Default to network deny and limit writes to the workspace or explicitly mounted paths.",
+        "Keep credentials outside the sandbox and pass only scoped session tokens inside.",
+        "Delay project-local config parsing until after trust is established, and inspect tool output before it reaches model context."
       ],
       "setup_cost": "hours",
-      "evidence": "named production outcome",
-      "evidence_grade": "B",
+      "evidence": "Anthropic says its Claude Code sandbox cut permission prompts by 84%, auto mode catches about 83% of overeager behaviors, and Gray Swan prompt-injection success is roughly 0.1% on single attempts.",
+      "evidence_grade": "A",
       "lens_id": "production-patterns",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/langchain-ai/langgraph"
+      "corroboration_url": null,
+      "try_monday": "Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs."
+    },
+    {
+      "id": "production-patterns-2026w28-ai-gateway-fallbacks",
+      "title": "Put a gateway in front of providers so outages do not stop the app",
+      "why": "Routing through a gateway gives you model failover, provider order, and request-level visibility instead of a single brittle dependency.",
+      "benefit": "both",
+      "source_url": "https://vercel.com/blog/ai-gateway-is-now-generally-available",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "how_to_steps": [
+        "Route traffic through one gateway endpoint instead of wiring the app directly to a single provider SDK.",
+        "Set a primary model and a fallback models list in providerOptions.gateway.",
+        "Add provider ordering and fast timeouts so the gateway fails over quickly when a provider stalls.",
+        "Inspect modelAttempts and providerAttempts metadata, then monitor latency, spend, and failure patterns by route."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Vercel says AI Gateway is the same system that has powered v0 for millions of users, sits on infrastructure delivering sub-20ms latency, and removes the single-provider failure mode.",
+      "evidence_grade": "B",
+      "lens_id": "production-patterns",
+      "corroboration": "supported",
+      "corroboration_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "try_monday": "Wrap one production AI endpoint with a primary model plus two fallbacks and log which model actually serves each request."
     }
   ]
 }

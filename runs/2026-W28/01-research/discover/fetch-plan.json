@@ -1,98 +1,95 @@
 {
   "week": "2026-W28",
-  "planned": 17,
-  "entries": [
+  "urls": [
     {
-      "url": "https://github.com/vercel-labs/ralph-loop-agent",
+      "url": "https://cursor.com/blog/bugbot-updates-june-2026",
       "tier": "primary",
       "lens_id": "ship-faster",
-      "reason": "fixture"
+      "reason": "Measured pre-push and incremental review improvements."
     },
     {
-      "url": "https://github.com/modelcontextprotocol/servers",
+      "url": "https://cursor.com/docs/bugbot",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Operational setup and branch-protection details."
+    },
+    {
+      "url": "https://cursor.com/blog/semsearch",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Measured agent retrieval gains on real codebases."
+    },
+    {
+      "url": "https://cursor.com/docs/agent/tools/search",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Indexing and configuration steps for semantic search."
+    },
+    {
+      "url": "https://cursor.com/blog/automations",
       "tier": "primary",
       "lens_id": "tooling-setups",
-      "reason": "fixture"
+      "reason": "Operational evidence and common review and incident workflows."
     },
     {
-      "url": "https://github.com/openai/evals",
+      "url": "https://cursor.com/docs/cloud-agent/automations",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "Trigger, tool, and repo configuration guide."
+    },
+    {
+      "url": "https://openai.com/index/introducing-upgrades-to-codex/",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "Operational outcomes for the Codex agent workflow."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/openai/codex/main/README.md",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "CLI install and login quickstart."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/april-23-postmortem",
       "tier": "primary",
       "lens_id": "build-robust",
-      "reason": "fixture"
+      "reason": "Concrete example of prompt regressions and the new release gates."
     },
     {
-      "url": "https://docs.cursor.com/agent",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
       "tier": "primary",
-      "lens_id": "ship-faster",
-      "reason": "fixture"
+      "lens_id": "build-robust",
+      "reason": "Practical eval design for capability and regression suites."
     },
     {
-      "url": "https://github.com/anthropics/claude-code",
-      "tier": "primary",
-      "lens_id": "tooling-setups",
-      "reason": "fixture"
-    },
-    {
-      "url": "https://github.com/langchain-ai/langgraph",
+      "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
       "tier": "primary",
       "lens_id": "production-patterns",
-      "reason": "fixture"
+      "reason": "Containment, sandbox, and egress patterns with production metrics."
     },
     {
-      "url": "search://model-workflows/coding model cost latency benchmark 2026",
-      "tier": "secondary",
+      "url": "https://vercel.com/blog/ai-gateway-is-now-generally-available",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "Production reliability motivation and operational claims."
+    },
+    {
+      "url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "Exact fallback configuration examples."
+    },
+    {
+      "url": "https://openai.com/index/introducing-gpt-5-for-developers/",
+      "tier": "primary",
       "lens_id": "model-workflows",
-      "reason": "fixture"
+      "reason": "Coding benchmark and pricing table for GPT-5 mini and GPT-5."
     },
     {
-      "url": "https://github.com/openai/evals",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/vercel-labs/ralph-loop-agent",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/openai/evals",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/vercel-labs/ralph-loop-agent",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/modelcontextprotocol/servers",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/langchain-ai/langgraph",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://docs.cursor.com/agent",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/langchain-ai/langgraph",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://docs.cursor.com/agent",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/anthropics/claude-code",
-      "tier": "secondary",
-      "reason": "prior_jam"
+      "url": "https://www.anthropic.com/news/prompt-caching",
+      "tier": "primary",
+      "lens_id": "model-workflows",
+      "reason": "Concrete latency and cost deltas for repeated long prompts."
     }
   ]
 }
