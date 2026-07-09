@@ -31,16 +31,36 @@ def _grade_from_signals(has_metric: bool, has_repo: bool, steps_count: int, tier
     return EvidenceGrade.D
 
 
-def _build_steps(text: str, url: str) -> list[str]:
-    numbered = re.findall(r"(?:^|\n)\s*(?:\d+[\).\s]+|-\s+)(.+)", text)
-    if len(numbered) >= 3:
-        return [step.strip() for step in numbered[:7]]
-    return [
-        f"Open the source: {url}",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week",
+def _clean_step(step: str) -> str:
+    return re.sub(r"\s+", " ", step).strip(" \t\r\n-:;,.")
+
+
+def _build_steps(text: str) -> list[str]:
+    numbered = [
+        _clean_step(step)
+        for step in re.findall(r"(?:^|\n)\s*(?:\d+[\).\s]+|-\s+)(.+)", text)
     ]
+    if len(numbered) >= 3:
+        return numbered[:7]
+
+    inline_numbered = [
+        _clean_step(step)
+        for step in re.findall(r"(?:^|[\s:])\d+[\.\)]\s*(.*?)(?=(?:\s+\d+[\.\)])|$)", text)
+    ]
+    if len(inline_numbered) >= 3:
+        return inline_numbered[:7]
+
+    labelled = re.search(r"(?:steps?|setup)\s*:\s*(.+)", text, re.I)
+    if labelled:
+        segments = [
+            _clean_step(step)
+            for step in re.split(r"\s*(?:,|;|\band\b)\s*", labelled.group(1))
+        ]
+        concrete = [step for step in segments if step]
+        if len(concrete) >= 3:
+            return concrete[:7]
+
+    return []
 
 
 def _has_metric(text: str) -> bool:
@@ -64,19 +84,23 @@ def analyze_excerpt(
     benefit_raw = lens_cfg.get("benefit", "both")
     benefit = Benefit(benefit_raw)
     title = excerpt.get("title") or f"{lens_id} finding {index}"
-    steps = _build_steps(text, url)
+    if not url.startswith("http"):
+        return None
+    steps = _build_steps(text)
+    if len(steps) < 3:
+        return None
     has_repo = "github.com" in url
     tier = excerpt.get("tier", "secondary")
     grade = _grade_from_signals(_has_metric(text), has_repo, len(steps), tier)
 
-    source_url = url if url.startswith("http") else f"https://example.com/dev-scout/{lens_id}/{index}"
+    source_url = url
     return JamItem(
         id=f"{lens_id}-{index}",
         title=title[:140],
         why=lens_cfg.get("question", "Relevant to weekly dev improvements"),
         benefit=benefit,
         source_url=source_url,
-        how_to_url=source_url if has_repo else None,
+        how_to_url=source_url,
         how_to_steps=steps,
         setup_cost=SetupCost.HOURS,
         evidence=lens_cfg.get("required_evidence", "Documented outcome"),

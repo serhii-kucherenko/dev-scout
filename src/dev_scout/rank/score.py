@@ -18,12 +18,25 @@ def _score(item: JamItem, known_ids: set[str]) -> float:
     return grade * cost * novelty * benefit
 
 
+def _dedupe_ranked(items: list[JamItem], known_ids: set[str]) -> list[JamItem]:
+    ranked = sorted(items, key=lambda item: _score(item, known_ids), reverse=True)
+    deduped: list[JamItem] = []
+    seen_keys: set[str] = set()
+    for item in ranked:
+        key = item.canonical_key()
+        if key in seen_keys:
+            continue
+        seen_keys.add(key)
+        deduped.append(item)
+    return deduped
+
+
 def run_rank(ctx: RunContext) -> list[JamItem]:
     dossier = run_synthesize(ctx)
     ledger = read_json(data_dir() / "findings.json")
     known_ids = {entry.get("id") for entry in ledger.get("findings", [])}
 
-    ranked = sorted(dossier.items, key=lambda item: _score(item, known_ids), reverse=True)
+    ranked = _dedupe_ranked(dossier.items, known_ids)
     write_json(
         ctx.stage_path("03-rank") / "ranked.json",
         {"week": ctx.week, "items": [item.model_dump(mode="json") for item in ranked]},

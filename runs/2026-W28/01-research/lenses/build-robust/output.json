@@ -2,24 +2,46 @@
   "lens_id": "build-robust",
   "items": [
     {
-      "id": "build-robust-101",
-      "title": "OpenAI Evals meta-evals plus PR gating",
-      "why": "The useful part of Evals is not just running a dataset once - it is adding labeled meta-evals and a pull-request gate so regressions are caught before merge.",
+      "id": "build-robust-2026w28-prompt-change-guardrails",
+      "title": "Treat system-prompt edits like code changes",
+      "why": "Prompt tweaks can silently degrade code quality, so they need the same gating discipline as production code.",
       "benefit": "robustness",
-      "source_url": "https://github.com/openai/evals/blob/main/docs/build-eval.md",
-      "how_to_url": "https://github.com/openai/evals/blob/main/docs/build-eval.md",
+      "source_url": "https://www.anthropic.com/engineering/april-23-postmortem",
+      "how_to_url": "https://www.anthropic.com/engineering/april-23-postmortem",
       "how_to_steps": [
-        "Put your dataset in `evals/registry/data/<eval_name>/samples.jsonl` and register it in `evals/registry/evals/<eval_name>.yaml`.",
-        "Run `oaieval <model> <eval_name>` locally to make sure the task and rubric behave the way you expect.",
-        "For model-graded evals, add labeled choice data and a meta-eval so the reported `metascore/` accuracy is close to `1.0` before you trust the grader.",
-        "Copy the repository's PR workflow pattern so new eval YAMLs automatically run a lightweight `oaieval ... --max_samples 10` check in CI."
+        "Run a broad per-model eval suite for every prompt change that affects an agent or coding workflow.",
+        "Use ablations to isolate which prompt line changes quality, latency, or token use.",
+        "Soak the change before full rollout if it trades off intelligence versus speed or cost.",
+        "Roll out gradually and revert immediately if the broader eval set regresses."
       ],
       "setup_cost": "hours",
-      "evidence": "The build guide explicitly recommends meta-evals and says good model-graded evals should report `metascore/` accuracy close to `1.0`; the repo workflow automatically runs new eval YAMLs on pull requests.",
+      "evidence": "Anthropic reports that one verbosity instruction caused a 3% drop on both Opus 4.6 and 4.7 in a broader evaluation set, and it immediately reverted the change.",
       "evidence_grade": "A",
       "lens_id": "build-robust",
       "corroboration": "supported",
-      "try_monday": "Take one fragile prompt workflow and turn it into a 20-25 sample eval with a meta-eval before the next model or prompt change."
+      "corroboration_url": "https://news.ycombinator.com/item?id=47878905",
+      "try_monday": "Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites."
+    },
+    {
+      "id": "build-robust-2026w28-regression-suite",
+      "title": "Graduate capability tests into an always-on regression suite",
+      "why": "Once an agent can reliably do a task, keep that task in the regression bank so quality drift becomes visible immediately.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "how_to_url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "how_to_steps": [
+        "Start with 20 to 50 real tasks drawn from bug reports, support tickets, or manual QA checks.",
+        "Split the bank into capability evals that are still hard and regression evals that should pass nearly 100% of the time.",
+        "Run tasks in a clean environment, use multiple trials where outputs vary, and prefer deterministic graders first.",
+        "When a capability task saturates, move it into the continuous regression suite and track latency, token use, and failure rate over time."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic recommends capability tasks that later graduate into a continuous regression suite and notes that fixing eval bugs plus scaffold issues moved one CORE-Bench result from 42% to 95%.",
+      "evidence_grade": "B",
+      "lens_id": "build-robust",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_monday": "Pick five agent tasks that already feel solved and convert them into a tiny must-pass regression suite."
     }
   ]
 }

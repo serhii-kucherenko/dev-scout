@@ -6,7 +6,7 @@ from dev_scout.util import data_dir, read_json, write_json
 
 
 def _item_key(item: JamItem) -> str:
-    return item.source_url
+    return item.canonical_key()
 
 
 def run_learning(ctx: RunContext) -> dict[str, int]:

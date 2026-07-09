@@ -2,64 +2,46 @@
   "lens_id": "tooling-setups",
   "items": [
     {
-      "id": "tooling-setups-101",
-      "title": "Roots-aware MCP filesystem server pattern",
-      "why": "The reference MCP servers now give you a copyable pattern for safe local tool access: explicit allowed directories, runtime roots updates, and client configs for Claude Desktop or VS Code.",
+      "id": "tooling-setups-2026w28-automations",
+      "title": "Use always-on cloud agents for review, triage, and incident chores",
+      "why": "Background automations keep review and maintenance work moving without waiting for someone to open the IDE.",
       "benefit": "both",
-      "source_url": "https://github.com/modelcontextprotocol/servers",
-      "how_to_url": "https://github.com/modelcontextprotocol/servers/blob/main/src/filesystem/README.md",
+      "source_url": "https://cursor.com/blog/automations",
+      "how_to_url": "https://cursor.com/docs/cloud-agent/automations",
       "how_to_steps": [
-        "Start with the reference server registry, then choose the filesystem server when you need tightly scoped file access instead of a broad shell integration.",
-        "Configure the server in your MCP client with `npx -y @modelcontextprotocol/server-filesystem` or Docker and pass only the directories the agent should touch.",
-        "Prefer clients that support Roots so the allowed directories can update at runtime instead of hardcoding every path up front.",
-        "If the server fails under NVM or similar PATH managers, switch to an absolute `node` or `npx` path or a wrapper script before debugging higher-level agent behavior."
+        "Create a new automation from the Agents Window, cursor.com/automations, or the /automate skill.",
+        "Pick a trigger such as pull request opened, CI completed, Slack, webhook, or cron.",
+        "Write the prompt and enable only the tools it needs, such as PR comments, Slack, MCP, or memories.",
+        "Choose whether it should run against one repo, multiple repos, or no repo, then save and activate it."
       ],
-      "setup_cost": "minutes",
-      "evidence": "Primary docs include concrete `npx`, Docker, VS Code, and Claude Desktop configs plus Roots-based runtime directory updates; the repo is the official MCP reference server collection.",
-      "evidence_grade": "A",
+      "setup_cost": "hours",
+      "evidence": "Cursor says Bugbot-like automations run thousands of times a day and have caught millions of bugs; its internal security-review automation has caught multiple vulnerabilities and critical bugs; Runlayer says the setup helps them move faster than teams five times their size.",
+      "evidence_grade": "B",
       "lens_id": "tooling-setups",
       "corroboration": "supported",
-      "try_monday": "Add one filesystem MCP server to a sandbox repo and restrict it to a single project folder before expanding access."
+      "corroboration_url": "https://cursor.com/docs/cloud-agent/automations",
+      "try_monday": "Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings."
     },
     {
-      "id": "tooling-setups-102",
-      "title": "Scheduled Claude Code workflows with repo-scoped subagents",
-      "why": "Claude Code's GitHub Action now supports comment-triggered and scheduled automation, while still following `CLAUDE.md` and custom agents in the repo.",
+      "id": "tooling-setups-2026w28-codex-cli",
+      "title": "Add Codex CLI as a terminal-first coding agent",
+      "why": "A local terminal agent gives you long-running code work and PR review loops without being tied to a single editor.",
       "benefit": "both",
-      "source_url": "https://docs.anthropic.com/en/docs/claude-code/github-actions",
-      "how_to_url": "https://docs.anthropic.com/en/docs/claude-code/github-actions",
+      "source_url": "https://openai.com/index/introducing-upgrades-to-codex/",
+      "how_to_url": "https://raw.githubusercontent.com/openai/codex/main/README.md",
       "how_to_steps": [
-        "Run `/install-github-app` for the fast path or manually install the Claude GitHub App, add `ANTHROPIC_API_KEY`, and copy a workflow into `.github/workflows/`.",
-        "Start with `anthropics/claude-code-action@v1` and use `prompt` for the task you want automated.",
-        "Move project rules into `CLAUDE.md` so the action follows the same standards your local sessions use.",
-        "For scheduled or specialized jobs, store a custom agent in `.claude/agents/` and pass `claude_args: --agent <name>` or call it explicitly from the workflow prompt."
+        "Install Codex CLI with the Mac or Linux install script, npm, Homebrew, or a release binary.",
+        "Run codex and sign in with ChatGPT so it uses the plan you already pay for.",
+        "Start code tasks from the terminal and choose an approval mode that matches your risk tolerance.",
+        "Escalate longer jobs to Codex cloud or GitHub review flows when you want work to keep running after you close the terminal."
       ],
       "setup_cost": "minutes",
-      "evidence": "Official docs provide quick setup, manual install, cron examples, and v1 workflow syntax; the GitHub discussion shows the `--agent` pattern for scheduled custom subagents.",
+      "evidence": "OpenAI says GPT-5-Codex can work for more than 7 hours on complex tasks, cached cloud tasks cut median completion time by 90%, bottom-decile turns use 93.7% fewer tokens than GPT-5, and Codex reviews the vast majority of internal PRs while catching hundreds of issues per day.",
       "evidence_grade": "A",
       "lens_id": "tooling-setups",
       "corroboration": "supported",
-      "try_monday": "Schedule one daily maintenance workflow that reads a repo-scoped agent and summarizes stale issues or flaky tests."
-    },
-    {
-      "id": "tooling-setups-103",
-      "title": "Codex CLI review-before-push workflow",
-      "why": "Codex now bundles install, local agent mode, a separate review agent, subagents, MCP, and cloud tasks into one terminal workflow instead of separate tools.",
-      "benefit": "both",
-      "source_url": "https://developers.openai.com/codex/cli",
-      "how_to_url": "https://developers.openai.com/codex/quickstart",
-      "how_to_steps": [
-        "Install Codex with the standalone installer, npm, or Homebrew and run `codex` in the project you want it to work in.",
-        "Sign in, point Codex at the repo, and keep Git checkpoints before and after each task so you can revert cleanly.",
-        "Use the built-in local code review pass before you commit or push, rather than treating generation and review as the same step.",
-        "Add subagents, MCP servers, or Codex Cloud tasks only after the core local workflow is stable, so you do not debug orchestration and base setup at the same time."
-      ],
-      "setup_cost": "minutes",
-      "evidence": "OpenAI describes the CLI as open source and built in Rust for speed and efficiency, and documents separate review, subagents, MCP, and cloud-task flows in the same tool.",
-      "evidence_grade": "A",
-      "lens_id": "tooling-setups",
-      "corroboration": "supported",
-      "try_monday": "Adopt a simple rule for one repo: every Codex-generated diff gets a separate Codex review pass before push."
+      "corroboration_url": "https://raw.githubusercontent.com/openai/codex/main/README.md",
+      "try_monday": "Install Codex CLI on one workstation and compare one feature branch done with terminal-agent help versus the current manual loop."
     }
   ]
 }

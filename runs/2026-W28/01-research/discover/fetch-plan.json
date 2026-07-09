@@ -1,90 +1,95 @@
 {
   "week": "2026-W28",
-  "planned": 14,
-  "entries": [
+  "urls": [
     {
-      "url": "https://github.com/modelcontextprotocol/servers",
+      "url": "https://cursor.com/blog/bugbot-updates-june-2026",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Measured pre-push and incremental review improvements."
+    },
+    {
+      "url": "https://cursor.com/docs/bugbot",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Operational setup and branch-protection details."
+    },
+    {
+      "url": "https://cursor.com/blog/semsearch",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Measured agent retrieval gains on real codebases."
+    },
+    {
+      "url": "https://cursor.com/docs/agent/tools/search",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Indexing and configuration steps for semantic search."
+    },
+    {
+      "url": "https://cursor.com/blog/automations",
       "tier": "primary",
       "lens_id": "tooling-setups",
-      "reason": "official reference MCP server collection with client configuration examples"
+      "reason": "Operational evidence and common review and incident workflows."
     },
     {
-      "url": "https://github.com/modelcontextprotocol/servers/blob/main/src/filesystem/README.md",
+      "url": "https://cursor.com/docs/cloud-agent/automations",
       "tier": "primary",
       "lens_id": "tooling-setups",
-      "reason": "safe filesystem pattern with allowed directories and Roots updates"
+      "reason": "Trigger, tool, and repo configuration guide."
     },
     {
-      "url": "https://github.com/modelcontextprotocol/servers/issues/64",
-      "tier": "discussion",
-      "lens_id": "tooling-setups",
-      "reason": "real-world npx and NVM startup gotchas for MCP servers"
-    },
-    {
-      "url": "https://news.ycombinator.com/item?id=47380270",
-      "tier": "discussion",
-      "lens_id": "tooling-setups",
-      "reason": "corroborating discussion on MCP as a security and policy boundary"
-    },
-    {
-      "url": "https://docs.anthropic.com/en/docs/claude-code/github-actions",
+      "url": "https://openai.com/index/introducing-upgrades-to-codex/",
       "tier": "primary",
       "lens_id": "tooling-setups",
-      "reason": "official GitHub Actions automation path for Claude Code"
+      "reason": "Operational outcomes for the Codex agent workflow."
     },
     {
-      "url": "https://github.com/anthropics/claude-code-action/discussions/576",
-      "tier": "secondary",
-      "lens_id": "tooling-setups",
-      "reason": "custom subagent invocation pattern for scheduled workflows"
-    },
-    {
-      "url": "https://developers.openai.com/codex/quickstart",
+      "url": "https://raw.githubusercontent.com/openai/codex/main/README.md",
       "tier": "primary",
       "lens_id": "tooling-setups",
-      "reason": "official install and first-task workflow for Codex"
+      "reason": "CLI install and login quickstart."
     },
     {
-      "url": "https://developers.openai.com/codex/cli",
-      "tier": "primary",
-      "lens_id": "tooling-setups",
-      "reason": "review, subagents, MCP, and cloud-task workflow in one CLI"
-    },
-    {
-      "url": "https://github.com/openai/evals/blob/main/docs/build-eval.md",
-      "tier": "primary",
-      "lens_id": "build-robust",
-      "reason": "official build workflow for evals and meta-evals"
-    },
-    {
-      "url": "https://github.com/openai/evals/blob/main/.github/workflows/test_eval.yaml",
+      "url": "https://www.anthropic.com/engineering/april-23-postmortem",
       "tier": "primary",
       "lens_id": "build-robust",
-      "reason": "pull-request gate pattern that runs new eval YAMLs automatically"
+      "reason": "Concrete example of prompt regressions and the new release gates."
     },
     {
-      "url": "https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
       "tier": "primary",
-      "lens_id": "model-workflows",
-      "reason": "provider sorting, filtering, and routing metadata for model choice"
+      "lens_id": "build-robust",
+      "reason": "Practical eval design for capability and regression suites."
     },
     {
-      "url": "https://vercel.com/changelog/sort-providers-by-cost-latency-or-throughput-on-ai-gateway",
-      "tier": "secondary",
-      "lens_id": "model-workflows",
-      "reason": "practical routing use cases for cost, TTFT, and TPS sorting"
+      "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "Containment, sandbox, and egress patterns with production metrics."
+    },
+    {
+      "url": "https://vercel.com/blog/ai-gateway-is-now-generally-available",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "Production reliability motivation and operational claims."
     },
     {
       "url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
       "tier": "primary",
       "lens_id": "production-patterns",
-      "reason": "cross-provider and cross-model failover recipe"
+      "reason": "Exact fallback configuration examples."
     },
     {
-      "url": "https://vercel.com/blog/how-ai-gateway-runs-on-fluid-compute",
-      "tier": "secondary",
-      "lens_id": "production-patterns",
-      "reason": "architecture write-up covering rerouting, retries, and reliability behavior"
+      "url": "https://openai.com/index/introducing-gpt-5-for-developers/",
+      "tier": "primary",
+      "lens_id": "model-workflows",
+      "reason": "Coding benchmark and pricing table for GPT-5 mini and GPT-5."
+    },
+    {
+      "url": "https://www.anthropic.com/news/prompt-caching",
+      "tier": "primary",
+      "lens_id": "model-workflows",
+      "reason": "Concrete latency and cost deltas for repeated long prompts."
     }
   ]
 }

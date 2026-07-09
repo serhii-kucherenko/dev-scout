@@ -1,11 +1,12 @@
 {
   "sufficient": true,
-  "promoted_count": 6,
-  "ab_count": 6,
+  "promoted_count": 10,
+  "ab_count": 10,
   "corroborated_count": 6,
-  "lenses_with_findings": 4,
+  "lenses_with_findings": 5,
   "gaps": [],
   "skipped": [
-    "ship-faster lens: did not promote any item without a recent primary source publishing strong speed evidence"
+    "Official GitHub MCP server: strong setup docs, but weaker measured outcome evidence than the promoted set.",
+    "How Anthropic teams use Claude Code: useful workflow anecdotes, but lower-evidence than the promoted operational sources."
   ]
 }

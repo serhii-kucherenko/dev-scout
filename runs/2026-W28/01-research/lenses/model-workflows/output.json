@@ -2,24 +2,46 @@
   "lens_id": "model-workflows",
   "items": [
     {
-      "id": "model-workflows-101",
-      "title": "AI Gateway provider sorting by cost, TTFT, or TPS",
-      "why": "When the same model is available from multiple providers, you can route for the cheapest, fastest-first-token, or highest-throughput option without changing application code.",
-      "benefit": "speed",
-      "source_url": "https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering",
-      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering",
+      "id": "model-workflows-2026w28-gpt5-mini-default",
+      "title": "Make GPT-5 mini the default coding workhorse",
+      "why": "A cheap high-skill default model lets teams save the expensive model for cases where verification says more horsepower is actually needed.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/introducing-gpt-5-for-developers/",
+      "how_to_url": "https://openai.com/index/introducing-gpt-5-for-developers/",
       "how_to_steps": [
-        "Call the AI SDK or OpenAI-compatible API through AI Gateway rather than pinning your app to one provider endpoint.",
-        "Set `providerOptions.gateway.sort` to `cost`, `ttft`, or `tps` based on whether you want cheaper dev runs, faster interactive latency, or better long-output throughput.",
-        "Combine `sort` with `only` or `order` when you need to restrict routing to approved providers or promote a preferred vendor.",
-        "Inspect `providerMetadata.gateway.routing.sort` on responses so you can see the exact execution order, metrics, and any deprioritized providers."
+        "Set gpt-5-mini as the default model for routine implementation, repo Q and A, and PR-sized coding tasks.",
+        "Keep the loop verification-based so you escalate only when tests fail, tool use gets messy, or the task stalls.",
+        "Use lower verbosity for tight edit loops and increase it only when you need fuller plans or explanations.",
+        "Track solve rate and spend side by side for mini-default versus full-model escalations."
       ],
       "setup_cost": "minutes",
-      "evidence": "The docs expose explicit sort controls for cost, median TTFT, and TPS, while the changelog explains that ranking updates at request time as provider prices and latency shift.",
+      "evidence": "OpenAI reports GPT-5 mini scores 71.0% on SWE-bench Verified and 71.6% on Aider polyglot while costing $0.25 per 1M input tokens and $2 per 1M output tokens.",
       "evidence_grade": "A",
       "lens_id": "model-workflows",
-      "corroboration": "supported",
-      "try_monday": "Route one interactive coding assistant endpoint by `ttft` for a day and compare perceived responsiveness against your current default."
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_monday": "Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails."
+    },
+    {
+      "id": "model-workflows-2026w28-prompt-caching",
+      "title": "Cache stable repo context instead of resending it every turn",
+      "why": "Repeated codebase context is expensive and slow; caching it turns long-running coding loops into faster, cheaper interactions.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/news/prompt-caching",
+      "how_to_url": "https://www.anthropic.com/news/prompt-caching",
+      "how_to_steps": [
+        "Put stable prompt material first, such as system policy, coding standards, tool schema, and repo summary.",
+        "Reuse that exact prefix across turns and agent tool loops, appending only the new task delta at the end.",
+        "Apply caching first to codebase Q and A, autocomplete, and multi-turn debugging sessions that resend long context.",
+        "Measure time to first token and input-token cost before and after the change."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic says prompt caching cuts cost by up to 90% and latency by up to 85%; one 100k-token prompt dropped from 11.5s to 2.4s time-to-first-token.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_monday": "Cache the stable repo and policy prefix in one high-volume coding assistant and compare TTFT and spend over a day."
     }
   ]
 }

@@ -1,102 +1,121 @@
 {
   "week": "2026-W28",
   "queries": [
-    "site:github.com/modelcontextprotocol/servers MCP server setup workflow 2026",
-    "site:anthropic.com claude code github actions docs 2026",
-    "site:openai.com codex cli docs official 2026",
-    "site:github.com/openai/evals evals graders regression testing 2026",
-    "site:vercel.com AI Gateway routing fallback cost latency docs 2026",
-    "site:news.ycombinator.com modelcontextprotocol Claude Code automation 2026"
-  ],
-  "notes": [
-    "Discarded generic or placeholder-only results that did not expose concrete setup steps.",
-    "Did not promote a ship-faster benchmark item this week because recent primary sources were strong on workflow details but weak on published speed measurements."
-  ],
-  "url_count": 14,
-  "urls": [
     {
-      "url": "https://github.com/modelcontextprotocol/servers",
-      "tier": "primary",
-      "lens_id": "tooling-setups",
-      "reason": "official registry and reference server entry point"
+      "lens_id": "ship-faster",
+      "query": "Cursor Bugbot faster cheaper more bugs June 2026"
     },
     {
-      "url": "https://github.com/modelcontextprotocol/servers/blob/main/src/filesystem/README.md",
-      "tier": "primary",
-      "lens_id": "tooling-setups",
-      "reason": "detailed filesystem server setup and security model"
+      "lens_id": "ship-faster",
+      "query": "Cursor semantic search higher accuracy codebase questions"
     },
     {
-      "url": "https://github.com/modelcontextprotocol/servers/issues/64",
-      "tier": "discussion",
       "lens_id": "tooling-setups",
-      "reason": "startup edge cases with version managers"
+      "query": "Cursor automations review monitoring cloud agents"
     },
     {
-      "url": "https://news.ycombinator.com/item?id=47380270",
-      "tier": "discussion",
       "lens_id": "tooling-setups",
-      "reason": "security and policy rationale for MCP boundaries"
+      "query": "OpenAI Codex CLI install terminal coding agent"
     },
     {
-      "url": "https://docs.anthropic.com/en/docs/claude-code/github-actions",
-      "tier": "primary",
-      "lens_id": "tooling-setups",
-      "reason": "official automation workflow docs"
-    },
-    {
-      "url": "https://github.com/anthropics/claude-code-action/discussions/576",
-      "tier": "secondary",
-      "lens_id": "tooling-setups",
-      "reason": "scheduled custom-subagent pattern"
-    },
-    {
-      "url": "https://developers.openai.com/codex/quickstart",
-      "tier": "primary",
-      "lens_id": "tooling-setups",
-      "reason": "install and first-task setup"
-    },
-    {
-      "url": "https://developers.openai.com/codex/cli",
-      "tier": "primary",
-      "lens_id": "tooling-setups",
-      "reason": "full CLI feature surface for review, subagents, MCP, and cloud tasks"
-    },
-    {
-      "url": "https://github.com/openai/evals/blob/main/docs/build-eval.md",
-      "tier": "primary",
       "lens_id": "build-robust",
-      "reason": "end-to-end eval and meta-eval workflow"
+      "query": "Anthropic Claude Code quality postmortem evals gradual rollouts"
     },
     {
-      "url": "https://github.com/openai/evals/blob/main/.github/workflows/test_eval.yaml",
-      "tier": "primary",
       "lens_id": "build-robust",
-      "reason": "CI gate for new eval definitions"
+      "query": "Anthropic demystifying evals agents regression suite"
     },
     {
-      "url": "https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering",
-      "tier": "primary",
-      "lens_id": "model-workflows",
-      "reason": "provider ranking by cost, TTFT, or TPS"
-    },
-    {
-      "url": "https://vercel.com/changelog/sort-providers-by-cost-latency-or-throughput-on-ai-gateway",
-      "tier": "secondary",
-      "lens_id": "model-workflows",
-      "reason": "practical guidance on when each sort metric matters"
-    },
-    {
-      "url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
-      "tier": "primary",
       "lens_id": "production-patterns",
-      "reason": "model-level failover recipe"
+      "query": "Anthropic contain Claude sandbox egress controls"
     },
     {
-      "url": "https://vercel.com/blog/how-ai-gateway-runs-on-fluid-compute",
-      "tier": "secondary",
       "lens_id": "production-patterns",
-      "reason": "architecture evidence for rerouting and automatic retries"
+      "query": "Vercel AI Gateway production reliability failover"
+    },
+    {
+      "lens_id": "model-workflows",
+      "query": "OpenAI GPT-5 mini SWE-bench pricing developers"
+    },
+    {
+      "lens_id": "model-workflows",
+      "query": "Anthropic prompt caching codebase assistant latency cost"
+    }
+  ],
+  "selected_sources": [
+    {
+      "title": "Run Bugbot before you push",
+      "lens_id": "ship-faster",
+      "source_url": "https://cursor.com/blog/bugbot-updates-june-2026",
+      "why_selected": "Cursor says Bugbot is over 3x faster, 22% cheaper, finds 10% more bugs per review, and 90% of runs now finish in under 3 minutes."
+    },
+    {
+      "title": "Index the repo so agents can search by meaning, not just strings",
+      "lens_id": "ship-faster",
+      "source_url": "https://cursor.com/blog/semsearch",
+      "why_selected": "Cursor reports 12.5% higher codebase QA accuracy on average, 0.3% higher code retention overall, 2.6% higher retention on repos with 1,000+ files, and 2.2% more dissatisfied follow-ups when semantic search is unavailable."
+    },
+    {
+      "title": "Use always-on cloud agents for review, triage, and incident chores",
+      "lens_id": "tooling-setups",
+      "source_url": "https://cursor.com/blog/automations",
+      "why_selected": "Cursor says Bugbot-like automations run thousands of times a day and have caught millions of bugs; its internal security-review automation has caught multiple vulnerabilities and critical bugs; Runlayer says the setup helps them move faster than teams five times their size."
+    },
+    {
+      "title": "Add Codex CLI as a terminal-first coding agent",
+      "lens_id": "tooling-setups",
+      "source_url": "https://openai.com/index/introducing-upgrades-to-codex/",
+      "why_selected": "OpenAI says GPT-5-Codex can work for more than 7 hours on complex tasks, cached cloud tasks cut median completion time by 90%, bottom-decile turns use 93.7% fewer tokens than GPT-5, and Codex reviews the vast majority of internal PRs while catching hundreds of issues per day."
+    },
+    {
+      "title": "Treat system-prompt edits like code changes",
+      "lens_id": "build-robust",
+      "source_url": "https://www.anthropic.com/engineering/april-23-postmortem",
+      "why_selected": "Anthropic reports that one verbosity instruction caused a 3% drop on both Opus 4.6 and 4.7 in a broader evaluation set, and it immediately reverted the change."
+    },
+    {
+      "title": "Graduate capability tests into an always-on regression suite",
+      "lens_id": "build-robust",
+      "source_url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "why_selected": "Anthropic recommends capability tasks that later graduate into a continuous regression suite and notes that fixing eval bugs plus scaffold issues moved one CORE-Bench result from 42% to 95%."
+    },
+    {
+      "title": "Design containment at the environment layer first",
+      "lens_id": "production-patterns",
+      "source_url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "why_selected": "Anthropic says its Claude Code sandbox cut permission prompts by 84%, auto mode catches about 83% of overeager behaviors, and Gray Swan prompt-injection success is roughly 0.1% on single attempts."
+    },
+    {
+      "title": "Put a gateway in front of providers so outages do not stop the app",
+      "lens_id": "production-patterns",
+      "source_url": "https://vercel.com/blog/ai-gateway-is-now-generally-available",
+      "why_selected": "Vercel says AI Gateway is the same system that has powered v0 for millions of users, sits on infrastructure delivering sub-20ms latency, and removes the single-provider failure mode."
+    },
+    {
+      "title": "Make GPT-5 mini the default coding workhorse",
+      "lens_id": "model-workflows",
+      "source_url": "https://openai.com/index/introducing-gpt-5-for-developers/",
+      "why_selected": "OpenAI reports GPT-5 mini scores 71.0% on SWE-bench Verified and 71.6% on Aider polyglot while costing $0.25 per 1M input tokens and $2 per 1M output tokens."
+    },
+    {
+      "title": "Cache stable repo context instead of resending it every turn",
+      "lens_id": "model-workflows",
+      "source_url": "https://www.anthropic.com/news/prompt-caching",
+      "why_selected": "Anthropic says prompt caching cuts cost by up to 90% and latency by up to 85%; one 100k-token prompt dropped from 11.5s to 2.4s time-to-first-token."
+    }
+  ],
+  "discarded_candidates": [
+    {
+      "title": "Official GitHub MCP server",
+      "reason": "Strong setup docs but not enough measured speed or robustness evidence for promoted jam."
+    },
+    {
+      "title": "How Anthropic teams use Claude Code",
+      "reason": "Useful anecdotes, but the stronger jam came from the operational docs and postmortem-style sources."
+    },
+    {
+      "title": "Full GPT-5 as the default for every task",
+      "reason": "The better weekly recommendation is cheap-by-default routing with explicit escalation rules."
     }
   ]
 }

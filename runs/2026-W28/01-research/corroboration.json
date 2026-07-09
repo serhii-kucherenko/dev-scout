@@ -1,8 +1,12 @@
 {
-  "tooling-setups-101": "supported",
-  "tooling-setups-102": "supported",
-  "tooling-setups-103": "supported",
-  "build-robust-101": "supported",
-  "model-workflows-101": "supported",
-  "production-patterns-101": "supported"
+  "ship-faster-2026w28-bugbot-prepush": "supported",
+  "ship-faster-2026w28-semantic-search": "supported",
+  "tooling-setups-2026w28-automations": "supported",
+  "tooling-setups-2026w28-codex-cli": "supported",
+  "build-robust-2026w28-prompt-change-guardrails": "supported",
+  "build-robust-2026w28-regression-suite": "weak",
+  "production-patterns-2026w28-containment-first": "weak",
+  "production-patterns-2026w28-ai-gateway-fallbacks": "supported",
+  "model-workflows-2026w28-gpt5-mini-default": "weak",
+  "model-workflows-2026w28-prompt-caching": "weak"
 }

@@ -1,65 +1,38 @@
 To: kucherenko.web@gmail.com
-Subject: Dev Scout 2026-W28 - 5 source-backed ways to ship faster and safer
+Subject: Dev Scout 2026-W28 - 5 ways to ship faster and build safer
 
-Hi Serhii,
+Dev Scout - 2026-W28
 
-I rebuilt this week's Dev Scout run from primary docs and real corroboration after discarding a thinner placeholder draft. Top takeaways:
+This week's jam is about moving review earlier, routing to cheaper default models, and hardening agent systems before they reach prod.
 
-1. OpenAI Evals meta-evals plus PR gating (robustness)
-   Source: https://github.com/openai/evals/blob/main/docs/build-eval.md
-   Why it matters: This is the cleanest path from "we should add evals someday" to "model or prompt regressions stop merging silently."
-   Steps:
-     1. Put your dataset in `evals/registry/data/<eval_name>/samples.jsonl`.
-     2. Register it in `evals/registry/evals/<eval_name>.yaml`.
-     3. Add a meta-eval until `metascore/` is close to `1.0`.
-     4. Gate new eval YAMLs in CI with a lightweight `oaieval` run.
-   Try Monday: Turn one fragile prompt workflow into a 20-25 sample eval before the next prompt or model tweak.
+1. Run Bugbot before you push (both)
+   Why: Move review left so the same agent catches bugs on the diff before the PR roundtrip starts.
+   Evidence: Cursor says Bugbot is over 3x faster, 22% cheaper, finds 10% more bugs per review, and 90% of runs now finish in under 3 minutes.
+   Source: https://cursor.com/blog/bugbot-updates-june-2026
+   Try Monday: Enable Bugbot on one active repo and require its check on draft PRs for one week.
 
-2. AI Gateway provider sorting by cost, TTFT, or TPS (speed)
-   Source: https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering
-   Why it matters: You can optimize for cost or latency without rewriting app code every time provider performance shifts.
-   Steps:
-     1. Route one endpoint through AI Gateway.
-     2. Set `providerOptions.gateway.sort` to `cost`, `ttft`, or `tps`.
-     3. Add `only` or `order` if you have vendor constraints.
-     4. Inspect routing metadata to see what actually ran.
-   Try Monday: Switch one interactive coding endpoint to `ttft` sorting and compare perceived responsiveness.
+2. Make GPT-5 mini the default coding workhorse (both)
+   Why: A cheap high-skill default model lets teams save the expensive model for cases where verification says more horsepower is actually needed.
+   Evidence: OpenAI reports GPT-5 mini scores 71.0% on SWE-bench Verified and 71.6% on Aider polyglot while costing $0.25 per 1M input tokens and $2 per 1M output tokens.
+   Source: https://openai.com/index/introducing-gpt-5-for-developers/
+   Try Monday: Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails.
 
-3. AI Gateway model fallbacks without app-side retry code (robustness)
-   Source: https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks
-   Why it matters: Backup models and providers can be declared once in the gateway instead of hand-coded in every app path.
-   Steps:
-     1. Keep your preferred model in `model`.
-     2. Add backup entries in `providerOptions.gateway.models`.
-     3. Add `order` if provider preference matters.
-     4. Log `modelAttempts` and `providerAttempts`.
-   Try Monday: Add one backup model to a non-critical route and capture fallback metadata in logs.
+3. Treat system-prompt edits like code changes (robustness)
+   Why: Prompt tweaks can silently degrade code quality, so they need the same gating discipline as production code.
+   Evidence: Anthropic reports that one verbosity instruction caused a 3% drop on both Opus 4.6 and 4.7 in a broader evaluation set, and it immediately reverted the change.
+   Source: https://www.anthropic.com/engineering/april-23-postmortem
+   Try Monday: Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites.
 
-4. Scheduled Claude Code workflows with repo-scoped subagents (both)
-   Source: https://docs.anthropic.com/en/docs/claude-code/github-actions
-   Why it matters: Repo-native automation is now straightforward enough to use for daily maintenance jobs instead of a one-off bot project.
-   Steps:
-     1. Run `/install-github-app` or manually install the Claude GitHub App.
-     2. Add `ANTHROPIC_API_KEY` and a workflow file.
-     3. Put project rules in `CLAUDE.md`.
-     4. Invoke a custom repo agent via `claude_args: --agent <name>`.
-   Try Monday: Schedule one daily maintenance workflow with a dedicated subagent.
+4. Design containment at the environment layer first (robustness)
+   Why: Sandbox and egress boundaries keep failures bounded even when the model, a tool, or a user prompt goes off the rails.
+   Evidence: Anthropic says its Claude Code sandbox cut permission prompts by 84%, auto mode catches about 83% of overeager behaviors, and Gray Swan prompt-injection success is roughly 0.1% on single attempts.
+   Source: https://www.anthropic.com/engineering/how-we-contain-claude
+   Try Monday: Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs.
 
-5. Roots-aware MCP filesystem server pattern (both)
-   Source: https://github.com/modelcontextprotocol/servers
-   Why it matters: This is one of the clearest "safe agent access" patterns I found this week: explicit directories, live roots updates, and easy client configs.
-   Steps:
-     1. Choose the filesystem server for scoped file access.
-     2. Register it in Claude Desktop or VS Code with only the directories you want exposed.
-     3. Prefer Roots-capable clients for live path updates.
-     4. If NVM breaks startup, switch to absolute `node` or `npx` paths.
-   Try Monday: Add a filesystem MCP server to one sandbox repo and keep it pinned to a single folder first.
+5. Use always-on cloud agents for review, triage, and incident chores (both)
+   Why: Background automations keep review and maintenance work moving without waiting for someone to open the IDE.
+   Evidence: Cursor says Bugbot-like automations run thousands of times a day and have caught millions of bugs; its internal security-review automation has caught multiple vulnerabilities and critical bugs; Runlayer says the setup helps them move faster than teams five times their size.
+   Source: https://cursor.com/blog/automations
+   Try Monday: Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings.
 
-Bonus:
-- Codex CLI now has a credible review-before-push loop built in: https://developers.openai.com/codex/cli
-
-Full digest:
-- runs/2026-W28/05-report/weekly-digest.md
-
-Email draft path:
-- runs/2026-W28/06-email/email-draft.md
+Full detail: runs/2026-W28/05-report/weekly-digest.md

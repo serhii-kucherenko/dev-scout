@@ -1,157 +1,133 @@
-# Dev Scout Weekly Digest — 2026-W28
+# Dev Scout Weekly Digest - 2026-W28
 
-This week's run was rebuilt from primary docs and real corroboration after discarding an earlier placeholder-heavy draft.
+Actionable jam for faster, more robust development with AI-assisted workflows.
 
 ## Top jam
 
-### OpenAI Evals meta-evals plus PR gating
+### Run Bugbot before you push
 
-**Why:** The highest leverage eval workflow is not "run a dataset once"; it is adding meta-evals and a pull-request gate so rubric regressions are caught before merge.
+**Benefit:** both | **Grade:** A | **Lens:** ship-faster
 
-**Benefit:** robustness | **Grade:** A
+**Why:** Move review left so the same agent catches bugs on the diff before the PR roundtrip starts.
 
-**Evidence:** The build guide explicitly recommends meta-evals and says good model-graded evals should report `metascore/` accuracy close to `1.0`; the repo workflow automatically runs new eval YAMLs on pull requests.
+**Evidence:** Cursor says Bugbot is over 3x faster, 22% cheaper, finds 10% more bugs per review, and 90% of runs now finish in under 3 minutes.
 
-**Source:** https://github.com/openai/evals/blob/main/docs/build-eval.md
+**Source:** https://cursor.com/blog/bugbot-updates-june-2026
 
-**How-to:** https://github.com/openai/evals/blob/main/docs/build-eval.md
-
-**Steps:**
-  1. Put your dataset in `evals/registry/data/<eval_name>/samples.jsonl` and register it in `evals/registry/evals/<eval_name>.yaml`.
-  2. Run `oaieval <model> <eval_name>` locally to validate the task and rubric.
-  3. Add labeled choice data and a meta-eval until `metascore/` is close to `1.0`.
-  4. Copy the repo's PR workflow pattern so new eval YAMLs get a lightweight CI check automatically.
-
-**Corroboration:** https://github.com/openai/evals/blob/main/.github/workflows/test_eval.yaml
-
-**Try Monday:** Turn one fragile prompt workflow into a 20-25 sample eval before the next prompt or model tweak.
-
-### AI Gateway provider sorting by cost, TTFT, or TPS
-
-**Why:** When a model is available from several providers, the gateway can route for low cost, low first-token latency, or high throughput without app-side provider switching code.
-
-**Benefit:** speed | **Grade:** A
-
-**Evidence:** The docs expose sort controls for `cost`, `ttft`, and `tps`, while the changelog explains that ranking updates at request time as provider prices and latency shift.
-
-**Source:** https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering
-
-**How-to:** https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering
+**How-to:** https://cursor.com/docs/bugbot
 
 **Steps:**
-  1. Route the request through AI Gateway instead of calling one provider directly.
-  2. Set `providerOptions.gateway.sort` to `cost`, `ttft`, or `tps`.
-  3. Combine it with `only` or `order` if you have vendor constraints.
-  4. Read the returned routing metadata so you can inspect the actual execution order and metrics.
+  1. Connect the repository to Cursor and enable Bugbot for the repo in the dashboard.
+  2. Run /review or /review-bugbot locally before pushing so the agent inspects the exact diff first.
+  3. Turn on incremental review or mention-only mode to keep feedback focused on new commits.
+  4. Require the Cursor Bugbot check in branch protection once the team trusts the signal.
 
-**Corroboration:** https://vercel.com/changelog/sort-providers-by-cost-latency-or-throughput-on-ai-gateway
+**Try Monday:** Enable Bugbot on one active repo and require its check on draft PRs for one week.
 
-**Try Monday:** Switch one interactive coding endpoint to `ttft` sorting and compare response feel.
+### Make GPT-5 mini the default coding workhorse
 
-### AI Gateway model fallbacks without app-side retry code
+**Benefit:** both | **Grade:** A | **Lens:** model-workflows
 
-**Why:** Cross-provider and cross-model fallback lets you survive outages or incompatibilities without custom retry orchestration in the application layer.
+**Why:** A cheap high-skill default model lets teams save the expensive model for cases where verification says more horsepower is actually needed.
 
-**Benefit:** robustness | **Grade:** A
+**Evidence:** OpenAI reports GPT-5 mini scores 71.0% on SWE-bench Verified and 71.6% on Aider polyglot while costing $0.25 per 1M input tokens and $2 per 1M output tokens.
 
-**Evidence:** The fallback docs show ordered retries across primary and backup models and providers; Vercel's architecture write-up describes automatic rerouting and retries when provider health degrades.
+**Source:** https://openai.com/index/introducing-gpt-5-for-developers/
 
-**Source:** https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks
-
-**How-to:** https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks
+**How-to:** https://openai.com/index/introducing-gpt-5-for-developers/
 
 **Steps:**
-  1. Keep your preferred model in `model`.
-  2. Add a `providerOptions.gateway.models` array for your backups.
-  3. Add `order` if provider preference matters for each model.
-  4. Log `modelAttempts` and `providerAttempts` so failures are visible instead of silent.
+  1. Set gpt-5-mini as the default model for routine implementation, repo Q and A, and PR-sized coding tasks.
+  2. Keep the loop verification-based so you escalate only when tests fail, tool use gets messy, or the task stalls.
+  3. Use lower verbosity for tight edit loops and increase it only when you need fuller plans or explanations.
+  4. Track solve rate and spend side by side for mini-default versus full-model escalations.
 
-**Corroboration:** https://vercel.com/blog/how-ai-gateway-runs-on-fluid-compute
+**Try Monday:** Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails.
 
-**Try Monday:** Add one backup model to a non-critical route and capture fallback metadata in logs.
+### Treat system-prompt edits like code changes
 
-### Scheduled Claude Code workflows with repo-scoped subagents
+**Benefit:** robustness | **Grade:** A | **Lens:** build-robust
 
-**Why:** Claude Code's GitHub Action can run on comments or cron while still obeying `CLAUDE.md` and custom agents that live in the repo.
+**Why:** Prompt tweaks can silently degrade code quality, so they need the same gating discipline as production code.
 
-**Benefit:** both | **Grade:** A
+**Evidence:** Anthropic reports that one verbosity instruction caused a 3% drop on both Opus 4.6 and 4.7 in a broader evaluation set, and it immediately reverted the change.
 
-**Evidence:** Official docs provide quick setup, manual install, cron examples, and v1 workflow syntax; the GitHub discussion shows the `--agent` pattern for scheduled custom subagents.
+**Source:** https://www.anthropic.com/engineering/april-23-postmortem
 
-**Source:** https://docs.anthropic.com/en/docs/claude-code/github-actions
-
-**How-to:** https://docs.anthropic.com/en/docs/claude-code/github-actions
+**How-to:** https://www.anthropic.com/engineering/april-23-postmortem
 
 **Steps:**
-  1. Run `/install-github-app` or manually install the Claude GitHub App.
-  2. Add `ANTHROPIC_API_KEY` and a workflow under `.github/workflows/`.
-  3. Put project rules in `CLAUDE.md`.
-  4. Store specialized jobs in `.claude/agents/` and invoke them via `claude_args: --agent <name>`.
+  1. Run a broad per-model eval suite for every prompt change that affects an agent or coding workflow.
+  2. Use ablations to isolate which prompt line changes quality, latency, or token use.
+  3. Soak the change before full rollout if it trades off intelligence versus speed or cost.
+  4. Roll out gradually and revert immediately if the broader eval set regresses.
 
-**Corroboration:** https://github.com/anthropics/claude-code-action/discussions/576
+**Try Monday:** Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites.
 
-**Try Monday:** Schedule one daily repo-maintenance workflow with a dedicated subagent.
+### Design containment at the environment layer first
 
-### Roots-aware MCP filesystem server pattern
+**Benefit:** robustness | **Grade:** A | **Lens:** production-patterns
 
-**Why:** The official MCP filesystem server is now a practical template for safe agent file access: explicit allowed directories, Roots-based live updates, and copyable configs for popular clients.
+**Why:** Sandbox and egress boundaries keep failures bounded even when the model, a tool, or a user prompt goes off the rails.
 
-**Benefit:** both | **Grade:** A
+**Evidence:** Anthropic says its Claude Code sandbox cut permission prompts by 84%, auto mode catches about 83% of overeager behaviors, and Gray Swan prompt-injection success is roughly 0.1% on single attempts.
 
-**Evidence:** Primary docs include concrete `npx`, Docker, VS Code, and Claude Desktop configs plus Roots-based runtime directory updates; the repo is the official MCP reference server collection.
+**Source:** https://www.anthropic.com/engineering/how-we-contain-claude
 
-**Source:** https://github.com/modelcontextprotocol/servers
-
-**How-to:** https://github.com/modelcontextprotocol/servers/blob/main/src/filesystem/README.md
+**How-to:** https://www.anthropic.com/engineering/how-we-contain-claude
 
 **Steps:**
-  1. Choose the filesystem server when you want scoped file access instead of broad shell power.
-  2. Register it in Claude Desktop or VS Code and pass only the directories the agent should touch.
-  3. Prefer Roots-capable clients so allowed paths can change without a server restart.
-  4. If the server fails under NVM, switch to an absolute `node` or `npx` path or a wrapper script.
+  1. Choose the isolation pattern that matches the user and task: ephemeral container, workspace sandbox, or sealed VM.
+  2. Default to network deny and limit writes to the workspace or explicitly mounted paths.
+  3. Keep credentials outside the sandbox and pass only scoped session tokens inside.
+  4. Delay project-local config parsing until after trust is established, and inspect tool output before it reaches model context.
 
-**Corroboration:** https://github.com/modelcontextprotocol/servers/issues/64 and https://news.ycombinator.com/item?id=47380270
+**Try Monday:** Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs.
 
-**Try Monday:** Add a filesystem MCP server to one sandbox repo and keep it pinned to a single folder at first.
+### Use always-on cloud agents for review, triage, and incident chores
 
-### Codex CLI review-before-push workflow
+**Benefit:** both | **Grade:** B | **Lens:** tooling-setups
 
-**Why:** Codex now combines local agent mode, a separate review agent, subagents, MCP, and cloud tasks in one CLI, which lowers the friction to adopt a review-before-push loop.
+**Why:** Background automations keep review and maintenance work moving without waiting for someone to open the IDE.
 
-**Benefit:** both | **Grade:** A
+**Evidence:** Cursor says Bugbot-like automations run thousands of times a day and have caught millions of bugs; its internal security-review automation has caught multiple vulnerabilities and critical bugs; Runlayer says the setup helps them move faster than teams five times their size.
 
-**Evidence:** OpenAI describes the CLI as open source and built in Rust for speed and efficiency, and documents separate review, subagents, MCP, and cloud-task flows in the same tool.
+**Source:** https://cursor.com/blog/automations
 
-**Source:** https://developers.openai.com/codex/cli
-
-**How-to:** https://developers.openai.com/codex/quickstart
+**How-to:** https://cursor.com/docs/cloud-agent/automations
 
 **Steps:**
-  1. Install Codex and run it inside the project you want it to edit.
-  2. Keep Git checkpoints before and after tasks.
-  3. Use the built-in review pass before commit or push.
-  4. Add subagents, MCP servers, or cloud tasks only after the base local workflow feels predictable.
+  1. Create a new automation from the Agents Window, cursor.com/automations, or the /automate skill.
+  2. Pick a trigger such as pull request opened, CI completed, Slack, webhook, or cron.
+  3. Write the prompt and enable only the tools it needs, such as PR comments, Slack, MCP, or memories.
+  4. Choose whether it should run against one repo, multiple repos, or no repo, then save and activate it.
 
-**Corroboration:** https://developers.openai.com/codex/quickstart
+**Try Monday:** Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings.
 
-**Try Monday:** Require a second Codex review pass for every Codex-generated diff on one repo.
+## All findings by lens
 
-## Lens coverage
+### ship-faster
+- [Run Bugbot before you push](https://cursor.com/blog/bugbot-updates-june-2026) - A - both
+- [Index the repo so agents can search by meaning, not just strings](https://cursor.com/blog/semsearch) - A - both
 
 ### tooling-setups
-- [Roots-aware MCP filesystem server pattern](https://github.com/modelcontextprotocol/servers)
-- [Scheduled Claude Code workflows with repo-scoped subagents](https://docs.anthropic.com/en/docs/claude-code/github-actions)
-- [Codex CLI review-before-push workflow](https://developers.openai.com/codex/cli)
+- [Use always-on cloud agents for review, triage, and incident chores](https://cursor.com/blog/automations) - B - both
+- [Add Codex CLI as a terminal-first coding agent](https://openai.com/index/introducing-upgrades-to-codex/) - A - both
 
 ### build-robust
-- [OpenAI Evals meta-evals plus PR gating](https://github.com/openai/evals/blob/main/docs/build-eval.md)
-
-### model-workflows
-- [AI Gateway provider sorting by cost, TTFT, or TPS](https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering)
+- [Treat system-prompt edits like code changes](https://www.anthropic.com/engineering/april-23-postmortem) - A - robustness
+- [Graduate capability tests into an always-on regression suite](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) - B - robustness
 
 ### production-patterns
-- [AI Gateway model fallbacks without app-side retry code](https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks)
+- [Design containment at the environment layer first](https://www.anthropic.com/engineering/how-we-contain-claude) - A - robustness
+- [Put a gateway in front of providers so outages do not stop the app](https://vercel.com/blog/ai-gateway-is-now-generally-available) - B - both
 
-## Skipped
+### model-workflows
+- [Make GPT-5 mini the default coding workhorse](https://openai.com/index/introducing-gpt-5-for-developers/) - A - both
+- [Cache stable repo context instead of resending it every turn](https://www.anthropic.com/news/prompt-caching) - A - both
 
-- No `ship-faster` item was promoted this week because the strongest recent sources explained workflows but did not publish benchmark-quality speed evidence.
+## What changed from the earlier draft
+
+- Replaced placeholder URLs and synthetic evidence with inspected source-backed findings.
+- Added concrete setup steps, operational metrics, and stronger model-routing guidance.
+- Kept only items with clear source links, how-to actions, and A/B-grade evidence.

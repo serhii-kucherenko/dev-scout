@@ -2,9 +2,33 @@ from __future__ import annotations
 
 from datetime import date
 from enum import Enum
+import re
 from typing import Literal
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from pydantic import BaseModel, Field, field_validator
+
+
+TRACKING_QUERY_PREFIXES = ("utm_",)
+TRACKING_QUERY_KEYS = {"fbclid", "gclid", "mc_cid", "mc_eid"}
+
+
+def canonicalize_source_url(url: str) -> str:
+    parts = urlsplit(url)
+    filtered_query = [
+        (key, value)
+        for key, value in parse_qsl(parts.query, keep_blank_values=True)
+        if not key.lower().startswith(TRACKING_QUERY_PREFIXES)
+        and key.lower() not in TRACKING_QUERY_KEYS
+    ]
+    normalized = parts._replace(
+        scheme=parts.scheme.lower(),
+        netloc=parts.netloc.lower(),
+        path=parts.path.rstrip("/") or "/",
+        query=urlencode(filtered_query, doseq=True),
+        fragment="",
+    )
+    return urlunsplit(normalized)
 
 
 class Benefit(str, Enum):
@@ -54,11 +78,34 @@ class JamItem(BaseModel):
             raise ValueError("source_url must be http(s)")
         return value
 
+    def uses_generated_source_url(self) -> bool:
+        parts = urlsplit(self.source_url)
+        return parts.netloc == "example.com" and parts.path.startswith("/dev-scout/")
+
+    def has_concrete_steps(self) -> bool:
+        if len(self.how_to_steps) < 3:
+            return False
+        normalized = [re.sub(r"\s+", " ", step.strip().lower()) for step in self.how_to_steps[:4]]
+        template_prefixes = [
+            "open the source:",
+            "skim for prerequisites and install commands",
+            "apply the workflow on a small branch before team rollout",
+            "measure cycle time or defect rate for one week",
+        ]
+        return not all(
+            step.startswith(template)
+            for step, template in zip(normalized, template_prefixes, strict=False)
+        )
+
+    def canonical_key(self) -> str:
+        return canonicalize_source_url(self.source_url)
+
     def is_promotable(self) -> bool:
         return (
             self.evidence_grade in {EvidenceGrade.A, EvidenceGrade.B}
-            and len(self.how_to_steps) >= 3
+            and self.has_concrete_steps()
             and bool(self.source_url)
+            and not self.uses_generated_source_url()
         )
 
 

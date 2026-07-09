@@ -2,24 +2,46 @@
   "lens_id": "production-patterns",
   "items": [
     {
-      "id": "production-patterns-101",
-      "title": "AI Gateway model fallbacks without app-side retry code",
-      "why": "AI Gateway can fail over across both providers and backup models, so you can survive outages or model incompatibilities without building custom retry orchestration in your app.",
+      "id": "production-patterns-2026w28-containment-first",
+      "title": "Design containment at the environment layer first",
+      "why": "Sandbox and egress boundaries keep failures bounded even when the model, a tool, or a user prompt goes off the rails.",
       "benefit": "robustness",
-      "source_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
-      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "source_url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "how_to_url": "https://www.anthropic.com/engineering/how-we-contain-claude",
       "how_to_steps": [
-        "Keep your preferred model in `model`, then add a `providerOptions.gateway.models` array for the fallback order you actually want in production.",
-        "Add `order` when you also care which provider is tried first for each model, such as Azure before OpenAI or Vertex before Anthropic.",
-        "Log the returned `modelAttempts` and `providerAttempts` metadata so you can see which provider or backup model handled failures.",
-        "Test one forced-failure path before rollout so you know the fallback model still meets your latency and quality floor."
+        "Choose the isolation pattern that matches the user and task: ephemeral container, workspace sandbox, or sealed VM.",
+        "Default to network deny and limit writes to the workspace or explicitly mounted paths.",
+        "Keep credentials outside the sandbox and pass only scoped session tokens inside.",
+        "Delay project-local config parsing until after trust is established, and inspect tool output before it reaches model context."
       ],
-      "setup_cost": "minutes",
-      "evidence": "The fallback docs show ordered retries across primary and backup models and providers; Vercel's architecture post describes automatic rerouting and retries when a provider slows down or fails.",
+      "setup_cost": "hours",
+      "evidence": "Anthropic says its Claude Code sandbox cut permission prompts by 84%, auto mode catches about 83% of overeager behaviors, and Gray Swan prompt-injection success is roughly 0.1% on single attempts.",
       "evidence_grade": "A",
       "lens_id": "production-patterns",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_monday": "Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs."
+    },
+    {
+      "id": "production-patterns-2026w28-ai-gateway-fallbacks",
+      "title": "Put a gateway in front of providers so outages do not stop the app",
+      "why": "Routing through a gateway gives you model failover, provider order, and request-level visibility instead of a single brittle dependency.",
+      "benefit": "both",
+      "source_url": "https://vercel.com/blog/ai-gateway-is-now-generally-available",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "how_to_steps": [
+        "Route traffic through one gateway endpoint instead of wiring the app directly to a single provider SDK.",
+        "Set a primary model and a fallback models list in providerOptions.gateway.",
+        "Add provider ordering and fast timeouts so the gateway fails over quickly when a provider stalls.",
+        "Inspect modelAttempts and providerAttempts metadata, then monitor latency, spend, and failure patterns by route."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Vercel says AI Gateway is the same system that has powered v0 for millions of users, sits on infrastructure delivering sub-20ms latency, and removes the single-provider failure mode.",
+      "evidence_grade": "B",
+      "lens_id": "production-patterns",
       "corroboration": "supported",
-      "try_monday": "Add one cheaper or more available backup model to a non-critical route and capture `modelAttempts` in logs."
+      "corroboration_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "try_monday": "Wrap one production AI endpoint with a primary model plus two fallbacks and log which model actually serves each request."
     }
   ]
 }

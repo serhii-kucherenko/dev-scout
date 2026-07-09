@@ -1,15 +1,16 @@
 {
-  "urls_planned": 14,
-  "urls_fetched": 14,
-  "urls_extracted": 16,
+  "urls_planned": 15,
+  "urls_fetched": 15,
+  "urls_extracted": 15,
   "lenses_run": 5,
-  "lenses_with_findings": 4,
+  "lenses_with_findings": 5,
   "grade_distribution": {
-    "A": 6
+    "A": 6,
+    "B": 4
   },
-  "corroboration_rate": 1.0,
+  "corroboration_rate": 0.6,
   "notes": [
-    "Promoted items came from official docs, repos, or changelog pages with concrete setup steps.",
-    "The ship-faster lens was intentionally left empty rather than promoting weak benchmark claims."
+    "Replaced placeholder-style artifacts with sourced findings from official docs, product posts, and engineering write-ups.",
+    "Primary sources were favored; discussion links were used only as secondary corroboration hints."
   ]
 }
