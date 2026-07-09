@@ -7,15 +7,17 @@ After judge pass, Dev Scout:
 
 ## What each email contains
 
-1. **Quick review of the previous email** — titles/benefits from the last brief (or “first brief” if none)
-2. **Only new jam** — findings whose source was not already emailed or stored in `data/findings.json`
-3. If nothing new: **“No new jam today”** / nothing beyond earlier briefs
-4. For each new item, the full jam packet from the daily goal:
-   - title, benefit (`speed` / `robustness` / `both`), why
-   - evidence + grade, setup cost, corroboration, lens
-   - source URL, how-to URL, concrete steps (≥3)
-   - try-today action
-5. Link to the full digest
+Emails are kept **scannable** — full steps and evidence live in the digest.
+
+1. **Repo link** — every brief links back to the project repo (`repo_url` in `config/delivery.yaml`, or `DEV_SCOUT_REPO_URL`)
+2. **Quick review of the previous email** — titles/benefits from the last brief (or “first brief” if none)
+3. **New since last brief** — findings whose source was not already emailed or stored in `data/findings.json`. Each is one compact block:
+   - title with a tag line — `benefit · setup effort · evidence grade` so you can decide at a glance whether it's worth a look
+   - **Why it matters** — one line on what it's for
+   - **Try** — one concrete first step (when available)
+   - **Link** — the source URL
+4. **Recap** — if there is little new jam, a short list of recent findings still worth a look, so a brief is never just one line
+5. Link to the **full digest** for every step, evidence, corroboration, and lens
 
 Artifacts still written locally:
 
