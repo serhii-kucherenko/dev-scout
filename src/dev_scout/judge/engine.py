@@ -12,11 +12,10 @@ def _load_corroboration(ctx: RunContext) -> dict[str, str]:
 
 def run_judge(ctx: RunContext) -> JudgeVerdict:
     cfg = load_yaml(config_dir() / "judge.yaml")
-    ranked_path = ctx.stage_path("03-rank") / "ranked.json"
-    if not ranked_path.exists():
-        run_rank(ctx)
-
-    payload = read_json(ranked_path)
+    payload = {
+        "week": ctx.week,
+        "items": [item.model_dump(mode="json") for item in run_rank(ctx)],
+    }
     items = [JamItem.model_validate(raw) for raw in payload.get("items", [])]
     corroboration = _load_corroboration(ctx)
 
