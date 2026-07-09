@@ -39,6 +39,6 @@ def run_rank(ctx: RunContext) -> list[JamItem]:
     ranked = _dedupe_ranked(dossier.items, known_ids)
     write_json(
         ctx.stage_path("03-rank") / "ranked.json",
-        {"week": ctx.week, "items": [item.model_dump(mode="json") for item in ranked]},
+        {"day": ctx.day, "items": [item.model_dump(mode="json") for item in ranked]},
     )
     return ranked

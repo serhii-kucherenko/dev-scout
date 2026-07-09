@@ -8,23 +8,23 @@ from rich.console import Console
 from rich.table import Table
 
 from dev_scout.context import RunContext
-from dev_scout.compose.email import run_compose_email
+from dev_scout.compose.email import resolve_recipient, run_compose_email
 from dev_scout.delivery.send import run_send
 from dev_scout.judge.engine import run_judge
-from dev_scout.models.jam import current_iso_week
+from dev_scout.models.jam import current_run_day
 from dev_scout.pipeline.loop import run_goal_loop
 from dev_scout.pipeline.runner import run_full_pipeline, run_research_pipeline
-from dev_scout.pipeline.week import run_week
+from dev_scout.pipeline.day import run_day
 from dev_scout.report.builder import run_report
 from dev_scout.research import run_collect, run_corroborate, run_coverage, run_discover, run_lenses
 from dev_scout.util import config_dir, load_yaml, project_root
 
-app = typer.Typer(no_args_is_help=True, help="Dev Scout — weekly research harness for faster, robust dev")
+app = typer.Typer(no_args_is_help=True, help="Dev Scout — daily research harness for faster, robust dev")
 console = Console()
 
 
-def _ctx(week: str | None) -> RunContext:
-    return RunContext.from_week(week or current_iso_week())
+def _ctx(day: str | None) -> RunContext:
+    return RunContext.from_day(day or current_run_day())
 
 
 def _emit(payload: dict, as_json: bool) -> None:
@@ -44,6 +44,7 @@ def doctor() -> None:
         "config": (config_dir() / "judge.yaml").exists(),
         "lenses": len(list((config_dir() / "lenses").glob("*.yaml"))),
         "delivery_mode": load_yaml(config_dir() / "delivery.yaml").get("mode", "draft"),
+        "delivery_to": resolve_recipient() or "(unset — set DEV_SCOUT_EMAIL)",
     }
     table = Table(title="Dev Scout Doctor")
     table.add_column("Check")
@@ -55,34 +56,34 @@ def doctor() -> None:
 
 @app.command()
 def discover(
-    week: str | None = typer.Option(None, "--week"),
+    day: str | None = typer.Option(None, "--day"),
     fixtures: bool = typer.Option(False, "--fixtures", help="Use test fixtures"),
     as_json: bool = typer.Option(False, "--json"),
 ) -> None:
-    ctx = _ctx(week)
+    ctx = _ctx(day)
     result = run_discover(ctx, use_fixtures=fixtures)
     _emit(result, as_json)
 
 
 @app.command()
 def collect(
-    week: str | None = typer.Option(None, "--week"),
+    day: str | None = typer.Option(None, "--day"),
     fixtures: bool = typer.Option(False, "--fixtures"),
     as_json: bool = typer.Option(False, "--json"),
 ) -> None:
-    ctx = _ctx(week)
+    ctx = _ctx(day)
     result = run_collect(ctx, use_fixtures=fixtures)
     _emit(result, as_json)
 
 
 @app.command("lens")
 def lens_cmd(
-    week: str | None = typer.Option(None, "--week"),
+    day: str | None = typer.Option(None, "--day"),
     lens_id: str | None = typer.Option(None, "--lens"),
     all_lenses: bool = typer.Option(False, "--all"),
     as_json: bool = typer.Option(False, "--json"),
 ) -> None:
-    ctx = _ctx(week)
+    ctx = _ctx(day)
     if all_lenses:
         result = run_lenses(ctx)
     elif lens_id:
@@ -94,88 +95,97 @@ def lens_cmd(
 
 @app.command()
 def corroborate(
-    week: str | None = typer.Option(None, "--week"),
+    day: str | None = typer.Option(None, "--day"),
     as_json: bool = typer.Option(False, "--json"),
 ) -> None:
-    ctx = _ctx(week)
+    ctx = _ctx(day)
     result = run_corroborate(ctx)
     _emit({"corroboration": result}, as_json)
 
 
 @app.command()
 def coverage(
-    week: str | None = typer.Option(None, "--week"),
+    day: str | None = typer.Option(None, "--day"),
     as_json: bool = typer.Option(False, "--json"),
 ) -> None:
-    ctx = _ctx(week)
+    ctx = _ctx(day)
     report = run_coverage(ctx)
     _emit(report.model_dump(mode="json"), as_json)
 
 
 @app.command()
 def judge(
-    week: str | None = typer.Option(None, "--week"),
+    day: str | None = typer.Option(None, "--day"),
     as_json: bool = typer.Option(False, "--json"),
 ) -> None:
-    ctx = _ctx(week)
+    ctx = _ctx(day)
     verdict = run_judge(ctx)
     _emit(verdict.model_dump(mode="json"), as_json)
 
 
 @app.command()
 def report(
-    week: str | None = typer.Option(None, "--week"),
+    day: str | None = typer.Option(None, "--day"),
     as_json: bool = typer.Option(False, "--json"),
 ) -> None:
-    ctx = _ctx(week)
+    ctx = _ctx(day)
     path = run_report(ctx)
     _emit({"path": path}, as_json)
 
 
 @app.command("compose-email")
 def compose_email(
-    week: str | None = typer.Option(None, "--week"),
+    day: str | None = typer.Option(None, "--day"),
     as_json: bool = typer.Option(False, "--json"),
 ) -> None:
-    ctx = _ctx(week)
+    ctx = _ctx(day)
     draft = run_compose_email(ctx)
     _emit({"subject": draft.subject, "to": draft.to, "path": str(ctx.stage_path("06-email") / "email-draft.md")}, as_json)
 
 
 @app.command()
 def send(
-    week: str | None = typer.Option(None, "--week"),
+    day: str | None = typer.Option(None, "--day"),
     dry_run: bool = typer.Option(False, "--dry-run"),
     as_json: bool = typer.Option(False, "--json"),
 ) -> None:
-    ctx = _ctx(week)
+    ctx = _ctx(day)
     result = run_send(ctx, dry_run=dry_run)
     _emit(result, as_json)
 
 
-@app.command("week")
-def week_cmd(
-    week: str | None = typer.Option(None, "--week"),
+@app.command("day")
+def day_cmd(
+    day: str | None = typer.Option(None, "--day"),
     fixtures: bool = typer.Option(False, "--fixtures", help="Use test fixtures for CI/smoke"),
     as_json: bool = typer.Option(False, "--json"),
 ) -> None:
-    """Run full weekly pipeline: research → judge → digest + email."""
-    result = run_week(week, use_fixtures=fixtures)
+    """Run full daily pipeline: research → judge → digest + email."""
+    result = run_day(day, use_fixtures=fixtures)
     payload = {
-        "week": result.week,
+        "day": result.day,
         "sufficient": result.verdict.sufficient,
         "digest": result.digest_path,
         "email": result.email_path,
         "run_md": result.run_md_path,
+        "send_status": result.send_status,
+        "send_result": result.send_result,
     }
     _emit(payload, as_json)
     if result.email_path:
         console.print(f"\n[green]Email draft:[/green] {result.email_path}")
+    if result.send_status == "sent":
+        console.print(
+            f"[green]Sent to[/green] {result.send_result.get('to', '')} "
+            f"(id={result.send_result.get('id', '')})"
+        )
+    elif result.send_status:
+        console.print(f"[yellow]Send {result.send_status}:[/yellow] {result.send_result.get('reason', '')}")
 
 
 @app.command()
 def loop(
-    week: str | None = typer.Option(None, "--week"),
+    day: str | None = typer.Option(None, "--day"),
     goal_file: Path | None = typer.Option(None, "--goal-file"),
     max_iterations: int = typer.Option(3, "--max-iterations"),
     fixtures: bool = typer.Option(False, "--fixtures"),
@@ -184,7 +194,7 @@ def loop(
     """Ralph-style loop until research sufficiency or max iterations."""
     result = run_goal_loop(
         goal_file=goal_file,
-        week=week,
+        day=day,
         max_iterations=max_iterations,
         use_fixtures=fixtures,
     )

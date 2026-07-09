@@ -23,12 +23,12 @@ STAGE_DIRS = [
 
 @dataclass
 class RunContext:
-    week: str
+    day: str
     root: Path = field(default_factory=runs_dir)
 
     @property
     def run_dir(self) -> Path:
-        return self.root / self.week
+        return self.root / self.day
 
     def ensure_layout(self) -> None:
         for rel in STAGE_DIRS:
@@ -53,10 +53,10 @@ class RunContext:
         return self.run_dir / "GOAL.md"
 
     @staticmethod
-    def from_week(week: str | None = None) -> RunContext:
-        from dev_scout.models.jam import current_iso_week
+    def from_day(day: str | None = None) -> RunContext:
+        from dev_scout.models.jam import current_run_day
 
-        return RunContext(week=week or current_iso_week())
+        return RunContext(day=day or current_run_day())
 
     @staticmethod
     def fixture_root() -> Path:

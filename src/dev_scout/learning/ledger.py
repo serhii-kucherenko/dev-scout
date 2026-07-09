@@ -9,6 +9,12 @@ def _item_key(item: JamItem) -> str:
     return item.canonical_key()
 
 
+def _ledger_days(ledger: dict) -> list[str]:
+    if "days" in ledger:
+        return list(ledger.get("days") or [])
+    return list(ledger.get("weeks") or [])
+
+
 def run_learning(ctx: RunContext) -> dict[str, int]:
     ranked = read_json(ctx.stage_path("03-rank") / "ranked.json")
     items = [JamItem.model_validate(raw) for raw in ranked.get("items", [])]
@@ -19,23 +25,25 @@ def run_learning(ctx: RunContext) -> dict[str, int]:
     existing = {_item_key(JamItem.model_validate(entry)) for entry in ledger.get("findings", [])}
 
     new_items = [item for item in promotable if _item_key(item) not in existing]
-    prior_week = ledger.get("weeks", [])[-1] if ledger.get("weeks") else None
+    days = _ledger_days(ledger)
+    prior_day = days[-1] if days else None
 
     delta = {
-        "week": ctx.week,
-        "prior_week": prior_week,
+        "day": ctx.day,
+        "prior_day": prior_day,
         "new_count": len(new_items),
         "promoted_count": len(promotable),
         "new_item_ids": [item.id for item in new_items],
     }
-    write_json(ctx.stage_path("07-learning") / "delta-vs-last-week.json", delta)
+    write_json(ctx.stage_path("07-learning") / "delta-vs-last-day.json", delta)
 
     ledger.setdefault("findings", [])
-    ledger.setdefault("weeks", [])
+    ledger["days"] = days
+    ledger.pop("weeks", None)
     for item in new_items:
         ledger["findings"].append(item.model_dump(mode="json"))
-    if ctx.week not in ledger["weeks"]:
-        ledger["weeks"].append(ctx.week)
+    if ctx.day not in ledger["days"]:
+        ledger["days"].append(ctx.day)
     write_json(ledger_path, ledger)
 
     return {"new": len(new_items), "total": len(ledger["findings"])}

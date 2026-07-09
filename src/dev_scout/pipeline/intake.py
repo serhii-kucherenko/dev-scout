@@ -11,9 +11,9 @@ def run_intake(ctx: RunContext) -> None:
     write_json(
         ctx.stage_path("00-intake") / "intake.json",
         {
-            "week": ctx.week,
+            "day": ctx.day,
             "goal_present": goal_exists,
             "prior_findings": len(ledger.get("findings", [])),
-            "prior_weeks": ledger.get("weeks", []),
+            "prior_days": ledger.get("days", ledger.get("weeks", [])),
         },
     )

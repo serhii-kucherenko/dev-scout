@@ -97,7 +97,7 @@ def analyze_excerpt(
     return JamItem(
         id=f"{lens_id}-{index}",
         title=title[:140],
-        why=lens_cfg.get("question", "Relevant to weekly dev improvements"),
+        why=lens_cfg.get("question", "Relevant to daily dev improvements"),
         benefit=benefit,
         source_url=source_url,
         how_to_url=source_url,
@@ -106,7 +106,7 @@ def analyze_excerpt(
         evidence=lens_cfg.get("required_evidence", "Documented outcome"),
         evidence_grade=grade,
         lens_id=lens_id,
-        try_monday=steps[0] if steps else "Review the linked source",
+        try_today=steps[0] if steps else "Review the linked source",
     )
 
 

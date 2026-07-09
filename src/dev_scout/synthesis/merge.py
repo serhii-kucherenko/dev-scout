@@ -8,7 +8,7 @@ from dev_scout.util import write_json
 
 def run_synthesize(ctx: RunContext) -> JamDossier:
     items = load_lens_items(ctx)
-    dossier = JamDossier(week=ctx.week, items=items)
+    dossier = JamDossier(day=ctx.day, items=items)
     write_json(
         ctx.stage_path("02-synthesize") / "dossier.json",
         dossier.model_dump(mode="json"),

@@ -1,26 +1,26 @@
 from __future__ import annotations
 
 from dev_scout.context import RunContext
-from dev_scout.models.jam import current_iso_week
+from dev_scout.models.jam import current_run_day
 from dev_scout.pipeline.runner import run_full_pipeline
 
 
-def run_week(week: str | None = None, *, use_fixtures: bool = False):
-    ctx = RunContext.from_week(week or current_iso_week())
+def run_day(day: str | None = None, *, use_fixtures: bool = False):
+    ctx = RunContext.from_day(day or current_run_day())
     if not ctx.goal_path().exists():
         _write_default_goal(ctx)
     return run_full_pipeline(ctx, use_fixtures=use_fixtures)
 
 
 def _write_default_goal(ctx: RunContext) -> None:
-    content = f"""# Goal — {ctx.week}
+    content = f"""# Goal — {ctx.day}
 
 ## Mission
 Find practical ways to ship faster and build more robust software with AI-assisted dev.
 
 ## Research questions
 1. What new agent/harness setups have published how-tos and measured speed gains?
-2. What CI/testing/review workflows reduced bugs or outage risk this week?
+2. What CI/testing/review workflows reduced bugs or outage risk today?
 3. What tooling dropped setup time or improved production readiness?
 
 ## Sufficiency

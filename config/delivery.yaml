@@ -1,6 +1,10 @@
-recipient: kucherenko.web@gmail.com
-mode: draft
-subject_template: "Dev Scout {week} — {top_count} ways to ship faster / build safer"
+recipient: ""  # set via DEV_SCOUT_EMAIL (preferred) or DELIVERY_TO
+mode: send
+subject_template: "Dev Scout {day} — {top_count} ways to ship faster / build safer"
 
-# Email drafts are written to runs/YYYY-Www/06-email/ as .md, .json, and .eml files.
-# No send integration is required for the weekly loop. No API keys required.
+# After judge pass, the findings brief is emailed to DEV_SCOUT_EMAIL via Resend.
+# Required GitHub Actions secrets / env:
+#   DEV_SCOUT_EMAIL  — recipient
+#   RESEND_API_KEY   — Resend API key
+#   DELIVERY_FROM    — verified From: address in Resend (e.g. Dev Scout <onboarding@resend.dev>)
+# Drafts are still written under runs/YYYY-MM-DD/06-email/ (.md, .json, .eml).

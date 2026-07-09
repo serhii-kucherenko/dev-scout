@@ -18,7 +18,7 @@
       "evidence_grade": "A",
       "lens_id": "tooling-setups",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
+      "try_today": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
     },
     {
       "id": "tooling-setups-2",
@@ -38,7 +38,7 @@
       "evidence_grade": "A",
       "lens_id": "tooling-setups",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/modelcontextprotocol/servers"
+      "try_today": "Open the source: https://github.com/modelcontextprotocol/servers"
     },
     {
       "id": "tooling-setups-3",
@@ -58,7 +58,7 @@
       "evidence_grade": "A",
       "lens_id": "tooling-setups",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/openai/evals"
+      "try_today": "Open the source: https://github.com/openai/evals"
     },
     {
       "id": "tooling-setups-4",
@@ -78,7 +78,7 @@
       "evidence_grade": "B",
       "lens_id": "tooling-setups",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://docs.cursor.com/agent"
+      "try_today": "Open the source: https://docs.cursor.com/agent"
     },
     {
       "id": "tooling-setups-5",
@@ -98,7 +98,7 @@
       "evidence_grade": "B",
       "lens_id": "tooling-setups",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/anthropics/claude-code"
+      "try_today": "Open the source: https://github.com/anthropics/claude-code"
     },
     {
       "id": "build-robust-3",
@@ -118,7 +118,7 @@
       "evidence_grade": "A",
       "lens_id": "build-robust",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/openai/evals"
+      "try_today": "Open the source: https://github.com/openai/evals"
     },
     {
       "id": "model-workflows-1",
@@ -138,7 +138,7 @@
       "evidence_grade": "A",
       "lens_id": "model-workflows",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
+      "try_today": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
     },
     {
       "id": "production-patterns-3",
@@ -158,7 +158,7 @@
       "evidence_grade": "A",
       "lens_id": "production-patterns",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/openai/evals"
+      "try_today": "Open the source: https://github.com/openai/evals"
     },
     {
       "id": "ship-faster-1",
@@ -178,7 +178,7 @@
       "evidence_grade": "A",
       "lens_id": "ship-faster",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
+      "try_today": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
     },
     {
       "id": "ship-faster-2",
@@ -198,7 +198,7 @@
       "evidence_grade": "A",
       "lens_id": "ship-faster",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/modelcontextprotocol/servers"
+      "try_today": "Open the source: https://github.com/modelcontextprotocol/servers"
     },
     {
       "id": "build-robust-6",
@@ -218,7 +218,7 @@
       "evidence_grade": "B",
       "lens_id": "build-robust",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/langchain-ai/langgraph"
+      "try_today": "Open the source: https://github.com/langchain-ai/langgraph"
     },
     {
       "id": "model-workflows-4",
@@ -238,7 +238,7 @@
       "evidence_grade": "B",
       "lens_id": "model-workflows",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://docs.cursor.com/agent"
+      "try_today": "Open the source: https://docs.cursor.com/agent"
     },
     {
       "id": "production-patterns-6",
@@ -258,7 +258,7 @@
       "evidence_grade": "B",
       "lens_id": "production-patterns",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/langchain-ai/langgraph"
+      "try_today": "Open the source: https://github.com/langchain-ai/langgraph"
     },
     {
       "id": "ship-faster-4",
@@ -278,7 +278,7 @@
       "evidence_grade": "B",
       "lens_id": "ship-faster",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://docs.cursor.com/agent"
+      "try_today": "Open the source: https://docs.cursor.com/agent"
     },
     {
       "id": "ship-faster-5",
@@ -298,7 +298,7 @@
       "evidence_grade": "B",
       "lens_id": "ship-faster",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/anthropics/claude-code"
+      "try_today": "Open the source: https://github.com/anthropics/claude-code"
     },
     {
       "id": "ship-faster-2026w28-bugbot-prepush",
@@ -319,7 +319,7 @@
       "lens_id": "ship-faster",
       "corroboration": "supported",
       "corroboration_url": "https://cursor.com/docs/bugbot",
-      "try_monday": "Enable Bugbot on one active repo and require its check on draft PRs for one week."
+      "try_today": "Enable Bugbot on one active repo and require its check on draft PRs for one week."
     },
     {
       "id": "ship-faster-2026w28-semantic-search",
@@ -340,7 +340,7 @@
       "lens_id": "ship-faster",
       "corroboration": "supported",
       "corroboration_url": "https://cursor.com/docs/agent/tools/search",
-      "try_monday": "Re-index the main repo, trim noisy paths with .cursorignore, and compare agent answer quality on one thorny codebase question set."
+      "try_today": "Re-index the main repo, trim noisy paths with .cursorignore, and compare agent answer quality on one thorny codebase question set."
     },
     {
       "id": "tooling-setups-2026w28-automations",
@@ -361,7 +361,7 @@
       "lens_id": "tooling-setups",
       "corroboration": "supported",
       "corroboration_url": "https://cursor.com/docs/cloud-agent/automations",
-      "try_monday": "Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings."
+      "try_today": "Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings."
     },
     {
       "id": "tooling-setups-2026w28-codex-cli",
@@ -382,7 +382,7 @@
       "lens_id": "tooling-setups",
       "corroboration": "supported",
       "corroboration_url": "https://raw.githubusercontent.com/openai/codex/main/README.md",
-      "try_monday": "Install Codex CLI on one workstation and compare one feature branch done with terminal-agent help versus the current manual loop."
+      "try_today": "Install Codex CLI on one workstation and compare one feature branch done with terminal-agent help versus the current manual loop."
     },
     {
       "id": "build-robust-2026w28-prompt-change-guardrails",
@@ -403,7 +403,7 @@
       "lens_id": "build-robust",
       "corroboration": "supported",
       "corroboration_url": "https://news.ycombinator.com/item?id=47878905",
-      "try_monday": "Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites."
+      "try_today": "Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites."
     },
     {
       "id": "build-robust-2026w28-regression-suite",
@@ -424,7 +424,7 @@
       "lens_id": "build-robust",
       "corroboration": "weak",
       "corroboration_url": null,
-      "try_monday": "Pick five agent tasks that already feel solved and convert them into a tiny must-pass regression suite."
+      "try_today": "Pick five agent tasks that already feel solved and convert them into a tiny must-pass regression suite."
     },
     {
       "id": "production-patterns-2026w28-containment-first",
@@ -445,7 +445,7 @@
       "lens_id": "production-patterns",
       "corroboration": "weak",
       "corroboration_url": null,
-      "try_monday": "Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs."
+      "try_today": "Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs."
     },
     {
       "id": "production-patterns-2026w28-ai-gateway-fallbacks",
@@ -466,7 +466,7 @@
       "lens_id": "production-patterns",
       "corroboration": "supported",
       "corroboration_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
-      "try_monday": "Wrap one production AI endpoint with a primary model plus two fallbacks and log which model actually serves each request."
+      "try_today": "Wrap one production AI endpoint with a primary model plus two fallbacks and log which model actually serves each request."
     },
     {
       "id": "model-workflows-2026w28-gpt5-mini-default",
@@ -487,7 +487,7 @@
       "lens_id": "model-workflows",
       "corroboration": "weak",
       "corroboration_url": null,
-      "try_monday": "Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails."
+      "try_today": "Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails."
     },
     {
       "id": "model-workflows-2026w28-prompt-caching",
@@ -508,11 +508,11 @@
       "lens_id": "model-workflows",
       "corroboration": "weak",
       "corroboration_url": null,
-      "try_monday": "Cache the stable repo and policy prefix in one high-volume coding assistant and compare TTFT and spend over a day."
+      "try_today": "Cache the stable repo and policy prefix in one high-volume coding assistant and compare TTFT and spend over a day."
     }
   ],
-  "weeks": [
-    "2099-W01",
-    "2026-W28"
+  "days": [
+    "2099-01-01",
+    "2026-07-08"
   ]
 }

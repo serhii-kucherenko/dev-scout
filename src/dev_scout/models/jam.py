@@ -3,10 +3,10 @@ from __future__ import annotations
 from datetime import date
 from enum import Enum
 import re
-from typing import Literal
+from typing import Any
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 TRACKING_QUERY_PREFIXES = ("utm_",)
@@ -69,7 +69,16 @@ class JamItem(BaseModel):
     evidence_grade: EvidenceGrade
     lens_id: str
     corroboration: CorroborationStatus = CorroborationStatus.WEAK
-    try_monday: str = ""
+    try_today: str = ""
+
+    @model_validator(mode="before")
+    @classmethod
+    def _migrate_try_monday(cls, data: Any) -> Any:
+        if isinstance(data, dict) and "try_today" not in data and "try_monday" in data:
+            migrated = dict(data)
+            migrated["try_today"] = migrated.pop("try_monday")
+            return migrated
+        return data
 
     @field_validator("source_url")
     @classmethod
@@ -110,8 +119,17 @@ class JamItem(BaseModel):
 
 
 class JamDossier(BaseModel):
-    week: str
+    day: str
     items: list[JamItem] = Field(default_factory=list)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _migrate_week(cls, data: Any) -> Any:
+        if isinstance(data, dict) and "day" not in data and "week" in data:
+            migrated = dict(data)
+            migrated["day"] = migrated.pop("week")
+            return migrated
+        return data
 
 
 class JudgeVerdict(BaseModel):
@@ -142,7 +160,6 @@ class EmailDraft(BaseModel):
     top_items: list[JamItem] = Field(default_factory=list)
 
 
-def current_iso_week(reference: date | None = None) -> str:
+def current_run_day(reference: date | None = None) -> str:
     today = reference or date.today()
-    year, week, _ = today.isocalendar()
-    return f"{year}-W{week:02d}"
+    return today.isoformat()
