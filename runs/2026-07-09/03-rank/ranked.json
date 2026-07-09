@@ -1,0 +1,125 @@
+{
+  "day": "2026-07-09",
+  "items": [
+    {
+      "id": "model-workflows-20260709-prompt-caching",
+      "title": "Cache stable prompt prefixes to cut LLM cost and latency",
+      "why": "Marking the unchanging part of a prompt (system instructions, tool defs, RAG/codebase context) as cacheable makes repeat calls reuse it at ~10% of input price and skip prefix compute, so cost and time-to-first-token drop sharply.",
+      "benefit": "both",
+      "source_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+      "how_to_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+      "how_to_steps": [
+        "Identify the stable prefix (system prompt, tool defs, long context) that repeats across calls and ensure it meets the model minimum (~1,024 tokens).",
+        "Add `cache_control: {type: 'ephemeral'}` to those blocks; keep the prefix byte-identical (no injected timestamps, no reordered tools).",
+        "Log `cache_read_input_tokens` and `cache_creation_input_tokens` from the response usage to verify hit rates.",
+        "For batch/agentic runs, fire calls within the TTL (5-min default or the 1-hour option) and pre-warm the cache before user traffic."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "Anthropic reports up to 90% lower input cost (cache reads at 0.1x) and up to 85% lower time-to-first-token; documented cases cut a bill from $720 -> $72/mo and per-page generation from $0.42 -> $0.06 (86%).",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "corroboration": "supported",
+      "try_today": "Add cache_control to the system prompt of one high-volume call and check cache_read_input_tokens on the second request."
+    },
+    {
+      "id": "tooling-setups-20260709-uv",
+      "title": "Swap pip for uv to cut install and CI time",
+      "why": "uv is a Rust drop-in for pip/venv that resolves and installs dependencies in a fraction of the time, so local setup and every cold-cache CI run get dramatically faster.",
+      "benefit": "speed",
+      "source_url": "https://docs.astral.sh/uv/",
+      "how_to_url": "https://docs.astral.sh/uv/getting-started/",
+      "how_to_steps": [
+        "Install uv (`curl -LsSf https://astral.sh/uv/install.sh | sh` or `pip install uv`), then confirm with `uv --version`.",
+        "In the project, run `uv init` if there is no pyproject.toml, then `uv add -r requirements.txt` to import existing deps and generate uv.lock.",
+        "Commit pyproject.toml and uv.lock; recreate environments with `uv sync` and run commands via `uv run <cmd>` instead of activating a venv.",
+        "Swap the CI install step to `uv sync --frozen` for deterministic, cache-fast installs, and compare the install stage time before/after."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "Real Python measured ~8x faster than pip (21.4s -> 2.6s installing JupyterLab); a widely cited uncached install dropped 38s -> 3s; one team cut a five-project CI suite from ~9 min to ~4.5 min.",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "corroboration": "supported",
+      "try_today": "Run `uv sync` on one repo and switch its CI install step to uv, then compare the install stage timing."
+    },
+    {
+      "id": "build-robust-20260709-merge-queue-integrity",
+      "title": "Add a merge-queue integrity check so bad merges can't land silently",
+      "why": "The April 2026 GitHub merge-queue bug silently reverted already-merged work while CI stayed green, because branch protection validates the temp commit, not what actually lands on main. A tree-hash / merge-base check makes that divergence impossible to miss.",
+      "benefit": "robustness",
+      "source_url": "https://mergify.com/blog/merge-queue-is-critical-infrastructure",
+      "how_to_url": "https://trunk.io/blog/what-happens-if-a-merge-queue-builds-on-the-wrong-commit",
+      "how_to_steps": [
+        "Add a post-merge CI job that recomputes the expected tree for each landed commit and compares it to the tested PR commit's tree (modulo merge-mode normalization); fail loudly on mismatch.",
+        "Verify the merge group's base equals the current head of the target branch before the merge finalizes, and block if they diverge.",
+        "Until you trust the queue, cap merge-group size to 1 (sequential) for squash groups to avoid the multi-PR failure combination.",
+        "Keep enough audit trail (tested commit SHAs) that you can reconstruct what CI actually signed off on after the fact."
+      ],
+      "setup_cost": "hours",
+      "evidence": "The April 23, 2026 GitHub merge-queue bug silently corrupted 658 repositories and 2,092 PRs for ~4.5 hours with green CI and no status-page entry; recovery had to be done by hand.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "corroboration": "supported",
+      "try_today": "Add a post-merge job that compares the landed tree hash to the tested PR's tree and alerts on mismatch."
+    },
+    {
+      "id": "build-robust-20260709-mutation-testing",
+      "title": "Run mutation testing to find tests that don't actually assert",
+      "why": "High line coverage can hide tests that execute code without verifying behavior. Mutation testing injects small bugs and checks your suite catches them, exposing real gaps a coverage number will not.",
+      "benefit": "robustness",
+      "source_url": "https://stryker-mutator.io/docs/",
+      "how_to_url": "https://stryker-mutator.io/docs/",
+      "how_to_steps": [
+        "Pick the mutation runner for your stack (Stryker for JS/TS/.NET, PIT for Java, mutmut for Python, cargo-mutants for Rust).",
+        "Scope the first run to one core module so it finishes fast, since mutation testing is CPU-heavy.",
+        "Review surviving mutants and, for each, add or strengthen an assertion until it is killed instead of chasing the score.",
+        "Wire it into CI nightly (or on changed files only) against critical domain logic, not every PR."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Teams with 95-98% line coverage found ~23% of mutants survived and uncovered 12 real undetected bugs; another 98%-coverage suite still let a data-corrupting bug reach production because tests never asserted the outcome.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "corroboration": "supported",
+      "try_today": "Run the mutation runner on one core module and fix the first three surviving mutants with real assertions."
+    },
+    {
+      "id": "ship-faster-20260709-turborepo-remote-cache",
+      "title": "Turn on Turborepo remote caching in CI",
+      "why": "Remote caching shares task outputs across teammates and CI runners, so unchanged builds/tests/lints download instead of re-running, collapsing duplicated work on every PR.",
+      "benefit": "speed",
+      "source_url": "https://turborepo.dev/docs/core-concepts/remote-caching",
+      "how_to_url": "https://turborepo.dev/docs/core-concepts/remote-caching",
+      "how_to_steps": [
+        "Define cacheable tasks in turbo.json with precise `inputs` and `outputs` so content hashes are correct.",
+        "Connect a remote cache: managed via `npx turbo login` + `npx turbo link`, or a self-hosted cache endpoint with a token.",
+        "Run a build twice locally and confirm the second run reports a remote cache hit.",
+        "In CI, pass the cache token/team env vars and run `turbo run build test lint`; verify the logs show 'remote cache hit'."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Makeswift cut CI pipeline time 65% (commit-to-deploy ~20 min -> under 1 min); the Next.js team cut publish times 80%; a 6-month monorepo retrospective reported full builds down ~50% (22 -> 11 min p50) at a 94% cache hit rate.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "corroboration": "supported",
+      "try_today": "Enable remote caching on one repo and re-run a green build to confirm a remote cache hit."
+    },
+    {
+      "id": "production-patterns-20260709-ephemeral-preview-envs",
+      "title": "Give every PR an ephemeral full-stack preview environment",
+      "why": "CI is structurally blind to deployed-state, real-data-shape, third-party-drift, browser, and cross-service bugs. A per-PR deployed environment surfaces those before merge instead of in production.",
+      "benefit": "both",
+      "source_url": "https://getautonoma.com/blog/per-pr-preview-environments-when-ci-green-isnt-enough",
+      "how_to_url": "https://www.bunnyshell.com/ephemeral-environments/",
+      "how_to_steps": [
+        "Describe the full stack (app + backend services + DB + queues/caches) as code with Compose, Helm, or Terraform.",
+        "Trigger provisioning on PR open via CI, giving each PR an isolated namespace/stack and a unique HTTPS URL.",
+        "Seed or clone an isolated database per environment so branches never share state.",
+        "Auto-destroy the environment on merge/close and post the preview URL to the PR for reviewers and QA."
+      ],
+      "setup_cost": "days",
+      "evidence": "Per-PR preview environments target five bug classes CI cannot catch (deployed-state, real-data-shape, third-party integration drift, browser regressions, cross-component flows); teams report catching UI/integration bugs before merge and removing shared-staging contention.",
+      "evidence_grade": "B",
+      "lens_id": "production-patterns",
+      "corroboration": "supported",
+      "try_today": "Stand up a per-PR preview for one service and share the URL on your next PR for QA."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "lens_id": "production-patterns",
+  "items": [
+    {
+      "id": "production-patterns-20260709-ephemeral-preview-envs",
+      "title": "Give every PR an ephemeral full-stack preview environment",
+      "why": "CI is structurally blind to deployed-state, real-data-shape, third-party-drift, browser, and cross-service bugs. A per-PR deployed environment surfaces those before merge instead of in production.",
+      "benefit": "both",
+      "source_url": "https://getautonoma.com/blog/per-pr-preview-environments-when-ci-green-isnt-enough",
+      "how_to_url": "https://www.bunnyshell.com/ephemeral-environments/",
+      "how_to_steps": [
+        "Describe the full stack (app + backend services + DB + queues/caches) as code with Compose, Helm, or Terraform.",
+        "Trigger provisioning on PR open via CI, giving each PR an isolated namespace/stack and a unique HTTPS URL.",
+        "Seed or clone an isolated database per environment so branches never share state.",
+        "Auto-destroy the environment on merge/close and post the preview URL to the PR for reviewers and QA."
+      ],
+      "setup_cost": "days",
+      "evidence": "Per-PR preview environments target five bug classes CI cannot catch (deployed-state, real-data-shape, third-party integration drift, browser regressions, cross-component flows); teams report catching UI/integration bugs before merge and removing shared-staging contention.",
+      "evidence_grade": "B",
+      "lens_id": "production-patterns",
+      "corroboration": "supported",
+      "try_today": "Stand up a per-PR preview for one service and share the URL on your next PR for QA."
+    }
+  ]
+}

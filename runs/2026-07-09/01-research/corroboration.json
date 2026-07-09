@@ -1,0 +1,8 @@
+{
+  "tooling-setups-20260709-uv": "supported",
+  "ship-faster-20260709-turborepo-remote-cache": "supported",
+  "model-workflows-20260709-prompt-caching": "supported",
+  "build-robust-20260709-merge-queue-integrity": "supported",
+  "build-robust-20260709-mutation-testing": "supported",
+  "production-patterns-20260709-ephemeral-preview-envs": "supported"
+}

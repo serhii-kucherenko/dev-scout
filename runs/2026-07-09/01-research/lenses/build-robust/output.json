@@ -1,0 +1,45 @@
+{
+  "lens_id": "build-robust",
+  "items": [
+    {
+      "id": "build-robust-20260709-merge-queue-integrity",
+      "title": "Add a merge-queue integrity check so bad merges can't land silently",
+      "why": "The April 2026 GitHub merge-queue bug silently reverted already-merged work while CI stayed green, because branch protection validates the temp commit, not what actually lands on main. A tree-hash / merge-base check makes that divergence impossible to miss.",
+      "benefit": "robustness",
+      "source_url": "https://mergify.com/blog/merge-queue-is-critical-infrastructure",
+      "how_to_url": "https://trunk.io/blog/what-happens-if-a-merge-queue-builds-on-the-wrong-commit",
+      "how_to_steps": [
+        "Add a post-merge CI job that recomputes the expected tree for each landed commit and compares it to the tested PR commit's tree (modulo merge-mode normalization); fail loudly on mismatch.",
+        "Verify the merge group's base equals the current head of the target branch before the merge finalizes, and block if they diverge.",
+        "Until you trust the queue, cap merge-group size to 1 (sequential) for squash groups to avoid the multi-PR failure combination.",
+        "Keep enough audit trail (tested commit SHAs) that you can reconstruct what CI actually signed off on after the fact."
+      ],
+      "setup_cost": "hours",
+      "evidence": "The April 23, 2026 GitHub merge-queue bug silently corrupted 658 repositories and 2,092 PRs for ~4.5 hours with green CI and no status-page entry; recovery had to be done by hand.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "corroboration": "supported",
+      "try_today": "Add a post-merge job that compares the landed tree hash to the tested PR's tree and alerts on mismatch."
+    },
+    {
+      "id": "build-robust-20260709-mutation-testing",
+      "title": "Run mutation testing to find tests that don't actually assert",
+      "why": "High line coverage can hide tests that execute code without verifying behavior. Mutation testing injects small bugs and checks your suite catches them, exposing real gaps a coverage number will not.",
+      "benefit": "robustness",
+      "source_url": "https://stryker-mutator.io/docs/",
+      "how_to_url": "https://stryker-mutator.io/docs/",
+      "how_to_steps": [
+        "Pick the mutation runner for your stack (Stryker for JS/TS/.NET, PIT for Java, mutmut for Python, cargo-mutants for Rust).",
+        "Scope the first run to one core module so it finishes fast, since mutation testing is CPU-heavy.",
+        "Review surviving mutants and, for each, add or strengthen an assertion until it is killed instead of chasing the score.",
+        "Wire it into CI nightly (or on changed files only) against critical domain logic, not every PR."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Teams with 95-98% line coverage found ~23% of mutants survived and uncovered 12 real undetected bugs; another 98%-coverage suite still let a data-corrupting bug reach production because tests never asserted the outcome.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "corroboration": "supported",
+      "try_today": "Run the mutation runner on one core module and fix the first three surviving mutants with real assertions."
+    }
+  ]
+}

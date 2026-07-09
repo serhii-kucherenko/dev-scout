@@ -1,0 +1,25 @@
+{
+  "lens_id": "ship-faster",
+  "items": [
+    {
+      "id": "ship-faster-20260709-turborepo-remote-cache",
+      "title": "Turn on Turborepo remote caching in CI",
+      "why": "Remote caching shares task outputs across teammates and CI runners, so unchanged builds/tests/lints download instead of re-running, collapsing duplicated work on every PR.",
+      "benefit": "speed",
+      "source_url": "https://turborepo.dev/docs/core-concepts/remote-caching",
+      "how_to_url": "https://turborepo.dev/docs/core-concepts/remote-caching",
+      "how_to_steps": [
+        "Define cacheable tasks in turbo.json with precise `inputs` and `outputs` so content hashes are correct.",
+        "Connect a remote cache: managed via `npx turbo login` + `npx turbo link`, or a self-hosted cache endpoint with a token.",
+        "Run a build twice locally and confirm the second run reports a remote cache hit.",
+        "In CI, pass the cache token/team env vars and run `turbo run build test lint`; verify the logs show 'remote cache hit'."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Makeswift cut CI pipeline time 65% (commit-to-deploy ~20 min -> under 1 min); the Next.js team cut publish times 80%; a 6-month monorepo retrospective reported full builds down ~50% (22 -> 11 min p50) at a 94% cache hit rate.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "corroboration": "supported",
+      "try_today": "Enable remote caching on one repo and re-run a green build to confirm a remote cache hit."
+    }
+  ]
+}
