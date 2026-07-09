@@ -1,4 +1,4 @@
-To: scout@example.com
+To: DEV_SCOUT_EMAIL
 Subject: Dev Scout 2026-07-09 — 5 new ways to ship faster / build safer
 
 Dev Scout — 2026-07-09

@@ -13,7 +13,7 @@
 
 ## Delivery
 - Email draft: `06-email/email-draft.md`
-- Send result: see `06-email/send-result.json` (emailed to `DEV_SCOUT_EMAIL` when secrets are set)
+- Send result: `06-email/send-result.json` (attempted for the configured recipient; see file for status)
 
 ## Resume
 Continue in Cursor chat from the next incomplete stage.
