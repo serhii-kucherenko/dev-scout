@@ -177,7 +177,11 @@ def _previous_review_lines(previous: dict | None) -> list[str]:
         for raw in items[:5]:
             title = raw.get("title") or "Untitled"
             benefit = raw.get("benefit") or "?"
-            lines.append(f"- {title} ({benefit})")
+            source_url = raw.get("source_url") if isinstance(raw, dict) else None
+            if isinstance(source_url, str) and source_url.startswith("http"):
+                lines.append(f"- {title} ({benefit}) — {source_url}")
+            else:
+                lines.append(f"- {title} ({benefit})")
         if len(items) > 5:
             lines.append(f"- …and {len(items) - 5} more")
     lines.append("")

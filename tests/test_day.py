@@ -103,7 +103,6 @@ def test_followup_email_reviews_previous_and_skips_repeats(tmp_path, monkeypatch
     assert first.verdict.sufficient
     first_draft = read_json(runs / "2099-01-01" / "06-email" / "email-draft.json")
     assert first_draft["top_items"]
-    first_titles = {item["title"] for item in first_draft["top_items"]}
 
     second = run_day("2099-01-02", use_fixtures=True)
     assert second.verdict.sufficient
@@ -112,8 +111,8 @@ def test_followup_email_reviews_previous_and_skips_repeats(tmp_path, monkeypatch
 
     assert second_draft["previous_day"] == "2099-01-01"
     assert "Quick review of previous email (2099-01-01):" in body
-    for title in list(first_titles)[:3]:
-        assert f"- {title}" in body
+    for item in first_draft["top_items"][:3]:
+        assert f"- {item['title']} ({item['benefit']}) — {item['source_url']}" in body
     assert "No new jam today." in body
     assert "Nothing new beyond what we already covered" in body
     assert second_draft["top_items"] == []
@@ -197,7 +196,10 @@ def test_followup_email_includes_only_unseen_findings(tmp_path, monkeypatch):
 
     draft = run_compose_email(ctx)
     assert [item.title for item in draft.top_items] == ["Brand new finding"]
-    assert "Already emailed finding" in draft.body_text
+    assert (
+        "- Already emailed finding (speed) — https://example.com/already-sent"
+        in draft.body_text
+    )
     assert "Quick review of previous email (2099-01-01):" in draft.body_text
     assert "Brand new finding" in draft.body_text
     assert "https://example.com/brand-new" in draft.body_text
