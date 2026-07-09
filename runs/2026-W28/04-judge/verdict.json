@@ -1,16 +1,11 @@
 {
   "sufficient": true,
-  "promoted_count": 15,
-  "ab_count": 15,
+  "promoted_count": 6,
+  "ab_count": 6,
   "corroborated_count": 6,
-  "lenses_with_findings": 5,
+  "lenses_with_findings": 4,
   "gaps": [],
   "skipped": [
-    "Model routing cost latency benchmark 2026: missing link, steps, or grade",
-    "Model routing cost latency benchmark 2026: missing link, steps, or grade",
-    "Model routing cost latency benchmark 2026: missing link, steps, or grade",
-    "Model routing cost latency benchmark 2026: missing link, steps, or grade",
-    "Model routing cost latency benchmark 2026: missing link, steps, or grade",
-    "HN discussion corroborates agent loops: missing link, steps, or grade"
+    "ship-faster lens: did not promote any item without a recent primary source publishing strong speed evidence"
   ]
 }

@@ -1,14 +1,15 @@
 {
-  "urls_planned": 17,
-  "urls_fetched": 0,
-  "urls_extracted": 8,
+  "urls_planned": 14,
+  "urls_fetched": 14,
+  "urls_extracted": 16,
   "lenses_run": 5,
-  "lenses_with_findings": 5,
+  "lenses_with_findings": 4,
   "grade_distribution": {
-    "A": 3,
-    "C": 1,
-    "B": 3,
-    "D": 1
+    "A": 6
   },
-  "corroboration_rate": 0.875
+  "corroboration_rate": 1.0,
+  "notes": [
+    "Promoted items came from official docs, repos, or changelog pages with concrete setup steps.",
+    "The ship-faster lens was intentionally left empty rather than promoting weak benchmark claims."
+  ]
 }

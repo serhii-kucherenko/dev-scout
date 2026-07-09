@@ -1,5 +1,10 @@
 {
   "week": "2026-W28",
   "sufficient": true,
-  "email_subject": "Dev Scout 2026-W28 — 5 ways to ship faster / build safer"
+  "email_subject": "Dev Scout 2026-W28 - 5 source-backed ways to ship faster and safer",
+  "top_artifacts": [
+    "runs/2026-W28/05-report/weekly-digest.md",
+    "runs/2026-W28/06-email/email-draft.md",
+    "runs/2026-W28/04-judge/verdict.json"
+  ]
 }

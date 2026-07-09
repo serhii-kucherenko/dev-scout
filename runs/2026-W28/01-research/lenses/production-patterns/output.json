@@ -2,24 +2,24 @@
   "lens_id": "production-patterns",
   "items": [
     {
-      "id": "production-patterns-6",
-      "title": "LangGraph production deploy patterns",
-      "why": "What deploy, observability, or rollback patterns shipped from real teams?",
+      "id": "production-patterns-101",
+      "title": "AI Gateway model fallbacks without app-side retry code",
+      "why": "AI Gateway can fail over across both providers and backup models, so you can survive outages or model incompatibilities without building custom retry orchestration in your app.",
       "benefit": "robustness",
-      "source_url": "https://github.com/langchain-ai/langgraph",
-      "how_to_url": "https://github.com/langchain-ai/langgraph",
+      "source_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
       "how_to_steps": [
-        "Open the source: https://github.com/langchain-ai/langgraph",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Keep your preferred model in `model`, then add a `providerOptions.gateway.models` array for the fallback order you actually want in production.",
+        "Add `order` when you also care which provider is tried first for each model, such as Azure before OpenAI or Vertex before Anthropic.",
+        "Log the returned `modelAttempts` and `providerAttempts` metadata so you can see which provider or backup model handled failures.",
+        "Test one forced-failure path before rollout so you know the fallback model still meets your latency and quality floor."
       ],
-      "setup_cost": "hours",
-      "evidence": "named production outcome",
-      "evidence_grade": "B",
+      "setup_cost": "minutes",
+      "evidence": "The fallback docs show ordered retries across primary and backup models and providers; Vercel's architecture post describes automatic rerouting and retries when a provider slows down or fails.",
+      "evidence_grade": "A",
       "lens_id": "production-patterns",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/langchain-ai/langgraph"
+      "corroboration": "supported",
+      "try_monday": "Add one cheaper or more available backup model to a non-critical route and capture `modelAttempts` in logs."
     }
   ]
 }

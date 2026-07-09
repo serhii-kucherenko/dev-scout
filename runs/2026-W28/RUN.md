@@ -1,16 +1,23 @@
 # Run 2026-W28
 
 ## Research
-- URLs planned: 17
-- URLs fetched: 0
-- Excerpts: 8
-- Lenses with findings: 5
-- Corroboration rate: 0.875
+- URLs planned: 14
+- URLs fetched: 14
+- Excerpts: 16
+- Lenses with findings: 4
+- Corroboration rate: 1.0
 
 ## Judge
 - Sufficient: True
-- Promoted jam: 15
+- Promoted jam: 6
+
+## Notes
+- Rebuilt the week from primary docs and real corroboration after discarding a placeholder-heavy draft.
+- Kept the ship-faster lens empty instead of stretching weak benchmark claims into jam.
 
 ## Resume
-Research: `dev-scout discover|collect|lens|corroborate|coverage`
-Output (after judge pass): `dev-scout report|compose-email|send`
+Complete.
+
+Outputs:
+- Digest: `runs/2026-W28/05-report/weekly-digest.md`
+- Email draft: `runs/2026-W28/06-email/email-draft.md`

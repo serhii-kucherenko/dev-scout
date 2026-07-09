@@ -2,24 +2,24 @@
   "lens_id": "build-robust",
   "items": [
     {
-      "id": "build-robust-3",
-      "title": "Eval harness for LLM regressions",
-      "why": "What testing, eval harnesses, or guardrails reduced bugs or outage risk?",
+      "id": "build-robust-101",
+      "title": "OpenAI Evals meta-evals plus PR gating",
+      "why": "The useful part of Evals is not just running a dataset once - it is adding labeled meta-evals and a pull-request gate so regressions are caught before merge.",
       "benefit": "robustness",
-      "source_url": "https://github.com/openai/evals",
-      "how_to_url": "https://github.com/openai/evals",
+      "source_url": "https://github.com/openai/evals/blob/main/docs/build-eval.md",
+      "how_to_url": "https://github.com/openai/evals/blob/main/docs/build-eval.md",
       "how_to_steps": [
-        "Open the source: https://github.com/openai/evals",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Put your dataset in `evals/registry/data/<eval_name>/samples.jsonl` and register it in `evals/registry/evals/<eval_name>.yaml`.",
+        "Run `oaieval <model> <eval_name>` locally to make sure the task and rubric behave the way you expect.",
+        "For model-graded evals, add labeled choice data and a meta-eval so the reported `metascore/` accuracy is close to `1.0` before you trust the grader.",
+        "Copy the repository's PR workflow pattern so new eval YAMLs automatically run a lightweight `oaieval ... --max_samples 10` check in CI."
       ],
       "setup_cost": "hours",
-      "evidence": "fewer bugs, caught regressions, or eval score",
+      "evidence": "The build guide explicitly recommends meta-evals and says good model-graded evals should report `metascore/` accuracy close to `1.0`; the repo workflow automatically runs new eval YAMLs on pull requests.",
       "evidence_grade": "A",
       "lens_id": "build-robust",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/openai/evals"
+      "corroboration": "supported",
+      "try_monday": "Take one fragile prompt workflow and turn it into a 20-25 sample eval with a meta-eval before the next model or prompt change."
     }
   ]
 }

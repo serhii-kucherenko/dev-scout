@@ -1,165 +1,130 @@
 {
   "week": "2026-W28",
+  "summary": [
+    "This dossier replaces the earlier placeholder-heavy week with primary-source-backed items from MCP, Anthropic, OpenAI, and Vercel.",
+    "Every promoted item now includes a real source URL, concrete setup steps, and corroboration.",
+    "The ship-faster lens was left empty on purpose because the strongest recent sources explained workflows but did not publish strong enough speed benchmarks."
+  ],
   "items": [
     {
-      "id": "build-robust-3",
-      "title": "Eval harness for LLM regressions",
-      "why": "What testing, eval harnesses, or guardrails reduced bugs or outage risk?",
+      "id": "build-robust-101",
+      "title": "OpenAI Evals meta-evals plus PR gating",
+      "why": "The useful part of Evals is not just running a dataset once - it is adding labeled meta-evals and a pull-request gate so regressions are caught before merge.",
       "benefit": "robustness",
-      "source_url": "https://github.com/openai/evals",
-      "how_to_url": "https://github.com/openai/evals",
+      "source_url": "https://github.com/openai/evals/blob/main/docs/build-eval.md",
+      "how_to_url": "https://github.com/openai/evals/blob/main/docs/build-eval.md",
       "how_to_steps": [
-        "Open the source: https://github.com/openai/evals",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Put your dataset in `evals/registry/data/<eval_name>/samples.jsonl` and register it in `evals/registry/evals/<eval_name>.yaml`.",
+        "Run `oaieval <model> <eval_name>` locally to make sure the task and rubric behave the way you expect.",
+        "For model-graded evals, add labeled choice data and a meta-eval so the reported `metascore/` accuracy is close to `1.0` before you trust the grader.",
+        "Copy the repository's PR workflow pattern so new eval YAMLs automatically run a lightweight `oaieval ... --max_samples 10` check in CI."
       ],
       "setup_cost": "hours",
-      "evidence": "fewer bugs, caught regressions, or eval score",
+      "evidence": "The build guide explicitly recommends meta-evals and says good model-graded evals should report `metascore/` accuracy close to `1.0`; the repo workflow automatically runs new eval YAMLs on pull requests.",
       "evidence_grade": "A",
       "lens_id": "build-robust",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/openai/evals"
+      "corroboration": "supported",
+      "try_monday": "Take one fragile prompt workflow and turn it into a 20-25 sample eval with a meta-eval before the next model or prompt change."
     },
     {
-      "id": "model-workflows-7",
-      "title": "Model routing cost latency benchmark 2026",
-      "why": "What model routing or cost/latency choices improve dev workflows?",
+      "id": "model-workflows-101",
+      "title": "AI Gateway provider sorting by cost, TTFT, or TPS",
+      "why": "When the same model is available from multiple providers, you can route for the cheapest, fastest-first-token, or highest-throughput option without changing application code.",
       "benefit": "speed",
-      "source_url": "https://example.com/dev-scout/model-workflows/7",
-      "how_to_url": null,
+      "source_url": "https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering",
       "how_to_steps": [
-        "Open the source: search://model-workflows/coding model cost latency benchmark 2026",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Call the AI SDK or OpenAI-compatible API through AI Gateway rather than pinning your app to one provider endpoint.",
+        "Set `providerOptions.gateway.sort` to `cost`, `ttft`, or `tps` based on whether you want cheaper dev runs, faster interactive latency, or better long-output throughput.",
+        "Combine `sort` with `only` or `order` when you need to restrict routing to approved providers or promote a preferred vendor.",
+        "Inspect `providerMetadata.gateway.routing.sort` on responses so you can see the exact execution order, metrics, and any deprioritized providers."
       ],
-      "setup_cost": "hours",
-      "evidence": "pricing, eval, or latency numbers",
-      "evidence_grade": "C",
-      "lens_id": "model-workflows",
-      "corroboration": "weak",
-      "try_monday": "Open the source: search://model-workflows/coding model cost latency benchmark 2026"
-    },
-    {
-      "id": "production-patterns-6",
-      "title": "LangGraph production deploy patterns",
-      "why": "What deploy, observability, or rollback patterns shipped from real teams?",
-      "benefit": "robustness",
-      "source_url": "https://github.com/langchain-ai/langgraph",
-      "how_to_url": "https://github.com/langchain-ai/langgraph",
-      "how_to_steps": [
-        "Open the source: https://github.com/langchain-ai/langgraph",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
-      ],
-      "setup_cost": "hours",
-      "evidence": "named production outcome",
-      "evidence_grade": "B",
-      "lens_id": "production-patterns",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/langchain-ai/langgraph"
-    },
-    {
-      "id": "ship-faster-1",
-      "title": "Ralph loop agent harness",
-      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
-      "benefit": "speed",
-      "source_url": "https://github.com/vercel-labs/ralph-loop-agent",
-      "how_to_url": "https://github.com/vercel-labs/ralph-loop-agent",
-      "how_to_steps": [
-        "Open the source: https://github.com/vercel-labs/ralph-loop-agent",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
-      ],
-      "setup_cost": "hours",
-      "evidence": "time saved, PR velocity, or benchmark",
+      "setup_cost": "minutes",
+      "evidence": "The docs expose explicit sort controls for cost, median TTFT, and TPS, while the changelog explains that ranking updates at request time as provider prices and latency shift.",
       "evidence_grade": "A",
-      "lens_id": "ship-faster",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
+      "lens_id": "model-workflows",
+      "corroboration": "supported",
+      "try_monday": "Route one interactive coding assistant endpoint by `ttft` for a day and compare perceived responsiveness against your current default."
     },
     {
-      "id": "ship-faster-4",
-      "title": "Cursor agent workflow docs",
-      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
-      "benefit": "speed",
-      "source_url": "https://docs.cursor.com/agent",
-      "how_to_url": null,
+      "id": "production-patterns-101",
+      "title": "AI Gateway model fallbacks without app-side retry code",
+      "why": "AI Gateway can fail over across both providers and backup models, so you can survive outages or model incompatibilities without building custom retry orchestration in your app.",
+      "benefit": "robustness",
+      "source_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
       "how_to_steps": [
-        "Open the source: https://docs.cursor.com/agent",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Keep your preferred model in `model`, then add a `providerOptions.gateway.models` array for the fallback order you actually want in production.",
+        "Add `order` when you also care which provider is tried first for each model, such as Azure before OpenAI or Vertex before Anthropic.",
+        "Log the returned `modelAttempts` and `providerAttempts` metadata so you can see which provider or backup model handled failures.",
+        "Test one forced-failure path before rollout so you know the fallback model still meets your latency and quality floor."
       ],
-      "setup_cost": "hours",
-      "evidence": "time saved, PR velocity, or benchmark",
-      "evidence_grade": "B",
-      "lens_id": "ship-faster",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://docs.cursor.com/agent"
+      "setup_cost": "minutes",
+      "evidence": "The fallback docs show ordered retries across primary and backup models and providers; Vercel's architecture post describes automatic rerouting and retries when a provider slows down or fails.",
+      "evidence_grade": "A",
+      "lens_id": "production-patterns",
+      "corroboration": "supported",
+      "try_monday": "Add one cheaper or more available backup model to a non-critical route and capture `modelAttempts` in logs."
     },
     {
-      "id": "ship-faster-8",
-      "title": "HN discussion corroborates agent loops",
-      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
-      "benefit": "speed",
-      "source_url": "https://news.ycombinator.com/item?id=agent-corroboration",
-      "how_to_url": null,
+      "id": "tooling-setups-102",
+      "title": "Scheduled Claude Code workflows with repo-scoped subagents",
+      "why": "Claude Code's GitHub Action now supports comment-triggered and scheduled automation, while still following `CLAUDE.md` and custom agents in the repo.",
+      "benefit": "both",
+      "source_url": "https://docs.anthropic.com/en/docs/claude-code/github-actions",
+      "how_to_url": "https://docs.anthropic.com/en/docs/claude-code/github-actions",
       "how_to_steps": [
-        "Open the source: https://news.ycombinator.com/item?id=agent-corroboration",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Run `/install-github-app` for the fast path or manually install the Claude GitHub App, add `ANTHROPIC_API_KEY`, and copy a workflow into `.github/workflows/`.",
+        "Start with `anthropics/claude-code-action@v1` and use `prompt` for the task you want automated.",
+        "Move project rules into `CLAUDE.md` so the action follows the same standards your local sessions use.",
+        "For scheduled or specialized jobs, store a custom agent in `.claude/agents/` and pass `claude_args: --agent <name>` or call it explicitly from the workflow prompt."
       ],
-      "setup_cost": "hours",
-      "evidence": "time saved, PR velocity, or benchmark",
-      "evidence_grade": "D",
-      "lens_id": "ship-faster",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://news.ycombinator.com/item?id=agent-corroboration"
+      "setup_cost": "minutes",
+      "evidence": "Official docs provide quick setup, manual install, cron examples, and v1 workflow syntax; the GitHub discussion shows the `--agent` pattern for scheduled custom subagents.",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "corroboration": "supported",
+      "try_monday": "Schedule one daily maintenance workflow that reads a repo-scoped agent and summarizes stale issues or flaky tests."
     },
     {
-      "id": "tooling-setups-2",
-      "title": "MCP servers for IDE workflows",
-      "why": "What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?",
+      "id": "tooling-setups-101",
+      "title": "Roots-aware MCP filesystem server pattern",
+      "why": "The reference MCP servers now give you a copyable pattern for safe local tool access: explicit allowed directories, runtime roots updates, and client configs for Claude Desktop or VS Code.",
       "benefit": "both",
       "source_url": "https://github.com/modelcontextprotocol/servers",
-      "how_to_url": "https://github.com/modelcontextprotocol/servers",
+      "how_to_url": "https://github.com/modelcontextprotocol/servers/blob/main/src/filesystem/README.md",
       "how_to_steps": [
-        "Open the source: https://github.com/modelcontextprotocol/servers",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Start with the reference server registry, then choose the filesystem server when you need tightly scoped file access instead of a broad shell integration.",
+        "Configure the server in your MCP client with `npx -y @modelcontextprotocol/server-filesystem` or Docker and pass only the directories the agent should touch.",
+        "Prefer clients that support Roots so the allowed directories can update at runtime instead of hardcoding every path up front.",
+        "If the server fails under NVM or similar PATH managers, switch to an absolute `node` or `npx` path or a wrapper script before debugging higher-level agent behavior."
       ],
-      "setup_cost": "hours",
-      "evidence": "repo or docs with setup steps",
+      "setup_cost": "minutes",
+      "evidence": "Primary docs include concrete `npx`, Docker, VS Code, and Claude Desktop configs plus Roots-based runtime directory updates; the repo is the official MCP reference server collection.",
       "evidence_grade": "A",
       "lens_id": "tooling-setups",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/modelcontextprotocol/servers"
+      "corroboration": "supported",
+      "try_monday": "Add one filesystem MCP server to a sandbox repo and restrict it to a single project folder before expanding access."
     },
     {
-      "id": "tooling-setups-5",
-      "title": "Claude Code CLI setup",
-      "why": "What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?",
+      "id": "tooling-setups-103",
+      "title": "Codex CLI review-before-push workflow",
+      "why": "Codex now bundles install, local agent mode, a separate review agent, subagents, MCP, and cloud tasks into one terminal workflow instead of separate tools.",
       "benefit": "both",
-      "source_url": "https://github.com/anthropics/claude-code",
-      "how_to_url": "https://github.com/anthropics/claude-code",
+      "source_url": "https://developers.openai.com/codex/cli",
+      "how_to_url": "https://developers.openai.com/codex/quickstart",
       "how_to_steps": [
-        "Open the source: https://github.com/anthropics/claude-code",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Install Codex with the standalone installer, npm, or Homebrew and run `codex` in the project you want it to work in.",
+        "Sign in, point Codex at the repo, and keep Git checkpoints before and after each task so you can revert cleanly.",
+        "Use the built-in local code review pass before you commit or push, rather than treating generation and review as the same step.",
+        "Add subagents, MCP servers, or Codex Cloud tasks only after the core local workflow is stable, so you do not debug orchestration and base setup at the same time."
       ],
-      "setup_cost": "hours",
-      "evidence": "repo or docs with setup steps",
-      "evidence_grade": "B",
+      "setup_cost": "minutes",
+      "evidence": "OpenAI describes the CLI as open source and built in Rust for speed and efficiency, and documents separate review, subagents, MCP, and cloud-task flows in the same tool.",
+      "evidence_grade": "A",
       "lens_id": "tooling-setups",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/anthropics/claude-code"
+      "corroboration": "supported",
+      "try_monday": "Adopt a simple rule for one repo: every Codex-generated diff gets a separate Codex review pass before push."
     }
   ]
 }

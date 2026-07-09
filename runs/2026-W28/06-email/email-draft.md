@@ -1,60 +1,65 @@
-Dev Scout — 2026-W28
+To: kucherenko.web@gmail.com
+Subject: Dev Scout 2026-W28 - 5 source-backed ways to ship faster and safer
 
-This week: practical ways to ship faster and build safer.
+Hi Serhii,
 
-1. MCP servers for IDE workflows (both)
-   Why: What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?
+I rebuilt this week's Dev Scout run from primary docs and real corroboration after discarding a thinner placeholder draft. Top takeaways:
+
+1. OpenAI Evals meta-evals plus PR gating (robustness)
+   Source: https://github.com/openai/evals/blob/main/docs/build-eval.md
+   Why it matters: This is the cleanest path from "we should add evals someday" to "model or prompt regressions stop merging silently."
+   Steps:
+     1. Put your dataset in `evals/registry/data/<eval_name>/samples.jsonl`.
+     2. Register it in `evals/registry/evals/<eval_name>.yaml`.
+     3. Add a meta-eval until `metascore/` is close to `1.0`.
+     4. Gate new eval YAMLs in CI with a lightweight `oaieval` run.
+   Try Monday: Turn one fragile prompt workflow into a 20-25 sample eval before the next prompt or model tweak.
+
+2. AI Gateway provider sorting by cost, TTFT, or TPS (speed)
+   Source: https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering
+   Why it matters: You can optimize for cost or latency without rewriting app code every time provider performance shifts.
+   Steps:
+     1. Route one endpoint through AI Gateway.
+     2. Set `providerOptions.gateway.sort` to `cost`, `ttft`, or `tps`.
+     3. Add `only` or `order` if you have vendor constraints.
+     4. Inspect routing metadata to see what actually ran.
+   Try Monday: Switch one interactive coding endpoint to `ttft` sorting and compare perceived responsiveness.
+
+3. AI Gateway model fallbacks without app-side retry code (robustness)
+   Source: https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks
+   Why it matters: Backup models and providers can be declared once in the gateway instead of hand-coded in every app path.
+   Steps:
+     1. Keep your preferred model in `model`.
+     2. Add backup entries in `providerOptions.gateway.models`.
+     3. Add `order` if provider preference matters.
+     4. Log `modelAttempts` and `providerAttempts`.
+   Try Monday: Add one backup model to a non-critical route and capture fallback metadata in logs.
+
+4. Scheduled Claude Code workflows with repo-scoped subagents (both)
+   Source: https://docs.anthropic.com/en/docs/claude-code/github-actions
+   Why it matters: Repo-native automation is now straightforward enough to use for daily maintenance jobs instead of a one-off bot project.
+   Steps:
+     1. Run `/install-github-app` or manually install the Claude GitHub App.
+     2. Add `ANTHROPIC_API_KEY` and a workflow file.
+     3. Put project rules in `CLAUDE.md`.
+     4. Invoke a custom repo agent via `claude_args: --agent <name>`.
+   Try Monday: Schedule one daily maintenance workflow with a dedicated subagent.
+
+5. Roots-aware MCP filesystem server pattern (both)
    Source: https://github.com/modelcontextprotocol/servers
-   How-to: https://github.com/modelcontextprotocol/servers
+   Why it matters: This is one of the clearest "safe agent access" patterns I found this week: explicit directories, live roots updates, and easy client configs.
    Steps:
-     1. Open the source: https://github.com/modelcontextprotocol/servers
-     2. Skim for prerequisites and install commands
-     3. Apply the workflow on a small branch before team rollout
-     4. Measure cycle time or defect rate for one week
-   Try Monday: Open the source: https://github.com/modelcontextprotocol/servers
+     1. Choose the filesystem server for scoped file access.
+     2. Register it in Claude Desktop or VS Code with only the directories you want exposed.
+     3. Prefer Roots-capable clients for live path updates.
+     4. If NVM breaks startup, switch to absolute `node` or `npx` paths.
+   Try Monday: Add a filesystem MCP server to one sandbox repo and keep it pinned to a single folder first.
 
-2. Claude Code CLI setup (both)
-   Why: What MCP servers, IDE configs, or CLI workflows have reproducible setup guides?
-   Source: https://github.com/anthropics/claude-code
-   How-to: https://github.com/anthropics/claude-code
-   Steps:
-     1. Open the source: https://github.com/anthropics/claude-code
-     2. Skim for prerequisites and install commands
-     3. Apply the workflow on a small branch before team rollout
-     4. Measure cycle time or defect rate for one week
-   Try Monday: Open the source: https://github.com/anthropics/claude-code
+Bonus:
+- Codex CLI now has a credible review-before-push loop built in: https://developers.openai.com/codex/cli
 
-3. Eval harness for LLM regressions (robustness)
-   Why: What testing, eval harnesses, or guardrails reduced bugs or outage risk?
-   Source: https://github.com/openai/evals
-   How-to: https://github.com/openai/evals
-   Steps:
-     1. Open the source: https://github.com/openai/evals
-     2. Skim for prerequisites and install commands
-     3. Apply the workflow on a small branch before team rollout
-     4. Measure cycle time or defect rate for one week
-   Try Monday: Open the source: https://github.com/openai/evals
+Full digest:
+- runs/2026-W28/05-report/weekly-digest.md
 
-4. Ralph loop agent harness (speed)
-   Why: What agent loops, codegen, or review automation shipped with measured speed gains?
-   Source: https://github.com/vercel-labs/ralph-loop-agent
-   How-to: https://github.com/vercel-labs/ralph-loop-agent
-   Steps:
-     1. Open the source: https://github.com/vercel-labs/ralph-loop-agent
-     2. Skim for prerequisites and install commands
-     3. Apply the workflow on a small branch before team rollout
-     4. Measure cycle time or defect rate for one week
-   Try Monday: Open the source: https://github.com/vercel-labs/ralph-loop-agent
-
-5. LangGraph production deploy patterns (robustness)
-   Why: What deploy, observability, or rollback patterns shipped from real teams?
-   Source: https://github.com/langchain-ai/langgraph
-   How-to: https://github.com/langchain-ai/langgraph
-   Steps:
-     1. Open the source: https://github.com/langchain-ai/langgraph
-     2. Skim for prerequisites and install commands
-     3. Apply the workflow on a small branch before team rollout
-     4. Measure cycle time or defect rate for one week
-   Try Monday: Open the source: https://github.com/langchain-ai/langgraph
-
-More in the full digest: runs/2026-W28/05-report/weekly-digest.md
+Email draft path:
+- runs/2026-W28/06-email/email-draft.md

@@ -1,7 +1,18 @@
 {
   "week": "2026-W28",
-  "prior_week": "2026-W28",
-  "new_count": 0,
+  "previous_week": null,
+  "new_count": 6,
   "promoted_count": 6,
-  "new_item_ids": []
+  "new_item_ids": [
+    "build-robust-101",
+    "model-workflows-101",
+    "production-patterns-101",
+    "tooling-setups-102",
+    "tooling-setups-101",
+    "tooling-setups-103"
+  ],
+  "notes": [
+    "Replaced a placeholder-heavy run with six source-backed findings.",
+    "Kept the ship-faster lens empty rather than promoting weak benchmark claims."
+  ]
 }

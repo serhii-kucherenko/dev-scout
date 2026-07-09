@@ -2,24 +2,24 @@
   "lens_id": "model-workflows",
   "items": [
     {
-      "id": "model-workflows-7",
-      "title": "Model routing cost latency benchmark 2026",
-      "why": "What model routing or cost/latency choices improve dev workflows?",
+      "id": "model-workflows-101",
+      "title": "AI Gateway provider sorting by cost, TTFT, or TPS",
+      "why": "When the same model is available from multiple providers, you can route for the cheapest, fastest-first-token, or highest-throughput option without changing application code.",
       "benefit": "speed",
-      "source_url": "https://example.com/dev-scout/model-workflows/7",
-      "how_to_url": null,
+      "source_url": "https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering",
       "how_to_steps": [
-        "Open the source: search://model-workflows/coding model cost latency benchmark 2026",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Call the AI SDK or OpenAI-compatible API through AI Gateway rather than pinning your app to one provider endpoint.",
+        "Set `providerOptions.gateway.sort` to `cost`, `ttft`, or `tps` based on whether you want cheaper dev runs, faster interactive latency, or better long-output throughput.",
+        "Combine `sort` with `only` or `order` when you need to restrict routing to approved providers or promote a preferred vendor.",
+        "Inspect `providerMetadata.gateway.routing.sort` on responses so you can see the exact execution order, metrics, and any deprioritized providers."
       ],
-      "setup_cost": "hours",
-      "evidence": "pricing, eval, or latency numbers",
-      "evidence_grade": "C",
+      "setup_cost": "minutes",
+      "evidence": "The docs expose explicit sort controls for cost, median TTFT, and TPS, while the changelog explains that ranking updates at request time as provider prices and latency shift.",
+      "evidence_grade": "A",
       "lens_id": "model-workflows",
-      "corroboration": "weak",
-      "try_monday": "Open the source: search://model-workflows/coding model cost latency benchmark 2026"
+      "corroboration": "supported",
+      "try_monday": "Route one interactive coding assistant endpoint by `ttft` for a day and compare perceived responsiveness against your current default."
     }
   ]
 }

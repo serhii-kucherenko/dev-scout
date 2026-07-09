@@ -1,98 +1,90 @@
 {
   "week": "2026-W28",
-  "planned": 17,
+  "planned": 14,
   "entries": [
     {
-      "url": "https://github.com/vercel-labs/ralph-loop-agent",
-      "tier": "primary",
-      "lens_id": "ship-faster",
-      "reason": "fixture"
-    },
-    {
       "url": "https://github.com/modelcontextprotocol/servers",
       "tier": "primary",
       "lens_id": "tooling-setups",
-      "reason": "fixture"
+      "reason": "official reference MCP server collection with client configuration examples"
     },
     {
-      "url": "https://github.com/openai/evals",
+      "url": "https://github.com/modelcontextprotocol/servers/blob/main/src/filesystem/README.md",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "safe filesystem pattern with allowed directories and Roots updates"
+    },
+    {
+      "url": "https://github.com/modelcontextprotocol/servers/issues/64",
+      "tier": "discussion",
+      "lens_id": "tooling-setups",
+      "reason": "real-world npx and NVM startup gotchas for MCP servers"
+    },
+    {
+      "url": "https://news.ycombinator.com/item?id=47380270",
+      "tier": "discussion",
+      "lens_id": "tooling-setups",
+      "reason": "corroborating discussion on MCP as a security and policy boundary"
+    },
+    {
+      "url": "https://docs.anthropic.com/en/docs/claude-code/github-actions",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "official GitHub Actions automation path for Claude Code"
+    },
+    {
+      "url": "https://github.com/anthropics/claude-code-action/discussions/576",
+      "tier": "secondary",
+      "lens_id": "tooling-setups",
+      "reason": "custom subagent invocation pattern for scheduled workflows"
+    },
+    {
+      "url": "https://developers.openai.com/codex/quickstart",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "official install and first-task workflow for Codex"
+    },
+    {
+      "url": "https://developers.openai.com/codex/cli",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "review, subagents, MCP, and cloud-task workflow in one CLI"
+    },
+    {
+      "url": "https://github.com/openai/evals/blob/main/docs/build-eval.md",
       "tier": "primary",
       "lens_id": "build-robust",
-      "reason": "fixture"
+      "reason": "official build workflow for evals and meta-evals"
     },
     {
-      "url": "https://docs.cursor.com/agent",
+      "url": "https://github.com/openai/evals/blob/main/.github/workflows/test_eval.yaml",
       "tier": "primary",
-      "lens_id": "ship-faster",
-      "reason": "fixture"
+      "lens_id": "build-robust",
+      "reason": "pull-request gate pattern that runs new eval YAMLs automatically"
     },
     {
-      "url": "https://github.com/anthropics/claude-code",
+      "url": "https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering",
       "tier": "primary",
-      "lens_id": "tooling-setups",
-      "reason": "fixture"
+      "lens_id": "model-workflows",
+      "reason": "provider sorting, filtering, and routing metadata for model choice"
     },
     {
-      "url": "https://github.com/langchain-ai/langgraph",
-      "tier": "primary",
-      "lens_id": "production-patterns",
-      "reason": "fixture"
-    },
-    {
-      "url": "search://model-workflows/coding model cost latency benchmark 2026",
+      "url": "https://vercel.com/changelog/sort-providers-by-cost-latency-or-throughput-on-ai-gateway",
       "tier": "secondary",
       "lens_id": "model-workflows",
-      "reason": "fixture"
+      "reason": "practical routing use cases for cost, TTFT, and TPS sorting"
     },
     {
-      "url": "https://github.com/openai/evals",
-      "tier": "secondary",
-      "reason": "prior_jam"
+      "url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "cross-provider and cross-model failover recipe"
     },
     {
-      "url": "https://github.com/vercel-labs/ralph-loop-agent",
+      "url": "https://vercel.com/blog/how-ai-gateway-runs-on-fluid-compute",
       "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/openai/evals",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/vercel-labs/ralph-loop-agent",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/modelcontextprotocol/servers",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/langchain-ai/langgraph",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://docs.cursor.com/agent",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/langchain-ai/langgraph",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://docs.cursor.com/agent",
-      "tier": "secondary",
-      "reason": "prior_jam"
-    },
-    {
-      "url": "https://github.com/anthropics/claude-code",
-      "tier": "secondary",
-      "reason": "prior_jam"
+      "lens_id": "production-patterns",
+      "reason": "architecture write-up covering rerouting, retries, and reliability behavior"
     }
   ]
 }
