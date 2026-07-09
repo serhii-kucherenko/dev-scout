@@ -1,6 +1,7 @@
-recipient: kucherenko.web@gmail.com
+recipient: ""  # set via DEV_SCOUT_EMAIL (preferred) or DELIVERY_TO
 mode: draft
 subject_template: "Dev Scout {day} — {top_count} ways to ship faster / build safer"
 
 # Email drafts are written to runs/YYYY-MM-DD/06-email/ as .md, .json, and .eml files.
-# No send integration is required for the daily loop. No API keys required.
+# Set DEV_SCOUT_EMAIL in GitHub Actions secrets/vars (or local .env) for the To: address.
+# No send API keys required for draft mode.

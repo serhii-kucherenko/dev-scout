@@ -8,7 +8,7 @@ from rich.console import Console
 from rich.table import Table
 
 from dev_scout.context import RunContext
-from dev_scout.compose.email import run_compose_email
+from dev_scout.compose.email import resolve_recipient, run_compose_email
 from dev_scout.delivery.send import run_send
 from dev_scout.judge.engine import run_judge
 from dev_scout.models.jam import current_run_day
@@ -44,6 +44,7 @@ def doctor() -> None:
         "config": (config_dir() / "judge.yaml").exists(),
         "lenses": len(list((config_dir() / "lenses").glob("*.yaml"))),
         "delivery_mode": load_yaml(config_dir() / "delivery.yaml").get("mode", "draft"),
+        "delivery_to": resolve_recipient() or "(unset — set DEV_SCOUT_EMAIL)",
     }
     table = Table(title="Dev Scout Doctor")
     table.add_column("Check")

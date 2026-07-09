@@ -1,8 +1,20 @@
 from __future__ import annotations
 
+import os
+
 from dev_scout.context import RunContext
 from dev_scout.models.jam import EmailDraft, JamItem
 from dev_scout.util import config_dir, load_yaml, read_json, write_json
+
+
+def resolve_recipient(delivery: dict | None = None) -> str:
+    """Recipient for email drafts. Prefer env (GitHub Actions / local .env)."""
+    for key in ("DEV_SCOUT_EMAIL", "DELIVERY_TO"):
+        value = os.environ.get(key, "").strip()
+        if value:
+            return value
+    cfg = delivery if delivery is not None else load_yaml(config_dir() / "delivery.yaml")
+    return str(cfg.get("recipient") or "").strip()
 
 
 def _render_markdown_draft(draft: EmailDraft) -> str:
@@ -72,7 +84,7 @@ def run_compose_email(ctx: RunContext) -> EmailDraft:
     body_text = "\n".join(lines)
     draft = EmailDraft(
         subject=subject,
-        to=delivery.get("recipient", ""),
+        to=resolve_recipient(delivery),
         body_text=body_text,
         top_items=top_items,
     )

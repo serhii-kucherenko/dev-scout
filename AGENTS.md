@@ -33,7 +33,7 @@ intake → discover → collect → lenses → corroborate → coverage → judg
 | **Corroborate** | Find second sources; write `01-research/corroboration.json` |
 | **Coverage** | Write `01-research/coverage.json` |
 | **Judge** | Apply `config/judge.yaml`; write `04-judge/verdict.json` |
-| **Output** | Write `03-rank/ranked.json`, `05-report/daily-digest.md`, `06-email/email-draft.md` |
+| **Output** | Write `03-rank/ranked.json`, `05-report/daily-digest.md`, `06-email/email-draft.md` (To: from `DEV_SCOUT_EMAIL`) |
 | **Learn** | Update `data/findings.json`, write `07-learning/delta-vs-last-day.json` |
 
 Update `RUN.md` after every stage.

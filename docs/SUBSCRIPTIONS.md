@@ -1,6 +1,8 @@
 # Subscriptions only — no API keys
 
-Dev Scout is designed to run entirely through **what you already pay for**. No `.env` file. No OpenAI, Anthropic, Exa, or Resend keys.
+Dev Scout is designed to run entirely through **what you already pay for**. No OpenAI, Anthropic, Exa, or Resend keys.
+
+Optional: set `DEV_SCOUT_EMAIL` (GitHub Actions variable/secret or local `.env`) so email drafts are addressed to you.
 
 ## What you use
 
@@ -17,7 +19,7 @@ Dev Scout is designed to run entirely through **what you already pay for**. No `
 - Anthropic API key
 - Google/Gemini API key
 - Exa / Brave search API keys
-- Resend or SMTP (email is a **markdown draft** in the repo — copy from `runs/…/06-email/email-draft.md`)
+- Resend or SMTP for the chat loop (email is a **draft** in the repo — `runs/…/06-email/email-draft.md` / `.eml`, addressed via `DEV_SCOUT_EMAIL`)
 
 ## If an agent asks for API keys
 
@@ -32,4 +34,4 @@ pip install -e ".[dev]"
 pytest
 ```
 
-No secrets file. No `cp .env.example`.
+Only optional env for delivery address: `DEV_SCOUT_EMAIL` (see `.env.example` and [DELIVERY.md](DELIVERY.md)).

@@ -39,6 +39,7 @@ def _write_lens_output(ctx: RunContext, lens_id: str, items: list[JamItem]) -> N
 
 def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
+    monkeypatch.setenv("DEV_SCOUT_EMAIL", "scout@example.com")
 
     result = run_day("2099-01-01", use_fixtures=True)
     assert result.verdict.sufficient
@@ -52,6 +53,7 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     assert (email_dir / "email-draft.md").exists()
     assert (email_dir / "email-draft.json").exists()
     assert (email_dir / "email-draft.eml").exists()
+    assert draft["to"] == "scout@example.com"
     assert draft["to"] == manifest["email_to"]
     assert draft["subject"] == manifest["email_subject"]
     assert manifest["email_draft_path"] == "runs/2099-01-01/06-email/email-draft.md"
@@ -66,6 +68,20 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     )
     assert (runs / "2099-01-01" / "05-report" / "daily-digest.md").exists()
     assert (runs / "2099-01-01" / "07-learning" / "delta-vs-last-day.json").exists()
+
+
+def test_resolve_recipient_prefers_env(monkeypatch):
+    from dev_scout.compose.email import resolve_recipient
+
+    monkeypatch.delenv("DEV_SCOUT_EMAIL", raising=False)
+    monkeypatch.delenv("DELIVERY_TO", raising=False)
+    assert resolve_recipient({"recipient": "fallback@example.com"}) == "fallback@example.com"
+
+    monkeypatch.setenv("DELIVERY_TO", "alias@example.com")
+    assert resolve_recipient({"recipient": "fallback@example.com"}) == "alias@example.com"
+
+    monkeypatch.setenv("DEV_SCOUT_EMAIL", "primary@example.com")
+    assert resolve_recipient({"recipient": "fallback@example.com"}) == "primary@example.com"
 
 
 def test_jam_item_promotable():
