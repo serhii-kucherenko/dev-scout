@@ -23,6 +23,15 @@ def resolve_recipient(delivery: dict | None = None) -> str:
     return str(cfg.get("recipient") or "").strip()
 
 
+def resolve_repo_url(delivery: dict | None = None) -> str:
+    """Repo link shown in every brief. Prefer env, fall back to delivery.yaml."""
+    value = os.environ.get("DEV_SCOUT_REPO_URL", "").strip()
+    if value:
+        return value
+    cfg = delivery if delivery is not None else load_yaml(config_dir() / "delivery.yaml")
+    return str(cfg.get("repo_url") or "").strip()
+
+
 def _render_markdown_draft(draft: EmailDraft) -> str:
     return "\n".join(
         [
@@ -96,41 +105,59 @@ def already_mentioned_keys(ctx: RunContext) -> set[str]:
     return keys
 
 
-def select_new_email_items(ctx: RunContext, candidates: list[JamItem], *, limit: int = 5) -> list[JamItem]:
+def select_email_items(
+    ctx: RunContext,
+    candidates: list[JamItem],
+    *,
+    limit: int = 5,
+    min_items: int = 3,
+) -> tuple[list[JamItem], list[JamItem]]:
+    """Split ranked candidates into fresh findings and a recap.
+
+    New (never-emailed) findings lead the brief. If there are fewer than
+    ``min_items`` of them, previously-seen findings backfill a short recap so a
+    brief is never just one line.
+    """
     seen = already_mentioned_keys(ctx)
-    fresh: list[JamItem] = []
+    new_items: list[JamItem] = []
+    recap_items: list[JamItem] = []
+    local_seen: set[str] = set()
     for item in candidates:
         key = item.canonical_key()
-        if key in seen:
+        if key in local_seen:
             continue
-        seen.add(key)
-        fresh.append(item)
-        if len(fresh) >= limit:
-            break
-    return fresh
+        local_seen.add(key)
+        if key in seen:
+            recap_items.append(item)
+        else:
+            new_items.append(item)
+
+    shown_new = new_items[:limit]
+    backfill = max(0, min(min_items - len(shown_new), limit - len(shown_new)))
+    return shown_new, recap_items[:backfill]
+
+
+def _tag_line(item: JamItem) -> str:
+    """Compact benefit / effort / evidence tags so readers can skip fast."""
+    return f"{item.benefit.value} · ~{item.setup_cost.value} to set up · grade {item.evidence_grade.value}"
 
 
 def _format_email_item(index: int, item: JamItem) -> list[str]:
-    """Full jam packet for one finding — matches GOAL / jam-criteria fields."""
-    how_to = item.how_to_url or item.source_url
+    """Scannable one-finding block: tags + what it's for + one link."""
     lines = [
-        f"{index}. {item.title}",
-        f"   Benefit: {item.benefit.value}",
-        f"   Why: {item.why}",
-        f"   Evidence: {item.evidence} (grade {item.evidence_grade.value})",
-        f"   Setup cost: {item.setup_cost.value}",
-        f"   Corroboration: {item.corroboration.value}",
-        f"   Lens: {item.lens_id}",
-        f"   Source: {item.source_url}",
-        f"   How-to: {how_to}",
-        "   Steps:",
+        f"{index}. {item.title}  [{_tag_line(item)}]",
+        f"   Why it matters: {item.why}",
     ]
-    for step_index, step in enumerate(item.how_to_steps, start=1):
-        lines.append(f"     {step_index}. {step}")
-    try_today = item.try_today.strip() or "Open the source and apply one step on a small branch"
-    lines.append(f"   Try today: {try_today}")
+    try_today = item.try_today.strip()
+    if try_today:
+        lines.append(f"   Try: {try_today}")
+    lines.append(f"   Link: {item.source_url}")
     lines.append("")
     return lines
+
+
+def _format_recap_item(item: JamItem) -> str:
+    return f"- {item.title} [{_tag_line(item)}] — {item.source_url}"
 
 
 def _previous_review_lines(previous: dict | None) -> list[str]:
@@ -159,16 +186,26 @@ def _previous_review_lines(previous: dict | None) -> list[str]:
     return lines
 
 
-def build_email_body(day: str, items: list[JamItem], *, previous: dict | None = None) -> str:
+def build_email_body(
+    day: str,
+    new_items: list[JamItem],
+    recap_items: list[JamItem] | None = None,
+    *,
+    previous: dict | None = None,
+    repo_url: str = "",
+) -> str:
+    recap_items = recap_items or []
     lines = [
         f"Dev Scout — {day}",
         "",
-        "Mission: practical ways to ship faster and build more robust software with AI-assisted dev.",
+        "Mission: ship faster & build more robust software with AI-assisted dev.",
         "",
     ]
+    if repo_url:
+        lines.extend([f"Repo: {repo_url}", ""])
     lines.extend(_previous_review_lines(previous))
 
-    if not items:
+    if not new_items and not recap_items:
         lines.extend(
             [
                 "No new jam today.",
@@ -180,18 +217,33 @@ def build_email_body(day: str, items: list[JamItem], *, previous: dict | None = 
         )
         return "\n".join(lines)
 
+    if new_items:
+        lines.extend(
+            [
+                f"New since last brief: {len(new_items)} ({_benefit_mix(new_items)}).",
+                "Tags read benefit · setup effort · evidence grade — skip anything that doesn't fit.",
+                "",
+            ]
+        )
+        for index, item in enumerate(new_items, start=1):
+            lines.extend(_format_email_item(index, item))
+    else:
+        lines.extend(
+            [
+                "No new jam today.",
+                "Nothing new beyond what we already covered in earlier briefs.",
+                "",
+            ]
+        )
+
+    if recap_items:
+        lines.append("Recap — recent jam still worth a look:")
+        lines.extend(_format_recap_item(item) for item in recap_items)
+        lines.append("")
+
     lines.extend(
         [
-            f"New jam today: {len(items)} findings ({_benefit_mix(items)}).",
-            "Only items not covered in earlier emails. Each includes source, how-to, evidence, and try-today.",
-            "",
-        ]
-    )
-    for index, item in enumerate(items, start=1):
-        lines.extend(_format_email_item(index, item))
-    lines.extend(
-        [
-            f"Full digest: runs/{day}/05-report/daily-digest.md",
+            f"Full detail (all steps + evidence): runs/{day}/05-report/daily-digest.md",
             "",
         ]
     )
@@ -203,7 +255,7 @@ def run_compose_email(ctx: RunContext) -> EmailDraft:
     ranked = read_json(ctx.stage_path("03-rank") / "ranked.json")
     candidates = [JamItem.model_validate(raw) for raw in ranked.get("items", [])]
     promotable = [item for item in candidates if item.is_promotable()]
-    new_items = select_new_email_items(ctx, promotable, limit=5)
+    new_items, recap_items = select_email_items(ctx, promotable, limit=5)
     previous = load_previous_email(ctx)
 
     if new_items:
@@ -218,7 +270,13 @@ def run_compose_email(ctx: RunContext) -> EmailDraft:
     if not new_items:
         subject = f"Dev Scout {ctx.day} — no new jam"
 
-    body_text = build_email_body(ctx.day, new_items, previous=previous)
+    body_text = build_email_body(
+        ctx.day,
+        new_items,
+        recap_items,
+        previous=previous,
+        repo_url=resolve_repo_url(delivery),
+    )
     draft = EmailDraft(
         subject=subject,
         to=resolve_recipient(delivery),
@@ -235,6 +293,7 @@ def run_compose_email(ctx: RunContext) -> EmailDraft:
             **draft.model_dump(mode="json"),
             "previous_day": previous["day"] if previous else None,
             "new_count": len(new_items),
+            "recap_count": len(recap_items),
             "repeated_skipped": max(0, len(promotable) - len(new_items)),
         },
     )

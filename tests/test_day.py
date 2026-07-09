@@ -45,6 +45,7 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     monkeypatch.setenv("DEV_SCOUT_EMAIL", "scout@example.com")
     monkeypatch.delenv("RESEND_API_KEY", raising=False)
     monkeypatch.delenv("DELIVERY_FROM", raising=False)
+    monkeypatch.delenv("DEV_SCOUT_REPO_URL", raising=False)
 
     result = run_day("2099-01-01", use_fixtures=True)
     assert result.verdict.sufficient
@@ -72,19 +73,16 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     assert send_result["to"] == "scout@example.com"
     assert eml_text.startswith(f"To: {draft['to']}\nSubject: {draft['subject']}\n")
     body = draft["body_text"]
-    assert "Mission: practical ways to ship faster" in body
+    assert "Mission: ship faster" in body
+    assert "Repo: " in body
+    assert "github.com/serhii-kucherenko/dev-scout" in body
     assert "Previous email: none yet" in body
-    assert "New jam today:" in body
-    assert "Evidence:" in body
+    assert "New since last brief:" in body
+    assert "Why it matters:" in body
     assert "grade " in body
-    assert "Setup cost:" in body
-    assert "Corroboration:" in body
-    assert "Lens:" in body
-    assert "Source:" in body
-    assert "How-to:" in body
-    assert "Steps:" in body
-    assert "Try today:" in body
-    assert "Full digest: runs/2099-01-01/05-report/daily-digest.md" in body
+    assert "Try:" in body
+    assert "Link:" in body
+    assert "Full detail (all steps + evidence): runs/2099-01-01/05-report/daily-digest.md" in body
     assert draft["new_count"] == len(draft["top_items"]) > 0
     ranked = read_json(runs / "2099-01-01" / "03-rank" / "ranked.json")
     assert all(
@@ -235,10 +233,9 @@ def test_day_sends_findings_email_when_resend_configured(tmp_path, monkeypatch):
             assert json["to"] == ["scout@example.com"]
             assert json["from"] == "Dev Scout <onboarding@resend.dev>"
             assert "Dev Scout — 2099-01-01" in json["text"]
-            assert "Evidence:" in json["text"]
-            assert "Try today:" in json["text"]
-            assert "Source:" in json["text"]
-            assert "Steps:" in json["text"]
+            assert "Why it matters:" in json["text"]
+            assert "Try:" in json["text"]
+            assert "Link:" in json["text"]
             return _FakeResponse()
 
     monkeypatch.setattr("dev_scout.delivery.send.httpx.Client", _FakeClient)

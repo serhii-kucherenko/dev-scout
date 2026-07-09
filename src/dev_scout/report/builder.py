@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dev_scout.compose.email import resolve_repo_url
 from dev_scout.context import RunContext
 from dev_scout.models.jam import JamItem
 from dev_scout.util import read_json, write_json
@@ -30,9 +31,11 @@ def run_report(ctx: RunContext) -> str:
         "",
         "Actionable jam for faster, more robust development.",
         "",
-        "## Top jam",
-        "",
     ]
+    repo_url = resolve_repo_url()
+    if repo_url:
+        lines.extend([f"Repo: {repo_url}", ""])
+    lines.extend(["## Top jam", ""])
     for item in promotable[:5]:
         lines.append(_format_item(item))
         lines.append("")

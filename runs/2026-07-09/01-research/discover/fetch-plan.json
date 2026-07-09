@@ -1,0 +1,24 @@
+{
+  "day": "2026-07-09",
+  "planned": 15,
+  "queries": [
+    "uv Python package manager benchmark speed vs pip 2026 how to migrate",
+    "Turborepo remote caching CI time savings case study metrics",
+    "Anthropic prompt caching cost latency reduction how to 2026 evidence",
+    "GitHub merge queue reduce broken main build evidence 2026",
+    "mutation testing Stryker caught bugs coverage gaps case study evidence",
+    "ephemeral preview environments per pull request catch bugs before production 2026"
+  ],
+  "urls": [
+    "https://docs.astral.sh/uv/",
+    "https://realpython.com/python-uv/",
+    "https://turborepo.dev/docs/core-concepts/remote-caching",
+    "https://vercel.com/blog/how-makeswift-improved-ci-speed-by-65-with-turborepo",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "https://mergify.com/blog/merge-queue-is-critical-infrastructure",
+    "https://failure-modes.dev/library/fm-029",
+    "https://stryker-mutator.io/docs/",
+    "https://getautonoma.com/blog/per-pr-preview-environments-when-ci-green-isnt-enough",
+    "https://www.bunnyshell.com/ephemeral-environments/"
+  ]
+}

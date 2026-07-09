@@ -1,0 +1,14 @@
+{
+  "day": "2026-07-09",
+  "prior_day": "2026-07-08",
+  "new_count": 6,
+  "promoted_count": 6,
+  "new_item_ids": [
+    "model-workflows-20260709-prompt-caching",
+    "tooling-setups-20260709-uv",
+    "build-robust-20260709-merge-queue-integrity",
+    "build-robust-20260709-mutation-testing",
+    "ship-faster-20260709-turborepo-remote-cache",
+    "production-patterns-20260709-ephemeral-preview-envs"
+  ]
+}

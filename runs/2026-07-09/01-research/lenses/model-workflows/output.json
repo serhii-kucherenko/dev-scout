@@ -1,0 +1,25 @@
+{
+  "lens_id": "model-workflows",
+  "items": [
+    {
+      "id": "model-workflows-20260709-prompt-caching",
+      "title": "Cache stable prompt prefixes to cut LLM cost and latency",
+      "why": "Marking the unchanging part of a prompt (system instructions, tool defs, RAG/codebase context) as cacheable makes repeat calls reuse it at ~10% of input price and skip prefix compute, so cost and time-to-first-token drop sharply.",
+      "benefit": "both",
+      "source_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+      "how_to_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+      "how_to_steps": [
+        "Identify the stable prefix (system prompt, tool defs, long context) that repeats across calls and ensure it meets the model minimum (~1,024 tokens).",
+        "Add `cache_control: {type: 'ephemeral'}` to those blocks; keep the prefix byte-identical (no injected timestamps, no reordered tools).",
+        "Log `cache_read_input_tokens` and `cache_creation_input_tokens` from the response usage to verify hit rates.",
+        "For batch/agentic runs, fire calls within the TTL (5-min default or the 1-hour option) and pre-warm the cache before user traffic."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "Anthropic reports up to 90% lower input cost (cache reads at 0.1x) and up to 85% lower time-to-first-token; documented cases cut a bill from $720 -> $72/mo and per-page generation from $0.42 -> $0.06 (86%).",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "corroboration": "supported",
+      "try_today": "Add cache_control to the system prompt of one high-volume call and check cache_read_input_tokens on the second request."
+    }
+  ]
+}
