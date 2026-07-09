@@ -40,6 +40,56 @@ def _render_eml_draft(draft: EmailDraft) -> str:
     )
 
 
+def _benefit_mix(items: list[JamItem]) -> str:
+    speed = sum(1 for item in items if item.benefit.value in {"speed", "both"})
+    robustness = sum(1 for item in items if item.benefit.value in {"robustness", "both"})
+    return f"speed={speed}, robustness={robustness}"
+
+
+def _format_email_item(index: int, item: JamItem) -> list[str]:
+    """Full jam packet for one finding — matches GOAL / jam-criteria fields."""
+    how_to = item.how_to_url or item.source_url
+    lines = [
+        f"{index}. {item.title}",
+        f"   Benefit: {item.benefit.value}",
+        f"   Why: {item.why}",
+        f"   Evidence: {item.evidence} (grade {item.evidence_grade.value})",
+        f"   Setup cost: {item.setup_cost.value}",
+        f"   Corroboration: {item.corroboration.value}",
+        f"   Lens: {item.lens_id}",
+        f"   Source: {item.source_url}",
+        f"   How-to: {how_to}",
+        "   Steps:",
+    ]
+    for step_index, step in enumerate(item.how_to_steps, start=1):
+        lines.append(f"     {step_index}. {step}")
+    try_today = item.try_today.strip() or "Open the source and apply one step on a small branch"
+    lines.append(f"   Try today: {try_today}")
+    lines.append("")
+    return lines
+
+
+def build_email_body(day: str, items: list[JamItem]) -> str:
+    lines = [
+        f"Dev Scout — {day}",
+        "",
+        "Mission: practical ways to ship faster and build more robust software with AI-assisted dev.",
+        "",
+        f"Today's jam: {len(items)} findings ({_benefit_mix(items)}).",
+        "Each item includes source, how-to steps, evidence, and a try-today action.",
+        "",
+    ]
+    for index, item in enumerate(items, start=1):
+        lines.extend(_format_email_item(index, item))
+    lines.extend(
+        [
+            f"Full digest: runs/{day}/05-report/daily-digest.md",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
 def run_compose_email(ctx: RunContext) -> EmailDraft:
     delivery = load_yaml(config_dir() / "delivery.yaml")
     ranked = read_json(ctx.stage_path("03-rank") / "ranked.json")
@@ -52,36 +102,7 @@ def run_compose_email(ctx: RunContext) -> EmailDraft:
         top_count=len(top_items),
     )
 
-    lines = [
-        f"Dev Scout — {ctx.day}",
-        "",
-        "Today: practical ways to ship faster and build safer.",
-        "",
-    ]
-
-    for index, item in enumerate(top_items, start=1):
-        lines.extend(
-            [
-                f"{index}. {item.title} ({item.benefit.value})",
-                f"   Why: {item.why}",
-                f"   Source: {item.source_url}",
-                f"   How-to: {item.how_to_url or item.source_url}",
-                "   Steps:",
-            ]
-        )
-        for step_index, step in enumerate(item.how_to_steps[:5], start=1):
-            lines.append(f"     {step_index}. {step}")
-        lines.append(f"   Try today: {item.try_today}")
-        lines.append("")
-
-    lines.extend(
-        [
-            "More in the full digest: runs/{day}/05-report/daily-digest.md".format(day=ctx.day),
-            "",
-        ]
-    )
-
-    body_text = "\n".join(lines)
+    body_text = build_email_body(ctx.day, top_items)
     draft = EmailDraft(
         subject=subject,
         to=resolve_recipient(delivery),

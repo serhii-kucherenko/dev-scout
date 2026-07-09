@@ -68,6 +68,18 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     assert send_result["status"] == "skipped"
     assert send_result["to"] == "scout@example.com"
     assert eml_text.startswith(f"To: {draft['to']}\nSubject: {draft['subject']}\n")
+    body = draft["body_text"]
+    assert "Mission: practical ways to ship faster" in body
+    assert "Evidence:" in body
+    assert "grade " in body
+    assert "Setup cost:" in body
+    assert "Corroboration:" in body
+    assert "Lens:" in body
+    assert "Source:" in body
+    assert "How-to:" in body
+    assert "Steps:" in body
+    assert "Try today:" in body
+    assert "Full digest: runs/2099-01-01/05-report/daily-digest.md" in body
     ranked = read_json(runs / "2099-01-01" / "03-rank" / "ranked.json")
     assert all(
         not item["source_url"].startswith("https://example.com/dev-scout")
@@ -106,6 +118,10 @@ def test_day_sends_findings_email_when_resend_configured(tmp_path, monkeypatch):
             assert json["to"] == ["scout@example.com"]
             assert json["from"] == "Dev Scout <onboarding@resend.dev>"
             assert "Dev Scout — 2099-01-01" in json["text"]
+            assert "Evidence:" in json["text"]
+            assert "Try today:" in json["text"]
+            assert "Source:" in json["text"]
+            assert "Steps:" in json["text"]
             return _FakeResponse()
 
     monkeypatch.setattr("dev_scout.delivery.send.httpx.Client", _FakeClient)

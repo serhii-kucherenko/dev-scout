@@ -5,6 +5,15 @@ After judge pass, Dev Scout:
 1. Writes the findings brief under `runs/YYYY-MM-DD/06-email/`
 2. **Emails that brief to `DEV_SCOUT_EMAIL`** via Resend
 
+Each emailed finding includes the full jam packet from the daily goal:
+
+- title, benefit (`speed` / `robustness` / `both`), why
+- evidence + grade, setup cost, corroboration, lens
+- source URL, how-to URL, concrete steps (≥3)
+- try-today action
+
+Plus a mission line, benefit mix summary, and link to the full digest.
+
 Artifacts still written locally:
 
 - `05-report/daily-digest.md` — full jam cookbook
