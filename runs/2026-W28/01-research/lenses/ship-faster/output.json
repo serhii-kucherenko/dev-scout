@@ -2,64 +2,46 @@
   "lens_id": "ship-faster",
   "items": [
     {
-      "id": "ship-faster-1",
-      "title": "Ralph loop agent harness",
-      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
-      "benefit": "speed",
-      "source_url": "https://github.com/vercel-labs/ralph-loop-agent",
-      "how_to_url": "https://github.com/vercel-labs/ralph-loop-agent",
+      "id": "ship-faster-2026w28-bugbot-prepush",
+      "title": "Run Bugbot before you push",
+      "why": "Move review left so the same agent catches bugs on the diff before the PR roundtrip starts.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/bugbot-updates-june-2026",
+      "how_to_url": "https://cursor.com/docs/bugbot",
       "how_to_steps": [
-        "Open the source: https://github.com/vercel-labs/ralph-loop-agent",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Connect the repository to Cursor and enable Bugbot for the repo in the dashboard.",
+        "Run /review or /review-bugbot locally before pushing so the agent inspects the exact diff first.",
+        "Turn on incremental review or mention-only mode to keep feedback focused on new commits.",
+        "Require the Cursor Bugbot check in branch protection once the team trusts the signal."
       ],
       "setup_cost": "hours",
-      "evidence": "time saved, PR velocity, or benchmark",
+      "evidence": "Cursor says Bugbot is over 3x faster, 22% cheaper, finds 10% more bugs per review, and 90% of runs now finish in under 3 minutes.",
       "evidence_grade": "A",
       "lens_id": "ship-faster",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/vercel-labs/ralph-loop-agent"
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/docs/bugbot",
+      "try_monday": "Enable Bugbot on one active repo and require its check on draft PRs for one week."
     },
     {
-      "id": "ship-faster-4",
-      "title": "Cursor agent workflow docs",
-      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
-      "benefit": "speed",
-      "source_url": "https://docs.cursor.com/agent",
-      "how_to_url": null,
+      "id": "ship-faster-2026w28-semantic-search",
+      "title": "Index the repo so agents can search by meaning, not just strings",
+      "why": "Semantic retrieval cuts the time an agent spends hunting for context and reduces follow-up correction loops.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/semsearch",
+      "how_to_url": "https://cursor.com/docs/agent/tools/search",
       "how_to_steps": [
-        "Open the source: https://docs.cursor.com/agent",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Open the workspace and let indexing begin automatically; semantic search becomes available at about 80% completion.",
+        "Check indexing status or trigger a rebuild from Cursor Settings > Indexing.",
+        "Add large generated paths to .cursorignore or .gitignore so the index stays focused on useful code.",
+        "Prompt the agent with behaviors like \"where do we handle failed payments?\" and let it combine semantic search with grep."
       ],
-      "setup_cost": "hours",
-      "evidence": "time saved, PR velocity, or benchmark",
-      "evidence_grade": "B",
+      "setup_cost": "minutes",
+      "evidence": "Cursor reports 12.5% higher codebase QA accuracy on average, 0.3% higher code retention overall, 2.6% higher retention on repos with 1,000+ files, and 2.2% more dissatisfied follow-ups when semantic search is unavailable.",
+      "evidence_grade": "A",
       "lens_id": "ship-faster",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://docs.cursor.com/agent"
-    },
-    {
-      "id": "ship-faster-8",
-      "title": "HN discussion corroborates agent loops",
-      "why": "What agent loops, codegen, or review automation shipped with measured speed gains?",
-      "benefit": "speed",
-      "source_url": "https://news.ycombinator.com/item?id=agent-corroboration",
-      "how_to_url": null,
-      "how_to_steps": [
-        "Open the source: https://news.ycombinator.com/item?id=agent-corroboration",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
-      ],
-      "setup_cost": "hours",
-      "evidence": "time saved, PR velocity, or benchmark",
-      "evidence_grade": "D",
-      "lens_id": "ship-faster",
-      "corroboration": "weak",
-      "try_monday": "Open the source: https://news.ycombinator.com/item?id=agent-corroboration"
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/docs/agent/tools/search",
+      "try_monday": "Re-index the main repo, trim noisy paths with .cursorignore, and compare agent answer quality on one thorny codebase question set."
     }
   ]
 }

@@ -2,24 +2,46 @@
   "lens_id": "build-robust",
   "items": [
     {
-      "id": "build-robust-3",
-      "title": "Eval harness for LLM regressions",
-      "why": "What testing, eval harnesses, or guardrails reduced bugs or outage risk?",
+      "id": "build-robust-2026w28-prompt-change-guardrails",
+      "title": "Treat system-prompt edits like code changes",
+      "why": "Prompt tweaks can silently degrade code quality, so they need the same gating discipline as production code.",
       "benefit": "robustness",
-      "source_url": "https://github.com/openai/evals",
-      "how_to_url": "https://github.com/openai/evals",
+      "source_url": "https://www.anthropic.com/engineering/april-23-postmortem",
+      "how_to_url": "https://www.anthropic.com/engineering/april-23-postmortem",
       "how_to_steps": [
-        "Open the source: https://github.com/openai/evals",
-        "Skim for prerequisites and install commands",
-        "Apply the workflow on a small branch before team rollout",
-        "Measure cycle time or defect rate for one week"
+        "Run a broad per-model eval suite for every prompt change that affects an agent or coding workflow.",
+        "Use ablations to isolate which prompt line changes quality, latency, or token use.",
+        "Soak the change before full rollout if it trades off intelligence versus speed or cost.",
+        "Roll out gradually and revert immediately if the broader eval set regresses."
       ],
       "setup_cost": "hours",
-      "evidence": "fewer bugs, caught regressions, or eval score",
+      "evidence": "Anthropic reports that one verbosity instruction caused a 3% drop on both Opus 4.6 and 4.7 in a broader evaluation set, and it immediately reverted the change.",
       "evidence_grade": "A",
       "lens_id": "build-robust",
+      "corroboration": "supported",
+      "corroboration_url": "https://news.ycombinator.com/item?id=47878905",
+      "try_monday": "Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites."
+    },
+    {
+      "id": "build-robust-2026w28-regression-suite",
+      "title": "Graduate capability tests into an always-on regression suite",
+      "why": "Once an agent can reliably do a task, keep that task in the regression bank so quality drift becomes visible immediately.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "how_to_url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "how_to_steps": [
+        "Start with 20 to 50 real tasks drawn from bug reports, support tickets, or manual QA checks.",
+        "Split the bank into capability evals that are still hard and regression evals that should pass nearly 100% of the time.",
+        "Run tasks in a clean environment, use multiple trials where outputs vary, and prefer deterministic graders first.",
+        "When a capability task saturates, move it into the continuous regression suite and track latency, token use, and failure rate over time."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic recommends capability tasks that later graduate into a continuous regression suite and notes that fixing eval bugs plus scaffold issues moved one CORE-Bench result from 42% to 95%.",
+      "evidence_grade": "B",
+      "lens_id": "build-robust",
       "corroboration": "weak",
-      "try_monday": "Open the source: https://github.com/openai/evals"
+      "corroboration_url": null,
+      "try_monday": "Pick five agent tasks that already feel solved and convert them into a tiny must-pass regression suite."
     }
   ]
 }

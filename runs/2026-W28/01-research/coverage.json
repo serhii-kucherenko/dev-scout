@@ -1,14 +1,16 @@
 {
-  "urls_planned": 17,
-  "urls_fetched": 0,
-  "urls_extracted": 8,
+  "urls_planned": 15,
+  "urls_fetched": 15,
+  "urls_extracted": 15,
   "lenses_run": 5,
   "lenses_with_findings": 5,
   "grade_distribution": {
-    "A": 3,
-    "C": 1,
-    "B": 3,
-    "D": 1
+    "A": 6,
+    "B": 4
   },
-  "corroboration_rate": 0.875
+  "corroboration_rate": 0.6,
+  "notes": [
+    "Replaced placeholder-style artifacts with sourced findings from official docs, product posts, and engineering write-ups.",
+    "Primary sources were favored; discussion links were used only as secondary corroboration hints."
+  ]
 }

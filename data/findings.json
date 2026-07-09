@@ -299,6 +299,216 @@
       "lens_id": "ship-faster",
       "corroboration": "weak",
       "try_monday": "Open the source: https://github.com/anthropics/claude-code"
+    },
+    {
+      "id": "ship-faster-2026w28-bugbot-prepush",
+      "title": "Run Bugbot before you push",
+      "why": "Move review left so the same agent catches bugs on the diff before the PR roundtrip starts.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/bugbot-updates-june-2026",
+      "how_to_url": "https://cursor.com/docs/bugbot",
+      "how_to_steps": [
+        "Connect the repository to Cursor and enable Bugbot for the repo in the dashboard.",
+        "Run /review or /review-bugbot locally before pushing so the agent inspects the exact diff first.",
+        "Turn on incremental review or mention-only mode to keep feedback focused on new commits.",
+        "Require the Cursor Bugbot check in branch protection once the team trusts the signal."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says Bugbot is over 3x faster, 22% cheaper, finds 10% more bugs per review, and 90% of runs now finish in under 3 minutes.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/docs/bugbot",
+      "try_monday": "Enable Bugbot on one active repo and require its check on draft PRs for one week."
+    },
+    {
+      "id": "ship-faster-2026w28-semantic-search",
+      "title": "Index the repo so agents can search by meaning, not just strings",
+      "why": "Semantic retrieval cuts the time an agent spends hunting for context and reduces follow-up correction loops.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/semsearch",
+      "how_to_url": "https://cursor.com/docs/agent/tools/search",
+      "how_to_steps": [
+        "Open the workspace and let indexing begin automatically; semantic search becomes available at about 80% completion.",
+        "Check indexing status or trigger a rebuild from Cursor Settings > Indexing.",
+        "Add large generated paths to .cursorignore or .gitignore so the index stays focused on useful code.",
+        "Prompt the agent with behaviors like \"where do we handle failed payments?\" and let it combine semantic search with grep."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "Cursor reports 12.5% higher codebase QA accuracy on average, 0.3% higher code retention overall, 2.6% higher retention on repos with 1,000+ files, and 2.2% more dissatisfied follow-ups when semantic search is unavailable.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/docs/agent/tools/search",
+      "try_monday": "Re-index the main repo, trim noisy paths with .cursorignore, and compare agent answer quality on one thorny codebase question set."
+    },
+    {
+      "id": "tooling-setups-2026w28-automations",
+      "title": "Use always-on cloud agents for review, triage, and incident chores",
+      "why": "Background automations keep review and maintenance work moving without waiting for someone to open the IDE.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/automations",
+      "how_to_url": "https://cursor.com/docs/cloud-agent/automations",
+      "how_to_steps": [
+        "Create a new automation from the Agents Window, cursor.com/automations, or the /automate skill.",
+        "Pick a trigger such as pull request opened, CI completed, Slack, webhook, or cron.",
+        "Write the prompt and enable only the tools it needs, such as PR comments, Slack, MCP, or memories.",
+        "Choose whether it should run against one repo, multiple repos, or no repo, then save and activate it."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says Bugbot-like automations run thousands of times a day and have caught millions of bugs; its internal security-review automation has caught multiple vulnerabilities and critical bugs; Runlayer says the setup helps them move faster than teams five times their size.",
+      "evidence_grade": "B",
+      "lens_id": "tooling-setups",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/docs/cloud-agent/automations",
+      "try_monday": "Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings."
+    },
+    {
+      "id": "tooling-setups-2026w28-codex-cli",
+      "title": "Add Codex CLI as a terminal-first coding agent",
+      "why": "A local terminal agent gives you long-running code work and PR review loops without being tied to a single editor.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/introducing-upgrades-to-codex/",
+      "how_to_url": "https://raw.githubusercontent.com/openai/codex/main/README.md",
+      "how_to_steps": [
+        "Install Codex CLI with the Mac or Linux install script, npm, Homebrew, or a release binary.",
+        "Run codex and sign in with ChatGPT so it uses the plan you already pay for.",
+        "Start code tasks from the terminal and choose an approval mode that matches your risk tolerance.",
+        "Escalate longer jobs to Codex cloud or GitHub review flows when you want work to keep running after you close the terminal."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "OpenAI says GPT-5-Codex can work for more than 7 hours on complex tasks, cached cloud tasks cut median completion time by 90%, bottom-decile turns use 93.7% fewer tokens than GPT-5, and Codex reviews the vast majority of internal PRs while catching hundreds of issues per day.",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "corroboration": "supported",
+      "corroboration_url": "https://raw.githubusercontent.com/openai/codex/main/README.md",
+      "try_monday": "Install Codex CLI on one workstation and compare one feature branch done with terminal-agent help versus the current manual loop."
+    },
+    {
+      "id": "build-robust-2026w28-prompt-change-guardrails",
+      "title": "Treat system-prompt edits like code changes",
+      "why": "Prompt tweaks can silently degrade code quality, so they need the same gating discipline as production code.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/april-23-postmortem",
+      "how_to_url": "https://www.anthropic.com/engineering/april-23-postmortem",
+      "how_to_steps": [
+        "Run a broad per-model eval suite for every prompt change that affects an agent or coding workflow.",
+        "Use ablations to isolate which prompt line changes quality, latency, or token use.",
+        "Soak the change before full rollout if it trades off intelligence versus speed or cost.",
+        "Roll out gradually and revert immediately if the broader eval set regresses."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic reports that one verbosity instruction caused a 3% drop on both Opus 4.6 and 4.7 in a broader evaluation set, and it immediately reverted the change.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "corroboration": "supported",
+      "corroboration_url": "https://news.ycombinator.com/item?id=47878905",
+      "try_monday": "Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites."
+    },
+    {
+      "id": "build-robust-2026w28-regression-suite",
+      "title": "Graduate capability tests into an always-on regression suite",
+      "why": "Once an agent can reliably do a task, keep that task in the regression bank so quality drift becomes visible immediately.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "how_to_url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "how_to_steps": [
+        "Start with 20 to 50 real tasks drawn from bug reports, support tickets, or manual QA checks.",
+        "Split the bank into capability evals that are still hard and regression evals that should pass nearly 100% of the time.",
+        "Run tasks in a clean environment, use multiple trials where outputs vary, and prefer deterministic graders first.",
+        "When a capability task saturates, move it into the continuous regression suite and track latency, token use, and failure rate over time."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic recommends capability tasks that later graduate into a continuous regression suite and notes that fixing eval bugs plus scaffold issues moved one CORE-Bench result from 42% to 95%.",
+      "evidence_grade": "B",
+      "lens_id": "build-robust",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_monday": "Pick five agent tasks that already feel solved and convert them into a tiny must-pass regression suite."
+    },
+    {
+      "id": "production-patterns-2026w28-containment-first",
+      "title": "Design containment at the environment layer first",
+      "why": "Sandbox and egress boundaries keep failures bounded even when the model, a tool, or a user prompt goes off the rails.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "how_to_url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "how_to_steps": [
+        "Choose the isolation pattern that matches the user and task: ephemeral container, workspace sandbox, or sealed VM.",
+        "Default to network deny and limit writes to the workspace or explicitly mounted paths.",
+        "Keep credentials outside the sandbox and pass only scoped session tokens inside.",
+        "Delay project-local config parsing until after trust is established, and inspect tool output before it reaches model context."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic says its Claude Code sandbox cut permission prompts by 84%, auto mode catches about 83% of overeager behaviors, and Gray Swan prompt-injection success is roughly 0.1% on single attempts.",
+      "evidence_grade": "A",
+      "lens_id": "production-patterns",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_monday": "Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs."
+    },
+    {
+      "id": "production-patterns-2026w28-ai-gateway-fallbacks",
+      "title": "Put a gateway in front of providers so outages do not stop the app",
+      "why": "Routing through a gateway gives you model failover, provider order, and request-level visibility instead of a single brittle dependency.",
+      "benefit": "both",
+      "source_url": "https://vercel.com/blog/ai-gateway-is-now-generally-available",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "how_to_steps": [
+        "Route traffic through one gateway endpoint instead of wiring the app directly to a single provider SDK.",
+        "Set a primary model and a fallback models list in providerOptions.gateway.",
+        "Add provider ordering and fast timeouts so the gateway fails over quickly when a provider stalls.",
+        "Inspect modelAttempts and providerAttempts metadata, then monitor latency, spend, and failure patterns by route."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Vercel says AI Gateway is the same system that has powered v0 for millions of users, sits on infrastructure delivering sub-20ms latency, and removes the single-provider failure mode.",
+      "evidence_grade": "B",
+      "lens_id": "production-patterns",
+      "corroboration": "supported",
+      "corroboration_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "try_monday": "Wrap one production AI endpoint with a primary model plus two fallbacks and log which model actually serves each request."
+    },
+    {
+      "id": "model-workflows-2026w28-gpt5-mini-default",
+      "title": "Make GPT-5 mini the default coding workhorse",
+      "why": "A cheap high-skill default model lets teams save the expensive model for cases where verification says more horsepower is actually needed.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/introducing-gpt-5-for-developers/",
+      "how_to_url": "https://openai.com/index/introducing-gpt-5-for-developers/",
+      "how_to_steps": [
+        "Set gpt-5-mini as the default model for routine implementation, repo Q and A, and PR-sized coding tasks.",
+        "Keep the loop verification-based so you escalate only when tests fail, tool use gets messy, or the task stalls.",
+        "Use lower verbosity for tight edit loops and increase it only when you need fuller plans or explanations.",
+        "Track solve rate and spend side by side for mini-default versus full-model escalations."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "OpenAI reports GPT-5 mini scores 71.0% on SWE-bench Verified and 71.6% on Aider polyglot while costing $0.25 per 1M input tokens and $2 per 1M output tokens.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_monday": "Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails."
+    },
+    {
+      "id": "model-workflows-2026w28-prompt-caching",
+      "title": "Cache stable repo context instead of resending it every turn",
+      "why": "Repeated codebase context is expensive and slow; caching it turns long-running coding loops into faster, cheaper interactions.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/news/prompt-caching",
+      "how_to_url": "https://www.anthropic.com/news/prompt-caching",
+      "how_to_steps": [
+        "Put stable prompt material first, such as system policy, coding standards, tool schema, and repo summary.",
+        "Reuse that exact prefix across turns and agent tool loops, appending only the new task delta at the end.",
+        "Apply caching first to codebase Q and A, autocomplete, and multi-turn debugging sessions that resend long context.",
+        "Measure time to first token and input-token cost before and after the change."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic says prompt caching cuts cost by up to 90% and latency by up to 85%; one 100k-token prompt dropped from 11.5s to 2.4s time-to-first-token.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_monday": "Cache the stable repo and policy prefix in one high-volume coding assistant and compare TTFT and spend over a day."
     }
   ],
   "weeks": [
