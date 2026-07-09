@@ -1,8 +1,12 @@
 recipient: ""  # set via DEV_SCOUT_EMAIL (preferred) or DELIVERY_TO
 mode: send
-subject_template: "Dev Scout {day} — {top_count} ways to ship faster / build safer"
+subject_template: "Dev Scout {day} — {top_count} new ways to ship faster / build safer"
 
 # After judge pass, the findings brief is emailed to DEV_SCOUT_EMAIL via Resend.
+# Each email:
+#   - quick-reviews the previous brief
+#   - includes only NEW jam (never repeats earlier sources)
+#   - says "No new jam today" when nothing fresh turned up
 # Required GitHub Actions secrets / env:
 #   DEV_SCOUT_EMAIL  — recipient
 #   RESEND_API_KEY   — Resend API key

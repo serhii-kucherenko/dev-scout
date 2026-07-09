@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dev_scout import context as context_module
+from dev_scout.compose import email as email_module
 from dev_scout.context import RunContext
 from dev_scout.learning import ledger as ledger_module
 from dev_scout.judge.engine import run_judge
@@ -26,6 +27,8 @@ def _configure_tmp_paths(tmp_path, monkeypatch):
     monkeypatch.setattr(discover_module, "data_dir", lambda: data)
     monkeypatch.setattr(score_module, "data_dir", lambda: data)
     monkeypatch.setattr(ledger_module, "data_dir", lambda: data)
+    monkeypatch.setattr(email_module, "data_dir", lambda: data)
+    monkeypatch.setattr(email_module, "runs_dir", lambda: runs)
     write_json(data / "findings.json", {"findings": [], "days": []})
     return runs, data
 
@@ -70,6 +73,8 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     assert eml_text.startswith(f"To: {draft['to']}\nSubject: {draft['subject']}\n")
     body = draft["body_text"]
     assert "Mission: practical ways to ship faster" in body
+    assert "Previous email: none yet" in body
+    assert "New jam today:" in body
     assert "Evidence:" in body
     assert "grade " in body
     assert "Setup cost:" in body
@@ -80,6 +85,7 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     assert "Steps:" in body
     assert "Try today:" in body
     assert "Full digest: runs/2099-01-01/05-report/daily-digest.md" in body
+    assert draft["new_count"] == len(draft["top_items"]) > 0
     ranked = read_json(runs / "2099-01-01" / "03-rank" / "ranked.json")
     assert all(
         not item["source_url"].startswith("https://example.com/dev-scout")
@@ -87,6 +93,117 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     )
     assert (runs / "2099-01-01" / "05-report" / "daily-digest.md").exists()
     assert (runs / "2099-01-01" / "07-learning" / "delta-vs-last-day.json").exists()
+
+
+def test_followup_email_reviews_previous_and_skips_repeats(tmp_path, monkeypatch):
+    runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
+    monkeypatch.setenv("DEV_SCOUT_EMAIL", "scout@example.com")
+    monkeypatch.delenv("RESEND_API_KEY", raising=False)
+    monkeypatch.delenv("DELIVERY_FROM", raising=False)
+
+    first = run_day("2099-01-01", use_fixtures=True)
+    assert first.verdict.sufficient
+    first_draft = read_json(runs / "2099-01-01" / "06-email" / "email-draft.json")
+    assert first_draft["top_items"]
+    first_titles = {item["title"] for item in first_draft["top_items"]}
+
+    second = run_day("2099-01-02", use_fixtures=True)
+    assert second.verdict.sufficient
+    second_draft = read_json(runs / "2099-01-02" / "06-email" / "email-draft.json")
+    body = second_draft["body_text"]
+
+    assert second_draft["previous_day"] == "2099-01-01"
+    assert "Quick review of previous email (2099-01-01):" in body
+    for title in list(first_titles)[:3]:
+        assert f"- {title}" in body
+    assert "No new jam today." in body
+    assert "Nothing new beyond what we already covered" in body
+    assert second_draft["top_items"] == []
+    assert second_draft["new_count"] == 0
+    assert second_draft["subject"] == "Dev Scout 2099-01-02 — no new jam"
+
+
+def test_followup_email_includes_only_unseen_findings(tmp_path, monkeypatch):
+    from dev_scout.compose.email import run_compose_email
+    from dev_scout.models.jam import CorroborationStatus
+
+    runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
+    monkeypatch.setenv("DEV_SCOUT_EMAIL", "scout@example.com")
+
+    prior_ctx = RunContext("2099-01-01", root=runs)
+    prior_ctx.ensure_layout()
+    write_json(
+        prior_ctx.stage_path("06-email") / "email-draft.json",
+        {
+            "subject": "Dev Scout 2099-01-01 — 1 new ways to ship faster / build safer",
+            "to": "scout@example.com",
+            "body_text": "prior",
+            "top_items": [
+                {
+                    "id": "old-1",
+                    "title": "Already emailed finding",
+                    "why": "Why",
+                    "benefit": "speed",
+                    "source_url": "https://example.com/already-sent",
+                    "how_to_steps": ["a", "b", "c"],
+                    "setup_cost": "hours",
+                    "evidence": "2x PR velocity",
+                    "evidence_grade": "A",
+                    "lens_id": "ship-faster",
+                    "corroboration": "supported",
+                    "try_today": "Reuse yesterday",
+                }
+            ],
+            "new_count": 1,
+        },
+    )
+
+    ctx = RunContext("2099-01-02", root=runs)
+    ctx.ensure_layout()
+    write_json(
+        ctx.stage_path("03-rank") / "ranked.json",
+        {
+            "day": "2099-01-02",
+            "items": [
+                {
+                    "id": "old-1",
+                    "title": "Already emailed finding",
+                    "why": "Why",
+                    "benefit": "speed",
+                    "source_url": "https://example.com/already-sent",
+                    "how_to_steps": ["a", "b", "c"],
+                    "setup_cost": "hours",
+                    "evidence": "2x PR velocity",
+                    "evidence_grade": "A",
+                    "lens_id": "ship-faster",
+                    "corroboration": CorroborationStatus.SUPPORTED.value,
+                    "try_today": "Reuse yesterday",
+                },
+                {
+                    "id": "new-1",
+                    "title": "Brand new finding",
+                    "why": "Fresh why",
+                    "benefit": "robustness",
+                    "source_url": "https://example.com/brand-new",
+                    "how_to_steps": ["Clone", "Configure", "Verify"],
+                    "setup_cost": "minutes",
+                    "evidence": "fewer escaped bugs",
+                    "evidence_grade": "A",
+                    "lens_id": "build-robust",
+                    "corroboration": CorroborationStatus.SUPPORTED.value,
+                    "try_today": "Try the new path",
+                },
+            ],
+        },
+    )
+
+    draft = run_compose_email(ctx)
+    assert [item.title for item in draft.top_items] == ["Brand new finding"]
+    assert "Already emailed finding" in draft.body_text
+    assert "Quick review of previous email (2099-01-01):" in draft.body_text
+    assert "Brand new finding" in draft.body_text
+    assert "https://example.com/brand-new" in draft.body_text
+    assert "No new jam today." not in draft.body_text
 
 
 def test_day_sends_findings_email_when_resend_configured(tmp_path, monkeypatch):
