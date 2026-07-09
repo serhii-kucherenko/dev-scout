@@ -34,7 +34,7 @@ intake → discover → collect → lenses → corroborate → coverage → judg
 | **Coverage** | Write `01-research/coverage.json` |
 | **Judge** | Apply `config/judge.yaml`; write `04-judge/verdict.json` |
 | **Output** | Write `03-rank/ranked.json`, `05-report/daily-digest.md`, `06-email/email-draft.*` addressed to `DEV_SCOUT_EMAIL` |
-| **Send** | Email the findings brief to `DEV_SCOUT_EMAIL` (Resend: `RESEND_API_KEY` + `DELIVERY_FROM`) |
+| **Send** | Email findings to `DEV_SCOUT_EMAIL` (review previous brief; only new jam; say so if none) |
 | **Learn** | Update `data/findings.json`, write `07-learning/delta-vs-last-day.json` |
 
 Update `RUN.md` after every stage.
