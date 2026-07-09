@@ -52,7 +52,12 @@ def run_output_pipeline(ctx: RunContext, verdict: JudgeVerdict) -> PipelineResul
         {
             "day": ctx.day,
             "sufficient": verdict.sufficient,
+            "email_to": draft.to,
             "email_subject": draft.subject,
+            "digest_path": f"runs/{ctx.day}/05-report/daily-digest.md",
+            "email_draft_path": f"runs/{ctx.day}/06-email/email-draft.md",
+            "email_json_path": f"runs/{ctx.day}/06-email/email-draft.json",
+            "email_eml_path": f"runs/{ctx.day}/06-email/email-draft.eml",
         },
     )
     return result

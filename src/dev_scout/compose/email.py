@@ -5,6 +5,29 @@ from dev_scout.models.jam import EmailDraft, JamItem
 from dev_scout.util import config_dir, load_yaml, read_json, write_json
 
 
+def _render_markdown_draft(draft: EmailDraft) -> str:
+    return "\n".join(
+        [
+            f"To: {draft.to}",
+            f"Subject: {draft.subject}",
+            "",
+            draft.body_text,
+        ]
+    )
+
+
+def _render_eml_draft(draft: EmailDraft) -> str:
+    return "\n".join(
+        [
+            f"To: {draft.to}",
+            f"Subject: {draft.subject}",
+            "Content-Type: text/plain; charset=utf-8",
+            "",
+            draft.body_text,
+        ]
+    )
+
+
 def run_compose_email(ctx: RunContext) -> EmailDraft:
     delivery = load_yaml(config_dir() / "delivery.yaml")
     ranked = read_json(ctx.stage_path("03-rank") / "ranked.json")
@@ -56,6 +79,7 @@ def run_compose_email(ctx: RunContext) -> EmailDraft:
 
     email_dir = ctx.stage_path("06-email")
     email_dir.mkdir(parents=True, exist_ok=True)
-    (email_dir / "email-draft.md").write_text(body_text, encoding="utf-8")
+    (email_dir / "email-draft.md").write_text(_render_markdown_draft(draft), encoding="utf-8")
     write_json(email_dir / "email-draft.json", draft.model_dump(mode="json"))
+    (email_dir / "email-draft.eml").write_text(_render_eml_draft(draft), encoding="utf-8")
     return draft
