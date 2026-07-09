@@ -5,10 +5,9 @@ from dev_scout.context import RunContext
 from dev_scout.learning import ledger as ledger_module
 from dev_scout.judge.engine import run_judge
 from dev_scout.models.jam import Benefit, EvidenceGrade, JamItem, SetupCost
-from dev_scout.models.jam import current_iso_week
+from dev_scout.models.jam import current_run_day
 from dev_scout.rank import score as score_module
-from dev_scout.pipeline import week as week_module
-from dev_scout.pipeline.week import run_week
+from dev_scout.pipeline.day import run_day
 from dev_scout.research import discover as discover_module
 from dev_scout.research.corroborate import run_corroborate
 from dev_scout.research.lenses import analyze_excerpt
@@ -20,14 +19,14 @@ def _configure_tmp_paths(tmp_path, monkeypatch):
     data = tmp_path / "data"
     monkeypatch.setattr(
         RunContext,
-        "from_week",
-        staticmethod(lambda week=None: RunContext(week=week or current_iso_week(), root=runs)),
+        "from_day",
+        staticmethod(lambda day=None: RunContext(day=day or current_run_day(), root=runs)),
     )
     monkeypatch.setattr(context_module, "runs_dir", lambda: runs)
     monkeypatch.setattr(discover_module, "data_dir", lambda: data)
     monkeypatch.setattr(score_module, "data_dir", lambda: data)
     monkeypatch.setattr(ledger_module, "data_dir", lambda: data)
-    write_json(data / "findings.json", {"findings": [], "weeks": []})
+    write_json(data / "findings.json", {"findings": [], "days": []})
     return runs, data
 
 
@@ -38,18 +37,20 @@ def _write_lens_output(ctx: RunContext, lens_id: str, items: list[JamItem]) -> N
     )
 
 
-def test_week_with_fixtures_produces_email(tmp_path, monkeypatch):
+def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
 
-    result = run_week("2099-W01", use_fixtures=True)
+    result = run_day("2099-01-01", use_fixtures=True)
     assert result.verdict.sufficient
     assert result.email_path is not None
     assert result.digest_path is not None
-    ranked = read_json(runs / "2099-W01" / "03-rank" / "ranked.json")
+    ranked = read_json(runs / "2099-01-01" / "03-rank" / "ranked.json")
     assert all(
         not item["source_url"].startswith("https://example.com/dev-scout")
         for item in ranked["items"]
     )
+    assert (runs / "2099-01-01" / "05-report" / "daily-digest.md").exists()
+    assert (runs / "2099-01-01" / "07-learning" / "delta-vs-last-day.json").exists()
 
 
 def test_jam_item_promotable():
@@ -105,6 +106,25 @@ def test_jam_item_rejects_low_grade():
     assert not item.is_promotable()
 
 
+def test_jam_item_accepts_legacy_try_monday():
+    item = JamItem.model_validate(
+        {
+            "id": "legacy-1",
+            "title": "Legacy",
+            "why": "Why",
+            "benefit": "speed",
+            "source_url": "https://example.com/legacy",
+            "how_to_steps": ["a", "b", "c"],
+            "setup_cost": "hours",
+            "evidence": "2x PR velocity",
+            "evidence_grade": "A",
+            "lens_id": "ship-faster",
+            "try_monday": "Try this today",
+        }
+    )
+    assert item.try_today == "Try this today"
+
+
 def test_analyze_excerpt_skips_search_only_sources():
     excerpt = {
         "url": "search://ship-faster/agent loop benchmark",
@@ -124,7 +144,7 @@ def test_analyze_excerpt_skips_search_only_sources():
 
 def test_corroborate_requires_independent_source(tmp_path, monkeypatch):
     runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
-    ctx = RunContext("2099-W02", root=runs)
+    ctx = RunContext("2099-01-02", root=runs)
     ctx.ensure_layout()
     item = JamItem(
         id="ship-faster-1",
@@ -146,7 +166,7 @@ def test_corroborate_requires_independent_source(tmp_path, monkeypatch):
 
 def test_corroborate_ignores_same_source_url_variants(tmp_path, monkeypatch):
     runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
-    ctx = RunContext("2099-W05", root=runs)
+    ctx = RunContext("2099-01-05", root=runs)
     ctx.ensure_layout()
     item = JamItem(
         id="ship-faster-1",
@@ -173,7 +193,7 @@ def test_corroborate_ignores_same_source_url_variants(tmp_path, monkeypatch):
 
 def test_rank_dedupes_duplicate_sources(tmp_path, monkeypatch):
     runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
-    ctx = RunContext("2099-W03", root=runs)
+    ctx = RunContext("2099-01-03", root=runs)
     ctx.ensure_layout()
     primary = JamItem(
         id="ship-faster-1",
@@ -209,7 +229,7 @@ def test_rank_dedupes_duplicate_sources(tmp_path, monkeypatch):
 
 def test_rank_keeps_distinct_query_identified_sources(tmp_path, monkeypatch):
     runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
-    ctx = RunContext("2099-W06", root=runs)
+    ctx = RunContext("2099-01-06", root=runs)
     ctx.ensure_layout()
     first = JamItem(
         id="ship-faster-1",
@@ -245,7 +265,7 @@ def test_rank_keeps_distinct_query_identified_sources(tmp_path, monkeypatch):
 
 def test_judge_rebuilds_stale_ranked_output(tmp_path, monkeypatch):
     runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
-    ctx = RunContext("2099-W04", root=runs)
+    ctx = RunContext("2099-01-04", root=runs)
     ctx.ensure_layout()
     item = JamItem(
         id="ship-faster-1",
@@ -261,7 +281,7 @@ def test_judge_rebuilds_stale_ranked_output(tmp_path, monkeypatch):
     )
     _write_lens_output(ctx, "ship-faster", [item])
     write_json(ctx.research_path("corroboration.json"), {})
-    write_json(ctx.stage_path("03-rank") / "ranked.json", {"week": ctx.week, "items": []})
+    write_json(ctx.stage_path("03-rank") / "ranked.json", {"day": ctx.day, "items": []})
 
     verdict = run_judge(ctx)
 

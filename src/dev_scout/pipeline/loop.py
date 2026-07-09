@@ -4,17 +4,18 @@ from pathlib import Path
 
 from dev_scout.context import RunContext
 from dev_scout.judge.engine import run_judge
+from dev_scout.models.jam import current_run_day
 from dev_scout.pipeline.runner import run_output_pipeline, run_research_pipeline
 
 
 def run_goal_loop(
     goal_file: Path | None = None,
     *,
-    week: str | None = None,
+    day: str | None = None,
     max_iterations: int = 3,
     use_fixtures: bool = False,
 ) -> dict:
-    ctx = RunContext.from_week(week or current_iso_week())
+    ctx = RunContext.from_day(day or current_run_day())
     ctx.ensure_layout()
     if goal_file and goal_file.exists():
         (ctx.run_dir / "GOAL.md").write_text(goal_file.read_text(encoding="utf-8"), encoding="utf-8")

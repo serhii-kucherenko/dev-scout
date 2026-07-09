@@ -16,7 +16,7 @@ def _format_item(item: JamItem) -> str:
         f"**Source:** {item.source_url}\n\n"
         f"**How-to:** {how_to}\n\n"
         f"**Steps:**\n{steps}\n\n"
-        f"**Try Monday:** {item.try_monday}\n"
+        f"**Try today:** {item.try_today}\n"
     )
 
 
@@ -26,7 +26,7 @@ def run_report(ctx: RunContext) -> str:
     promotable = [item for item in items if item.is_promotable()]
 
     lines = [
-        f"# Dev Scout Weekly Digest — {ctx.week}",
+        f"# Dev Scout Daily Digest — {ctx.day}",
         "",
         "Actionable jam for faster, more robust development.",
         "",
@@ -57,6 +57,6 @@ def run_report(ctx: RunContext) -> str:
     content = "\n".join(lines)
     report_dir = ctx.stage_path("05-report")
     report_dir.mkdir(parents=True, exist_ok=True)
-    path = report_dir / "weekly-digest.md"
+    path = report_dir / "daily-digest.md"
     path.write_text(content, encoding="utf-8")
     return str(path)

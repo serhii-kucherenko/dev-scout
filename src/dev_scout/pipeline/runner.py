@@ -17,7 +17,7 @@ from dev_scout.util import write_json
 
 @dataclass
 class PipelineResult:
-    week: str
+    day: str
     verdict: JudgeVerdict
     email_path: str | None = None
     digest_path: str | None = None
@@ -34,7 +34,7 @@ def run_research_pipeline(ctx: RunContext, *, use_fixtures: bool = False) -> Non
 
 
 def run_output_pipeline(ctx: RunContext, verdict: JudgeVerdict) -> PipelineResult:
-    result = PipelineResult(week=ctx.week, verdict=verdict)
+    result = PipelineResult(day=ctx.day, verdict=verdict)
     if not verdict.sufficient:
         write_run_md(ctx)
         result.run_md_path = str(ctx.run_dir / "RUN.md")
@@ -50,7 +50,7 @@ def run_output_pipeline(ctx: RunContext, verdict: JudgeVerdict) -> PipelineResul
     write_json(
         ctx.run_dir / "run.manifest.json",
         {
-            "week": ctx.week,
+            "day": ctx.day,
             "sufficient": verdict.sufficient,
             "email_subject": draft.subject,
         },

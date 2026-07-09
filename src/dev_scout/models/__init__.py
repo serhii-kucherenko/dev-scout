@@ -8,7 +8,7 @@ from dev_scout.models.jam import (
     JamItem,
     JudgeVerdict,
     SetupCost,
-    current_iso_week,
+    current_run_day,
 )
 
 __all__ = [
@@ -21,5 +21,5 @@ __all__ = [
     "JamItem",
     "JudgeVerdict",
     "SetupCost",
-    "current_iso_week",
+    "current_run_day",
 ]

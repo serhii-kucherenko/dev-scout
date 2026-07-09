@@ -11,15 +11,16 @@ def run_compose_email(ctx: RunContext) -> EmailDraft:
     items = [JamItem.model_validate(raw) for raw in ranked.get("items", [])]
     top_items = [item for item in items if item.is_promotable()][:5]
 
-    subject = delivery.get("subject_template", "Dev Scout {week}").format(
-        week=ctx.week,
+    subject = delivery.get("subject_template", "Dev Scout {day}").format(
+        day=ctx.day,
+        week=ctx.day,
         top_count=len(top_items),
     )
 
     lines = [
-        f"Dev Scout — {ctx.week}",
+        f"Dev Scout — {ctx.day}",
         "",
-        "This week: practical ways to ship faster and build safer.",
+        "Today: practical ways to ship faster and build safer.",
         "",
     ]
 
@@ -35,12 +36,12 @@ def run_compose_email(ctx: RunContext) -> EmailDraft:
         )
         for step_index, step in enumerate(item.how_to_steps[:5], start=1):
             lines.append(f"     {step_index}. {step}")
-        lines.append(f"   Try Monday: {item.try_monday}")
+        lines.append(f"   Try today: {item.try_today}")
         lines.append("")
 
     lines.extend(
         [
-            "More in the full digest: runs/{week}/05-report/weekly-digest.md".format(week=ctx.week),
+            "More in the full digest: runs/{day}/05-report/daily-digest.md".format(day=ctx.day),
             "",
         ]
     )

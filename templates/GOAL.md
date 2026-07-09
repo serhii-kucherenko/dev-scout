@@ -1,4 +1,4 @@
-# Goal — {{WEEK}}
+# Goal — {{DAY}}
 
 ## Mission
 
@@ -7,7 +7,7 @@ Find practical ways to ship faster and build more robust software with AI-assist
 ## Research questions
 
 1. What new agent/harness setups have published how-tos and measured speed gains?
-2. What CI/testing/review workflows reduced bugs or outage risk this week?
+2. What CI/testing/review workflows reduced bugs or outage risk today?
 3. What tooling dropped setup time or improved production readiness?
 
 ## Sufficiency

@@ -72,12 +72,12 @@ def run_discover(ctx: RunContext, *, use_fixtures: bool = False) -> dict[str, An
     urls = urls[:max_urls]
 
     source_discovery = {
-        "week": ctx.week,
+        "day": ctx.day,
         "url_count": len(urls),
         "urls": urls,
     }
     fetch_plan = {
-        "week": ctx.week,
+        "day": ctx.day,
         "planned": len(urls),
         "entries": urls,
     }

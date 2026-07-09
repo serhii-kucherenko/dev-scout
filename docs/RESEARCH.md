@@ -13,7 +13,7 @@ A finding is only promoted if it is **jam**:
 
 See `config/jam-criteria.yaml`, `templates/jam-item.example.json`, and `system/memory/evidence-rubric.yaml`.
 
-## Weekly flow (in chat)
+## Daily flow (in chat)
 
 1. User kickoff → agent reads [CHAT-LOOP.md](CHAT-LOOP.md)
 2. Discover sources from playbook + `config/sources.yaml`
@@ -25,6 +25,6 @@ See `config/jam-criteria.yaml`, `templates/jam-item.example.json`, and `system/m
 
 ## Research memory
 
-- `data/findings.json` — cross-week ledger (dedupe)
+- `data/findings.json` — cross-day ledger (dedupe)
 - `system/memory/discovery-playbook.yaml` — how to search
 - Prior `runs/` — audit trail

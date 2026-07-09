@@ -1,9 +1,9 @@
-# Weekly run anatomy
+# Daily run anatomy
 
 Created by the Cursor agent during chat — not by a CLI.
 
 ```
-runs/2026-W28/
+runs/2026-07-09/
 ├── GOAL.md                 # from templates/GOAL.md
 ├── RUN.md                  # resume manifest — update every stage
 ├── feedback-001.md         # if judge fails
@@ -17,6 +17,6 @@ runs/2026-W28/
 └── 07-learning/
 ```
 
-ISO week format: `YYYY-Www`.
+Date format: `YYYY-MM-DD`.
 
-To resume: open chat and say "Continue the dev scout loop for runs/2026-W28/".
+To resume: open chat and say "Continue the dev scout loop for runs/2026-07-09/".

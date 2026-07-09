@@ -1,7 +1,7 @@
 [project]
 name = "dev-scout"
 version = "0.1.0"
-description = "Weekly research harness for faster, more robust AI-assisted development"
+description = "Daily research harness for faster, more robust AI-assisted development"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }

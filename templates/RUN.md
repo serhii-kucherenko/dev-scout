@@ -1,4 +1,4 @@
-# Run {{WEEK}}
+# Run {{DAY}}
 
 ## Status
 

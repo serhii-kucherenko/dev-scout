@@ -13,7 +13,7 @@ def _load_corroboration(ctx: RunContext) -> dict[str, str]:
 def run_judge(ctx: RunContext) -> JudgeVerdict:
     cfg = load_yaml(config_dir() / "judge.yaml")
     payload = {
-        "week": ctx.week,
+        "day": ctx.day,
         "items": [item.model_dump(mode="json") for item in run_rank(ctx)],
     }
     items = [JamItem.model_validate(raw) for raw in payload.get("items", [])]

@@ -4,26 +4,26 @@ No CLI. No API keys. Open this repo in Cursor and drive the loop from chat.
 
 ## Kickoff prompts (copy into chat)
 
-**Start a new week:**
+**Start a new day:**
 
 ```
-Run this week's dev scout research loop.
+Run today's dev scout research loop.
 Read AGENTS.md and docs/CHAT-LOOP.md first.
 Find practical ways to ship faster and build more robust software with AI-assisted dev.
 Deliver jam with source links and how-tos when judge passes.
 ```
 
-**Continue an in-progress week:**
+**Continue an in-progress day:**
 
 ```
-Continue the dev scout loop for runs/YYYY-Www/.
+Continue the dev scout loop for runs/YYYY-MM-DD/.
 Read RUN.md and any feedback-*.md, then pick up where we left off.
 ```
 
 **Re-research after thin results:**
 
 ```
-The dev scout judge failed for runs/YYYY-Www/.
+The dev scout judge failed for runs/YYYY-MM-DD/.
 Read gaps.md and feedback files, re-research the gaps, then update judge and outputs.
 ```
 
@@ -33,15 +33,15 @@ Read gaps.md and feedback files, re-research the gaps, then update judge and out
 
 | Stage | What the agent does | Artifacts |
 |-------|---------------------|-----------|
-| 1. Intake | Copy `templates/GOAL.md` → `runs/YYYY-Www/GOAL.md`, check `data/findings.json` | `00-intake/intake.json` |
+| 1. Intake | Copy `templates/GOAL.md` → `runs/YYYY-MM-DD/GOAL.md`, check `data/findings.json` | `00-intake/intake.json` |
 | 2. Discover | Search web per playbook + `config/sources.yaml` | `01-research/discover/fetch-plan.json`, `source-discovery.json` |
 | 3. Collect | Fetch URLs, save excerpts | `01-research/excerpts.jsonl`, optional `raw/` |
 | 4. Lenses | Analyze excerpts per `config/lenses/` | `01-research/lenses/<id>/output.json` |
 | 5. Corroborate | Verify claims with second sources | `01-research/corroboration.json` |
 | 6. Coverage | Summarize research health | `01-research/coverage.json` |
 | 7. Judge | Check `config/judge.yaml` | `04-judge/verdict.json`, `gaps.md` if fail |
-| 8. Output | Only if judge passes | `05-report/weekly-digest.md`, `06-email/email-draft.md` |
-| 9. Learn | Dedupe into ledger | `07-learning/delta-vs-last-week.json`, update `data/findings.json` |
+| 8. Output | Only if judge passes | `05-report/daily-digest.md`, `06-email/email-draft.md` |
+| 9. Learn | Dedupe into ledger | `07-learning/delta-vs-last-day.json`, update `data/findings.json` |
 
 Update `RUN.md` after each stage so the next chat session can resume.
 
@@ -92,7 +92,7 @@ Each finding in lens `output.json` and `03-rank/ranked.json`:
   "evidence_grade": "A",
   "lens_id": "ship-faster",
   "corroboration": "supported",
-  "try_monday": "One concrete first action"
+  "try_today": "One concrete first action"
 }
 ```
 

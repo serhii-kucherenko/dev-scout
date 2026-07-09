@@ -10,7 +10,7 @@ def write_run_md(ctx: RunContext) -> str:
     collect = read_json(ctx.research_path("collect-summary.json"))
 
     lines = [
-        f"# Run {ctx.week}",
+        f"# Run {ctx.day}",
         "",
         "## Research",
         f"- URLs planned: {coverage.get('urls_planned', 0)}",
@@ -24,8 +24,7 @@ def write_run_md(ctx: RunContext) -> str:
         f"- Promoted jam: {verdict.get('promoted_count', 0)}",
         "",
         "## Resume",
-        "Research: `dev-scout discover|collect|lens|corroborate|coverage`",
-        "Output (after judge pass): `dev-scout report|compose-email|send`",
+        "Continue in Cursor chat from the next incomplete stage.",
         "",
     ]
     content = "\n".join(lines)
