@@ -1,4 +1,4 @@
-To: DEV_SCOUT_EMAIL
+To: kucherenko.web@gmail.com // pragma: allowlist secret
 Subject: Dev Scout 2026-07-09 — 5 new ways to ship faster / build safer
 
 Dev Scout — 2026-07-09
