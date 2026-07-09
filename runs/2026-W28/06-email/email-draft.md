@@ -1,3 +1,6 @@
+To: kucherenko.web@gmail.com
+Subject: Dev Scout 2026-W28 - 5 ways to ship faster and build safer
+
 Dev Scout - 2026-W28
 
 This week's jam is about moving review earlier, routing to cheaper default models, and hardening agent systems before they reach prod.
