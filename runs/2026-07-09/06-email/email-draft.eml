@@ -9,11 +9,11 @@ Mission: ship faster & build more robust software with AI-assisted dev.
 Repo: https://github.com/serhii-kucherenko/dev-scout
 
 Quick review of previous email (2099-W01):
-- MCP servers for IDE workflows (both)
-- Claude Code CLI setup (both)
-- Eval harness for LLM regressions (robustness)
-- Ralph loop agent harness (speed)
-- LangGraph production deploy patterns (robustness)
+- MCP servers for IDE workflows (both) — https://github.com/modelcontextprotocol/servers
+- Claude Code CLI setup (both) — https://github.com/anthropics/claude-code
+- Eval harness for LLM regressions (robustness) — https://github.com/openai/evals
+- Ralph loop agent harness (speed) — https://github.com/vercel-labs/ralph-loop-agent
+- LangGraph production deploy patterns (robustness) — https://github.com/langchain-ai/langgraph
 
 Do not re-read those unless you still need to act on them.
 

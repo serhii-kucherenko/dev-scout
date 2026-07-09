@@ -10,7 +10,7 @@ After judge pass, Dev Scout:
 Emails are kept **scannable** — full steps and evidence live in the digest.
 
 1. **Repo link** — every brief links back to the project repo (`repo_url` in `config/delivery.yaml`, or `DEV_SCOUT_REPO_URL`)
-2. **Quick review of the previous email** — titles/benefits from the last brief (or “first brief” if none)
+2. **Quick review of the previous email** — titles, benefits, and source links from the last brief (or “first brief” if none), so you can jump straight back into a topic
 3. **New since last brief** — findings whose source was not already emailed or stored in `data/findings.json`. Each is one compact block:
    - title with a tag line — `benefit · setup effort · evidence grade` so you can decide at a glance whether it's worth a look
    - **Why it matters** — one line on what it's for
