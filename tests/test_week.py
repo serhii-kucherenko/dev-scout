@@ -45,6 +45,21 @@ def test_week_with_fixtures_produces_email(tmp_path, monkeypatch):
     assert result.verdict.sufficient
     assert result.email_path is not None
     assert result.digest_path is not None
+    email_dir = runs / "2099-W01" / "06-email"
+    manifest = read_json(runs / "2099-W01" / "run.manifest.json")
+    draft = read_json(email_dir / "email-draft.json")
+    eml_text = (email_dir / "email-draft.eml").read_text(encoding="utf-8")
+
+    assert (email_dir / "email-draft.md").exists()
+    assert (email_dir / "email-draft.json").exists()
+    assert (email_dir / "email-draft.eml").exists()
+    assert draft["to"] == manifest["email_to"]
+    assert draft["subject"] == manifest["email_subject"]
+    assert manifest["email_draft_path"] == "runs/2099-W01/06-email/email-draft.md"
+    assert manifest["email_json_path"] == "runs/2099-W01/06-email/email-draft.json"
+    assert manifest["email_eml_path"] == "runs/2099-W01/06-email/email-draft.eml"
+    assert manifest["digest_path"] == "runs/2099-W01/05-report/weekly-digest.md"
+    assert eml_text.startswith(f"To: {draft['to']}\nSubject: {draft['subject']}\n")
     ranked = read_json(runs / "2099-W01" / "03-rank" / "ranked.json")
     assert all(
         not item["source_url"].startswith("https://example.com/dev-scout")

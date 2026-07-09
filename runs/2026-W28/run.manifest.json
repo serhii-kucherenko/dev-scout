@@ -1,5 +1,10 @@
 {
   "week": "2026-W28",
   "sufficient": true,
-  "email_subject": "Dev Scout 2026-W28 - 5 ways to ship faster and build safer"
+  "email_to": "kucherenko.web@gmail.com",
+  "email_subject": "Dev Scout 2026-W28 — 5 ways to ship faster / build safer",
+  "digest_path": "runs/2026-W28/05-report/weekly-digest.md",
+  "email_draft_path": "runs/2026-W28/06-email/email-draft.md",
+  "email_json_path": "runs/2026-W28/06-email/email-draft.json",
+  "email_eml_path": "runs/2026-W28/06-email/email-draft.eml"
 }

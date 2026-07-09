@@ -1,7 +1,7 @@
 {
-  "subject": "Dev Scout 2026-W28 - 5 ways to ship faster and build safer",
+  "subject": "Dev Scout 2026-W28 — 5 ways to ship faster / build safer",
   "to": "kucherenko.web@gmail.com",
-  "body_text": "Dev Scout - 2026-W28\n\nThis week's jam is about moving review earlier, routing to cheaper default models, and hardening agent systems before they reach prod.\n\n1. Run Bugbot before you push (both)\n   Why: Move review left so the same agent catches bugs on the diff before the PR roundtrip starts.\n   Evidence: Cursor says Bugbot is over 3x faster, 22% cheaper, finds 10% more bugs per review, and 90% of runs now finish in under 3 minutes.\n   Source: https://cursor.com/blog/bugbot-updates-june-2026\n   Try Monday: Enable Bugbot on one active repo and require its check on draft PRs for one week.\n\n2. Make GPT-5 mini the default coding workhorse (both)\n   Why: A cheap high-skill default model lets teams save the expensive model for cases where verification says more horsepower is actually needed.\n   Evidence: OpenAI reports GPT-5 mini scores 71.0% on SWE-bench Verified and 71.6% on Aider polyglot while costing $0.25 per 1M input tokens and $2 per 1M output tokens.\n   Source: https://openai.com/index/introducing-gpt-5-for-developers/\n   Try Monday: Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails.\n\n3. Treat system-prompt edits like code changes (robustness)\n   Why: Prompt tweaks can silently degrade code quality, so they need the same gating discipline as production code.\n   Evidence: Anthropic reports that one verbosity instruction caused a 3% drop on both Opus 4.6 and 4.7 in a broader evaluation set, and it immediately reverted the change.\n   Source: https://www.anthropic.com/engineering/april-23-postmortem\n   Try Monday: Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites.\n\n4. Design containment at the environment layer first (robustness)\n   Why: Sandbox and egress boundaries keep failures bounded even when the model, a tool, or a user prompt goes off the rails.\n   Evidence: Anthropic says its Claude Code sandbox cut permission prompts by 84%, auto mode catches about 83% of overeager behaviors, and Gray Swan prompt-injection success is roughly 0.1% on single attempts.\n   Source: https://www.anthropic.com/engineering/how-we-contain-claude\n   Try Monday: Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs.\n\n5. Use always-on cloud agents for review, triage, and incident chores (both)\n   Why: Background automations keep review and maintenance work moving without waiting for someone to open the IDE.\n   Evidence: Cursor says Bugbot-like automations run thousands of times a day and have caught millions of bugs; its internal security-review automation has caught multiple vulnerabilities and critical bugs; Runlayer says the setup helps them move faster than teams five times their size.\n   Source: https://cursor.com/blog/automations\n   Try Monday: Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings.\n\nFull detail: runs/2026-W28/05-report/weekly-digest.md\n",
+  "body_text": "Dev Scout — 2026-W28\n\nThis week: practical ways to ship faster and build safer.\n\n1. Run Bugbot before you push (both)\n   Why: Move review left so the same agent catches bugs on the diff before the PR roundtrip starts.\n   Source: https://cursor.com/blog/bugbot-updates-june-2026\n   How-to: https://cursor.com/docs/bugbot\n   Steps:\n     1. Connect the repository to Cursor and enable Bugbot for the repo in the dashboard.\n     2. Run /review or /review-bugbot locally before pushing so the agent inspects the exact diff first.\n     3. Turn on incremental review or mention-only mode to keep feedback focused on new commits.\n     4. Require the Cursor Bugbot check in branch protection once the team trusts the signal.\n   Try Monday: Enable Bugbot on one active repo and require its check on draft PRs for one week.\n\n2. Make GPT-5 mini the default coding workhorse (both)\n   Why: A cheap high-skill default model lets teams save the expensive model for cases where verification says more horsepower is actually needed.\n   Source: https://openai.com/index/introducing-gpt-5-for-developers/\n   How-to: https://openai.com/index/introducing-gpt-5-for-developers/\n   Steps:\n     1. Set gpt-5-mini as the default model for routine implementation, repo Q and A, and PR-sized coding tasks.\n     2. Keep the loop verification-based so you escalate only when tests fail, tool use gets messy, or the task stalls.\n     3. Use lower verbosity for tight edit loops and increase it only when you need fuller plans or explanations.\n     4. Track solve rate and spend side by side for mini-default versus full-model escalations.\n   Try Monday: Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails.\n\n3. Treat system-prompt edits like code changes (robustness)\n   Why: Prompt tweaks can silently degrade code quality, so they need the same gating discipline as production code.\n   Source: https://www.anthropic.com/engineering/april-23-postmortem\n   How-to: https://www.anthropic.com/engineering/april-23-postmortem\n   Steps:\n     1. Run a broad per-model eval suite for every prompt change that affects an agent or coding workflow.\n     2. Use ablations to isolate which prompt line changes quality, latency, or token use.\n     3. Soak the change before full rollout if it trades off intelligence versus speed or cost.\n     4. Roll out gradually and revert immediately if the broader eval set regresses.\n   Try Monday: Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites.\n\n4. Design containment at the environment layer first (robustness)\n   Why: Sandbox and egress boundaries keep failures bounded even when the model, a tool, or a user prompt goes off the rails.\n   Source: https://www.anthropic.com/engineering/how-we-contain-claude\n   How-to: https://www.anthropic.com/engineering/how-we-contain-claude\n   Steps:\n     1. Choose the isolation pattern that matches the user and task: ephemeral container, workspace sandbox, or sealed VM.\n     2. Default to network deny and limit writes to the workspace or explicitly mounted paths.\n     3. Keep credentials outside the sandbox and pass only scoped session tokens inside.\n     4. Delay project-local config parsing until after trust is established, and inspect tool output before it reaches model context.\n   Try Monday: Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs.\n\n5. Use always-on cloud agents for review, triage, and incident chores (both)\n   Why: Background automations keep review and maintenance work moving without waiting for someone to open the IDE.\n   Source: https://cursor.com/blog/automations\n   How-to: https://cursor.com/docs/cloud-agent/automations\n   Steps:\n     1. Create a new automation from the Agents Window, cursor.com/automations, or the /automate skill.\n     2. Pick a trigger such as pull request opened, CI completed, Slack, webhook, or cron.\n     3. Write the prompt and enable only the tools it needs, such as PR comments, Slack, MCP, or memories.\n     4. Choose whether it should run against one repo, multiple repos, or no repo, then save and activate it.\n   Try Monday: Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings.\n\nMore in the full digest: runs/2026-W28/05-report/weekly-digest.md\n",
   "body_html": null,
   "top_items": [
     {
@@ -22,7 +22,6 @@
       "evidence_grade": "A",
       "lens_id": "ship-faster",
       "corroboration": "supported",
-      "corroboration_url": "https://cursor.com/docs/bugbot",
       "try_monday": "Enable Bugbot on one active repo and require its check on draft PRs for one week."
     },
     {
@@ -43,7 +42,6 @@
       "evidence_grade": "A",
       "lens_id": "model-workflows",
       "corroboration": "weak",
-      "corroboration_url": null,
       "try_monday": "Change one editor or agent default to GPT-5 mini and keep a simple escalation rule when verification fails."
     },
     {
@@ -64,7 +62,6 @@
       "evidence_grade": "A",
       "lens_id": "build-robust",
       "corroboration": "supported",
-      "corroboration_url": "https://news.ycombinator.com/item?id=47878905",
       "try_monday": "Put your agent prompt under version control and block merges unless the change passes both narrow and broad eval suites."
     },
     {
@@ -85,7 +82,6 @@
       "evidence_grade": "A",
       "lens_id": "production-patterns",
       "corroboration": "weak",
-      "corroboration_url": null,
       "try_monday": "Move one internal coding agent into a workspace-only sandbox with network denied by default and audit what access it still truly needs."
     },
     {
@@ -106,7 +102,6 @@
       "evidence_grade": "B",
       "lens_id": "tooling-setups",
       "corroboration": "supported",
-      "corroboration_url": "https://cursor.com/docs/cloud-agent/automations",
       "try_monday": "Ship one cron or PR-open automation that reviews merged code for missing tests and posts only high-confidence findings."
     }
   ]
