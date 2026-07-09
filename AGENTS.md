@@ -33,10 +33,19 @@ intake → discover → collect → lenses → corroborate → coverage → judg
 | **Corroborate** | Find second sources; write `01-research/corroboration.json` |
 | **Coverage** | Write `01-research/coverage.json` |
 | **Judge** | Apply `config/judge.yaml`; write `04-judge/verdict.json` |
-| **Output** | Write `03-rank/ranked.json`, `05-report/daily-digest.md`, `06-email/email-draft.md` (To: from `DEV_SCOUT_EMAIL`) |
+| **Output** | Write `03-rank/ranked.json`, `05-report/daily-digest.md`, `06-email/email-draft.*` addressed to `DEV_SCOUT_EMAIL` |
+| **Send** | Email the findings brief to `DEV_SCOUT_EMAIL` (Resend: `RESEND_API_KEY` + `DELIVERY_FROM`) |
 | **Learn** | Update `data/findings.json`, write `07-learning/delta-vs-last-day.json` |
 
 Update `RUN.md` after every stage.
+
+After judge passes and drafts are written, **send the findings email** when secrets are available:
+
+```bash
+python -m dev_scout.cli send --day YYYY-MM-DD
+```
+
+(or the full `day` pipeline, which sends automatically). Record status in `06-email/send-result.json`.
 
 ## Jam rules (non-negotiable)
 
@@ -45,9 +54,11 @@ Update `RUN.md` after every stage.
 - No meta fluff, listicles without links, hype without how-to
 - See `config/jam-criteria.yaml` and `templates/jam-item.example.json`
 
-## Discovery (subscriptions only — no API keys)
+## Discovery (subscriptions only — no LLM/search API keys)
 
-Use only what the user already pays for. **Never ask for OpenAI, Anthropic, Exa, or other API keys.**
+Use only what the user already pays for for research. **Never ask for OpenAI, Anthropic, or Exa keys.**
+
+Delivery of the findings email uses `DEV_SCOUT_EMAIL` + Resend (`RESEND_API_KEY`, `DELIVERY_FROM`) — see [docs/DELIVERY.md](docs/DELIVERY.md).
 
 | Tool | Use |
 |------|-----|
@@ -70,7 +81,8 @@ Write `feedback-NNN.md` from [templates/feedback.md](templates/feedback.md). Tel
 Tell the user:
 
 > Today's jam is ready: `runs/YYYY-MM-DD/06-email/email-draft.md`  
-> Full detail: `runs/YYYY-MM-DD/05-report/daily-digest.md`
+> Full detail: `runs/YYYY-MM-DD/05-report/daily-digest.md`  
+> Sent to: `$DEV_SCOUT_EMAIL` (see `06-email/send-result.json`)
 
 ## Optional
 

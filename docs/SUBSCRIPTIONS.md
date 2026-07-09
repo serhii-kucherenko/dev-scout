@@ -1,37 +1,44 @@
-# Subscriptions only — no API keys
+# Subscriptions — research without LLM API keys
 
-Dev Scout is designed to run entirely through **what you already pay for**. No OpenAI, Anthropic, Exa, or Resend keys.
+Dev Scout research runs through **what you already pay for** (Cursor). No OpenAI, Anthropic, or Exa keys for discovery.
 
-Optional: set `DEV_SCOUT_EMAIL` (GitHub Actions variable/secret or local `.env`) so email drafts are addressed to you.
-
-## What you use
+## What you use for research
 
 | You already have | Dev Scout uses it for |
 |------------------|----------------------|
-| **Cursor Pro/Business** | Agent chat — the whole loop runs here |
+| **Cursor Pro/Business** | Agent chat — the whole research loop runs here |
 | **Cursor web search** | Finding recent guides, repos, blog posts |
 | **GitHub account** (`gh auth`) | Optional: `gh search` for repos and releases |
 | **agent-reach** (in Cursor) | HN, Reddit, Twitter/X, GitHub, articles — free backends |
 
-## What you do not need
+## What you do not need for research
 
 - OpenAI API key
 - Anthropic API key
 - Google/Gemini API key
 - Exa / Brave search API keys
-- Resend or SMTP for the chat loop (email is a **draft** in the repo — `runs/…/06-email/email-draft.md` / `.eml`, addressed via `DEV_SCOUT_EMAIL`)
 
-## If an agent asks for API keys
+## Delivery (findings email)
+
+After judge pass, the findings brief is **emailed** to you. Set these in GitHub Actions secrets (or local `.env`):
+
+| Secret | Purpose |
+|--------|---------|
+| `DEV_SCOUT_EMAIL` | Where the findings report is sent |
+| `RESEND_API_KEY` | Resend API key |
+| `DELIVERY_FROM` | Verified From address in Resend |
+
+See [DELIVERY.md](DELIVERY.md) and `.env.example`.
+
+## If an agent asks for LLM API keys
 
 Refuse and use [DISCOVERY-PLAYBOOK.md](DISCOVERY-PLAYBOOK.md) instead: Cursor search + agent-reach + web fetch.
 
 ## Optional local setup
 
-Only if you want CI to run Python smoke tests (not required for the chat loop):
+Only if you want CI / CLI smoke tests:
 
 ```bash
 pip install -e ".[dev]"
 pytest
 ```
-
-Only optional env for delivery address: `DEV_SCOUT_EMAIL` (see `.env.example` and [DELIVERY.md](DELIVERY.md)).

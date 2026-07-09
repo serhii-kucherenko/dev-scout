@@ -40,14 +40,18 @@ def _write_lens_output(ctx: RunContext, lens_id: str, items: list[JamItem]) -> N
 def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
     monkeypatch.setenv("DEV_SCOUT_EMAIL", "scout@example.com")
+    monkeypatch.delenv("RESEND_API_KEY", raising=False)
+    monkeypatch.delenv("DELIVERY_FROM", raising=False)
 
     result = run_day("2099-01-01", use_fixtures=True)
     assert result.verdict.sufficient
     assert result.email_path is not None
     assert result.digest_path is not None
+    assert result.send_status == "skipped"
     email_dir = runs / "2099-01-01" / "06-email"
     manifest = read_json(runs / "2099-01-01" / "run.manifest.json")
     draft = read_json(email_dir / "email-draft.json")
+    send_result = read_json(email_dir / "send-result.json")
     eml_text = (email_dir / "email-draft.eml").read_text(encoding="utf-8")
 
     assert (email_dir / "email-draft.md").exists()
@@ -60,6 +64,9 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     assert manifest["email_json_path"] == "runs/2099-01-01/06-email/email-draft.json"
     assert manifest["email_eml_path"] == "runs/2099-01-01/06-email/email-draft.eml"
     assert manifest["digest_path"] == "runs/2099-01-01/05-report/daily-digest.md"
+    assert manifest["send_status"] == "skipped"
+    assert send_result["status"] == "skipped"
+    assert send_result["to"] == "scout@example.com"
     assert eml_text.startswith(f"To: {draft['to']}\nSubject: {draft['subject']}\n")
     ranked = read_json(runs / "2099-01-01" / "03-rank" / "ranked.json")
     assert all(
@@ -68,6 +75,48 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     )
     assert (runs / "2099-01-01" / "05-report" / "daily-digest.md").exists()
     assert (runs / "2099-01-01" / "07-learning" / "delta-vs-last-day.json").exists()
+
+
+def test_day_sends_findings_email_when_resend_configured(tmp_path, monkeypatch):
+    runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
+    monkeypatch.setenv("DEV_SCOUT_EMAIL", "scout@example.com")
+    monkeypatch.setenv("RESEND_API_KEY", "re_test_key")
+    monkeypatch.setenv("DELIVERY_FROM", "Dev Scout <onboarding@resend.dev>")
+
+    class _FakeResponse:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> dict[str, str]:
+            return {"id": "email_123"}
+
+    class _FakeClient:
+        def __init__(self, *args, **kwargs) -> None:
+            self.kwargs = kwargs
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args) -> None:
+            return None
+
+        def post(self, url, headers=None, json=None):
+            assert url == "https://api.resend.com/emails"
+            assert headers["Authorization"] == "Bearer re_test_key"
+            assert json["to"] == ["scout@example.com"]
+            assert json["from"] == "Dev Scout <onboarding@resend.dev>"
+            assert "Dev Scout — 2099-01-01" in json["text"]
+            return _FakeResponse()
+
+    monkeypatch.setattr("dev_scout.delivery.send.httpx.Client", _FakeClient)
+
+    result = run_day("2099-01-01", use_fixtures=True)
+    assert result.send_status == "sent"
+    assert result.send_result["id"] == "email_123"
+    assert result.send_result["to"] == "scout@example.com"
+    send_result = read_json(runs / "2099-01-01" / "06-email" / "send-result.json")
+    assert send_result["status"] == "sent"
+    assert send_result["id"] == "email_123"
 
 
 def test_resolve_recipient_prefers_env(monkeypatch):

@@ -40,8 +40,9 @@ Read gaps.md and feedback files, re-research the gaps, then update judge and out
 | 5. Corroborate | Verify claims with second sources | `01-research/corroboration.json` |
 | 6. Coverage | Summarize research health | `01-research/coverage.json` |
 | 7. Judge | Check `config/judge.yaml` | `04-judge/verdict.json`, `gaps.md` if fail |
-| 8. Output | Only if judge passes; put `To: $DEV_SCOUT_EMAIL` on the draft | `05-report/daily-digest.md`, `06-email/email-draft.md` (+ `.json` / `.eml`) |
-| 9. Learn | Dedupe into ledger | `07-learning/delta-vs-last-day.json`, update `data/findings.json` |
+| 8. Output | Only if judge passes; address draft to `$DEV_SCOUT_EMAIL` | `05-report/daily-digest.md`, `06-email/email-draft.md` (+ `.json` / `.eml`) |
+| 9. Send | Email the findings brief to `$DEV_SCOUT_EMAIL` via Resend | `06-email/send-result.json` |
+| 10. Learn | Dedupe into ledger | `07-learning/delta-vs-last-day.json`, update `data/findings.json` |
 
 Update `RUN.md` after each stage so the next chat session can resume.
 

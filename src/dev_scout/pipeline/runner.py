@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from dev_scout.compose.email import run_compose_email
 from dev_scout.context import RunContext
+from dev_scout.delivery.send import run_send
 from dev_scout.judge.engine import run_judge
 from dev_scout.learning.ledger import run_learning
 from dev_scout.models.jam import JudgeVerdict
@@ -22,6 +23,8 @@ class PipelineResult:
     email_path: str | None = None
     digest_path: str | None = None
     run_md_path: str | None = None
+    send_status: str | None = None
+    send_result: dict[str, str] = field(default_factory=dict)
 
 
 def run_research_pipeline(ctx: RunContext, *, use_fixtures: bool = False) -> None:
@@ -44,6 +47,9 @@ def run_output_pipeline(ctx: RunContext, verdict: JudgeVerdict) -> PipelineResul
     result.digest_path = run_report(ctx)
     draft = run_compose_email(ctx)
     result.email_path = str(ctx.stage_path("06-email") / "email-draft.md")
+    send_result = run_send(ctx)
+    result.send_result = send_result
+    result.send_status = send_result.get("status")
     run_learning(ctx)
     write_run_md(ctx)
     result.run_md_path = str(ctx.run_dir / "RUN.md")
@@ -58,6 +64,8 @@ def run_output_pipeline(ctx: RunContext, verdict: JudgeVerdict) -> PipelineResul
             "email_draft_path": f"runs/{ctx.day}/06-email/email-draft.md",
             "email_json_path": f"runs/{ctx.day}/06-email/email-draft.json",
             "email_eml_path": f"runs/{ctx.day}/06-email/email-draft.eml",
+            "send_status": result.send_status,
+            "send_result": send_result,
         },
     )
     return result

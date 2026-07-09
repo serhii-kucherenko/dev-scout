@@ -168,10 +168,19 @@ def day_cmd(
         "digest": result.digest_path,
         "email": result.email_path,
         "run_md": result.run_md_path,
+        "send_status": result.send_status,
+        "send_result": result.send_result,
     }
     _emit(payload, as_json)
     if result.email_path:
         console.print(f"\n[green]Email draft:[/green] {result.email_path}")
+    if result.send_status == "sent":
+        console.print(
+            f"[green]Sent to[/green] {result.send_result.get('to', '')} "
+            f"(id={result.send_result.get('id', '')})"
+        )
+    elif result.send_status:
+        console.print(f"[yellow]Send {result.send_status}:[/yellow] {result.send_result.get('reason', '')}")
 
 
 @app.command()

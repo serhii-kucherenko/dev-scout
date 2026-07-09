@@ -14,7 +14,8 @@ This repo is a **chat-driven research harness**, not a CLI tool. The user runs t
 3. Execute the research loop by **writing files** and **using web research tools** — do not tell the user to run terminal commands
 4. Use **Cursor web search**, **agent-reach**, and web fetch — never ask for external API keys ([docs/SUBSCRIPTIONS.md](docs/SUBSCRIPTIONS.md))
 5. Never write digest or email until judge criteria in `config/judge.yaml` pass
-6. End by pointing the user to `runs/YYYY-MM-DD/06-email/email-draft.md`
+6. Email the findings brief to `DEV_SCOUT_EMAIL` (Resend) when secrets are available; write `06-email/send-result.json`
+7. End by pointing the user to `runs/YYYY-MM-DD/06-email/email-draft.md` and the send result
 
 ## Jam rules
 
