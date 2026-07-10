@@ -1,4 +1,5 @@
 id: model-workflows
+default_track: ai-development
 question: "What model routing or cost/latency choices improve dev workflows?"
 benefit: speed
 required_evidence: "pricing, eval, or latency numbers"

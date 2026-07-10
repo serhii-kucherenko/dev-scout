@@ -1,4 +1,5 @@
 id: build-robust
+default_track: ai-driven-development
 question: "What testing, eval harnesses, or guardrails reduced bugs or outage risk?"
 benefit: robustness
 required_evidence: "fewer bugs, caught regressions, or eval score"

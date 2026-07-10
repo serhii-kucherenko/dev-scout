@@ -3,8 +3,8 @@
   "items": [
     {
       "id": "model-workflows-20260710-cws",
-      "title": "Schedule parallel subagents inside prompt-cache warm windows",
-      "why": "A 5-minute cache TTL means sequential subagent calls pay full prefix cost multiple times; batching independent calls into one warm window can cut shared-prefix spend sharply.",
+      "title": "Run parallel subagents while the prompt cache is still warm",
+      "why": "Cached prompts expire after ~5 minutes. Subagents that run one-by-one often pay for the same prefix repeatedly. Start independent subagents together right after a warm-up call.",
       "benefit": "speed",
       "source_url": "https://dev.to/akaranjkar08/prompt-cache-orchestration-beat-the-5-min-ttl-miss-2026-2e31",
       "how_to_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
@@ -15,12 +15,13 @@
         "Monitor `cache_read_input_tokens` and target 80%+ hit rate on the shared prefix after one tuning iteration."
       ],
       "setup_cost": "hours",
-      "evidence": "Cache-Warm Sequencing case: five 200s sequential subagents span three cache windows; parallel batch at T=0 finishes in ~200s with one write plus four reads — up to ~10× prefix cost reduction cited in the framework write-up.",
+      "evidence": "Cache-Warm Sequencing case: five 200s sequential subagents span three cache windows; parallel batch at T=0 finishes in ~200s with one write plus four reads \u2014 up to ~10\u00d7 prefix cost reduction cited in the framework write-up.",
       "evidence_grade": "B",
       "lens_id": "model-workflows",
       "corroboration": "supported",
       "corroboration_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
-      "try_today": "Identify two independent agent calls in your pipeline and run them concurrently after a cache-warm request."
+      "try_today": "Find two subagent steps that don't need each other's output. Run them in parallel after a cache-warm request and compare `cache_read_input_tokens`.",
+      "track": "ai-development"
     }
   ]
 }

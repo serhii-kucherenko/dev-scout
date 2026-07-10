@@ -37,6 +37,11 @@ class Benefit(str, Enum):
     BOTH = "both"
 
 
+class Track(str, Enum):
+    AI_DEVELOPMENT = "ai-development"
+    AI_DRIVEN_DEVELOPMENT = "ai-driven-development"
+
+
 class SetupCost(str, Enum):
     MINUTES = "minutes"
     HOURS = "hours"
@@ -68,6 +73,7 @@ class JamItem(BaseModel):
     evidence: str
     evidence_grade: EvidenceGrade
     lens_id: str
+    track: Track = Track.AI_DRIVEN_DEVELOPMENT
     corroboration: CorroborationStatus = CorroborationStatus.WEAK
     try_today: str = ""
 

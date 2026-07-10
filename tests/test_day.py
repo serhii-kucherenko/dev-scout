@@ -80,7 +80,7 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     assert "New since last brief:" in body
     assert "Why it matters:" in body
     assert "grade " in body
-    assert "Try:" in body
+    assert "Do this next:" in body
     assert "Link:" in body
     assert "Full detail (all steps + evidence): runs/2099-01-01/05-report/daily-digest.md" in body
     assert draft["new_count"] == len(draft["top_items"]) > 0
@@ -236,7 +236,7 @@ def test_day_sends_findings_email_when_resend_configured(tmp_path, monkeypatch):
             assert json["from"] == "Dev Scout <onboarding@resend.dev>"
             assert "Dev Scout — 2099-01-01" in json["text"]
             assert "Why it matters:" in json["text"]
-            assert "Try:" in json["text"]
+            assert "Do this next:" in json["text"]
             assert "Link:" in json["text"]
             return _FakeResponse()
 

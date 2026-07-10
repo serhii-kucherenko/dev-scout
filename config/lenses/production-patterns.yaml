@@ -1,4 +1,5 @@
 id: production-patterns
+default_track: ai-development
 question: "What deploy, observability, or rollback patterns shipped from real teams?"
 benefit: robustness
 required_evidence: "named production outcome"

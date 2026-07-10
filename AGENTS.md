@@ -51,6 +51,7 @@ python -m dev_scout.cli send --day YYYY-MM-DD
 
 - Every promoted item: `source_url` + `how_to_steps` (≥3) + grade A or B
 - Benefit must be `speed`, `robustness`, or `both`
+- Track must be `ai-development` (building AI systems) or `ai-driven-development` (using AI to build software) — see `config/tracks.yaml`
 - No meta fluff, listicles without links, hype without how-to
 - See `config/jam-criteria.yaml` and `templates/jam-item.example.json`
 

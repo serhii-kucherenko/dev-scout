@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from dev_scout.models.jam import Benefit, EvidenceGrade, JamItem, SetupCost
+from dev_scout.models.jam import Benefit, EvidenceGrade, JamItem, SetupCost, Track
 from dev_scout.util import config_dir, load_yaml, read_jsonl
 
 
@@ -94,6 +94,7 @@ def analyze_excerpt(
     grade = _grade_from_signals(_has_metric(text), has_repo, len(steps), tier)
 
     source_url = url
+    track_raw = lens_cfg.get("default_track", Track.AI_DRIVEN_DEVELOPMENT.value)
     return JamItem(
         id=f"{lens_id}-{index}",
         title=title[:140],
@@ -106,6 +107,7 @@ def analyze_excerpt(
         evidence=lens_cfg.get("required_evidence", "Documented outcome"),
         evidence_grade=grade,
         lens_id=lens_id,
+        track=Track(track_raw),
         try_today=steps[0] if steps else "Review the linked source",
     )
 

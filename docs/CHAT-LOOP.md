@@ -92,6 +92,7 @@ Each finding in lens `output.json` and `03-rank/ranked.json`:
   "evidence": "2x PR velocity",
   "evidence_grade": "A",
   "lens_id": "ship-faster",
+  "track": "ai-driven-development",
   "corroboration": "supported",
   "try_today": "One concrete first action"
 }

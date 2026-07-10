@@ -15,6 +15,7 @@
   "evidence": "Team reported 2x PR throughput in primary post",
   "evidence_grade": "A",
   "lens_id": "ship-faster",
+  "track": "ai-driven-development",
   "corroboration": "supported",
   "try_today": "Add verify step to one agent workflow on a small PR"
 }

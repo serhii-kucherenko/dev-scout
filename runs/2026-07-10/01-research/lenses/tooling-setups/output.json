@@ -3,8 +3,8 @@
   "items": [
     {
       "id": "tooling-setups-20260710-agents-rules-layer",
-      "title": "Layer AGENTS.md for shared truth and .cursor/rules for scoped activation",
-      "why": "Duplicated instructions across CLAUDE.md, AGENTS.md, and always-on rules drift quickly; one canonical AGENTS.md plus thin glob-scoped .mdc rules keeps agents aligned without blowing the context budget.",
+      "title": "One AGENTS.md for everyone, small rules only where needed",
+      "why": "Duplicating instructions across CLAUDE.md, AGENTS.md, and a huge always-on rule means they drift apart. Shared basics in AGENTS.md; folder-specific notes in small `.mdc` rules.",
       "benefit": "both",
       "source_url": "https://cursor.com/docs/context/rules",
       "how_to_url": "https://cursor.com/docs/context/rules",
@@ -20,7 +20,8 @@
       "lens_id": "tooling-setups",
       "corroboration": "supported",
       "corroboration_url": "https://taskprio.com/cursor-rules",
-      "try_today": "Move one always-on mega-prompt into AGENTS.md and split the rest into two scoped .mdc rules with globs."
+      "try_today": "Move your repo's shared \"how we work\" text into `AGENTS.md`. Delete duplicate copies. Add one `.mdc` rule scoped to `src/**/*.ts`.",
+      "track": "ai-driven-development"
     }
   ]
 }

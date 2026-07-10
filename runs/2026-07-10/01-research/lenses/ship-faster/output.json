@@ -3,8 +3,8 @@
   "items": [
     {
       "id": "ship-faster-20260710-oxlint-ci",
-      "title": "Run oxlint before ESLint to cut monorepo lint time",
-      "why": "Lint is often the slowest low-signal CI step; a Rust linter as first pass catches most issues in seconds so ESLint only runs on the remainder.",
+      "title": "Run oxlint first to shrink CI lint time",
+      "why": "Full ESLint on a large monorepo can take minutes every PR. oxlint catches most problems in seconds; ESLint only runs on what oxlint cleared.",
       "benefit": "speed",
       "source_url": "https://oxc.rs/docs/guide/usage/linter.html",
       "how_to_url": "https://oxc.rs/docs/guide/usage/linter.html",
@@ -15,17 +15,18 @@
         "Wire oxlint into Turbo as a cached task so unchanged packages skip re-lint on cache hit."
       ],
       "setup_cost": "minutes",
-      "evidence": "Oxlint benchmarks show 50–100× faster than ESLint on equivalent rule sets; a monorepo team reported oxlint as a 30–40% per-job speedup as a drop-in pre-check.",
+      "evidence": "Oxlint benchmarks show 50\u2013100\u00d7 faster than ESLint on equivalent rule sets; a monorepo team reported oxlint as a 30\u201340% per-job speedup as a drop-in pre-check.",
       "evidence_grade": "A",
       "lens_id": "ship-faster",
       "corroboration": "supported",
       "corroboration_url": "https://dev.to/jimmyyeung/journey-of-systematically-cut-our-monorepo-ci-time-in-half-ec8",
-      "try_today": "Add oxlint to one repo's CI and compare lint-stage duration on the next green PR."
+      "try_today": "`pnpm add -D oxlint`, add a `lint:fast` script, run it before ESLint in CI on one repo, and compare lint job time on the next PR.",
+      "track": "ai-driven-development"
     },
     {
       "id": "ship-faster-20260710-worktrees-turbo",
-      "title": "Give each parallel agent its own git worktree under Turbo remote cache",
-      "why": "Multiple agents on one checkout thrash the working tree and bust caches; worktrees isolate branches while Turbo 3 shares remote cache across them.",
+      "title": "Give each parallel agent its own folder, share Turbo cache",
+      "why": "Two agents switching branches in one checkout overwrite each other's work. Git worktrees = separate folders, same repo. Turbo remote cache reuses build results for unchanged packages.",
       "benefit": "speed",
       "source_url": "https://turborepo.dev/docs/crafting-your-repository/constructing-ci",
       "how_to_url": "https://callsphere.ai/blog/vw8h-build-ai-agent-cicd-turborepo-monorepo-2026.md",
@@ -41,7 +42,8 @@
       "lens_id": "ship-faster",
       "corroboration": "supported",
       "corroboration_url": "https://callsphere.ai/blog/vw8h-build-ai-agent-cicd-turborepo-monorepo-2026.md",
-      "try_today": "Spin up two worktrees on one repo and confirm both hit the same remote Turbo cache on an unchanged package."
+      "try_today": "`git worktree add ../agent-b feat/other-branch`. Run `turbo build` in both folders without changing code. Confirm the second run hits remote cache.",
+      "track": "ai-driven-development"
     }
   ]
 }

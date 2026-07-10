@@ -10,8 +10,9 @@ A finding is only promoted if it is **jam**:
 - **How-to steps** (3–7 concrete steps)
 - **Evidence** (metric, benchmark, named outcome)
 - Benefit: `speed`, `robustness`, or `both`
+- Track: `ai-development` (building AI systems) or `ai-driven-development` (using AI to build software)
 
-See `config/jam-criteria.yaml`, `templates/jam-item.example.json`, and `system/memory/evidence-rubric.yaml`.
+See `config/jam-criteria.yaml`, `config/tracks.yaml`, `templates/jam-item.example.json`, and `system/memory/evidence-rubric.yaml`.
 
 ## Daily flow (in chat)
 

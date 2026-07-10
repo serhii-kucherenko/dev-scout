@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 
 from dev_scout.context import RunContext
-from dev_scout.models.jam import EmailDraft, JamItem, canonicalize_source_url
+from dev_scout.models.jam import EmailDraft, JamItem, Track, canonicalize_source_url
 from dev_scout.util import config_dir, data_dir, load_yaml, read_json, runs_dir, write_json
 
 
@@ -137,6 +137,31 @@ def select_email_items(
     return shown_new, recap_items[:backfill]
 
 
+def _track_config() -> dict:
+    return load_yaml(config_dir() / "tracks.yaml").get("tracks", {})
+
+
+def _track_order() -> list[Track]:
+    return [Track.AI_DEVELOPMENT, Track.AI_DRIVEN_DEVELOPMENT]
+
+
+def _track_label(track: Track) -> str:
+    meta = _track_config().get(track.value, {})
+    return str(meta.get("label") or track.value)
+
+
+def _track_intro(track: Track) -> str:
+    meta = _track_config().get(track.value, {})
+    return str(meta.get("email_intro") or "")
+
+
+def _group_by_track(items: list[JamItem]) -> list[tuple[Track, list[JamItem]]]:
+    buckets: dict[Track, list[JamItem]] = {track: [] for track in _track_order()}
+    for item in items:
+        buckets.setdefault(item.track, []).append(item)
+    return [(track, buckets[track]) for track in _track_order() if buckets[track]]
+
+
 def _tag_line(item: JamItem) -> str:
     """Compact benefit / effort / evidence tags so readers can skip fast."""
     return f"{item.benefit.value} · ~{item.setup_cost.value} to set up · grade {item.evidence_grade.value}"
@@ -150,7 +175,7 @@ def _format_email_item(index: int, item: JamItem) -> list[str]:
     ]
     try_today = item.try_today.strip()
     if try_today:
-        lines.append(f"   Try: {try_today}")
+        lines.append(f"   Do this next: {try_today}")
     lines.append(f"   Link: {item.source_url}")
     lines.append("")
     return lines
@@ -225,12 +250,19 @@ def build_email_body(
         lines.extend(
             [
                 f"New since last brief: {len(new_items)} ({_benefit_mix(new_items)}).",
-                "Tags read benefit · setup effort · evidence grade — skip anything that doesn't fit.",
+                "Each tag is benefit · setup time · evidence grade — skip what doesn't fit your stack.",
                 "",
             ]
         )
-        for index, item in enumerate(new_items, start=1):
-            lines.extend(_format_email_item(index, item))
+        for track, track_items in _group_by_track(new_items):
+            lines.append(f"--- {_track_label(track)} ({len(track_items)}) ---")
+            intro = _track_intro(track)
+            if intro:
+                lines.append(intro)
+            lines.append("")
+            for index, item in enumerate(track_items, start=1):
+                lines.extend(_format_email_item(index, item))
+            lines.append("")
     else:
         lines.extend(
             [

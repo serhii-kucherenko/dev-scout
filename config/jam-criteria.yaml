@@ -8,6 +8,13 @@ valid_benefits:
   - robustness
   - both
 
+valid_tracks:
+  - ai-development
+  - ai-driven-development
+
+# ai-development — building/shipping AI products (agents, LLM apps, evals, agent infra)
+# ai-driven-development — using AI assistants to build regular application software
+
 valid_setup_costs:
   - minutes
   - hours

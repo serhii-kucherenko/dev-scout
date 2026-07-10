@@ -1,0 +1,12 @@
+# Two audiences — tag every JamItem with one track.
+
+tracks:
+  ai-development:
+    label: "Building AI systems"
+    email_intro: "For teams shipping agents, LLM features, evals, or other AI products."
+    digest_intro: "Practices for designing, testing, deploying, and operating AI systems."
+
+  ai-driven-development:
+    label: "Using AI to build software"
+    email_intro: "For teams using Cursor, Codex, Claude Code, or other agents to write and ship application code."
+    digest_intro: "Practices for faster, safer everyday development with AI coding assistants."

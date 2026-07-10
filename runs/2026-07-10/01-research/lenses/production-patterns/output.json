@@ -3,8 +3,8 @@
   "items": [
     {
       "id": "production-patterns-20260710-otel-genai",
-      "title": "Trace agent runs with OpenTelemetry gen_ai spans end to end",
-      "why": "Without nested spans for LLM calls, tools, and retrieval you cannot tell which step failed, looped, or blew the token budget in production.",
+      "title": "See which agent step burned time and tokens",
+      "why": "\"The agent was slow\" or \"the bill spiked\" isn't actionable. One trace with a span per LLM call, tool, and retrieval step shows exactly where the run went wrong.",
       "benefit": "robustness",
       "source_url": "https://developers.redhat.com/articles/2026/04/06/distributed-tracing-agentic-workflows-opentelemetry",
       "how_to_url": "https://geodocs.dev/ai-agents/agent-trace-instrumentation-spec",
@@ -20,12 +20,13 @@
       "lens_id": "production-patterns",
       "corroboration": "supported",
       "corroboration_url": "https://geodocs.dev/ai-agents/agent-trace-instrumentation-spec",
-      "try_today": "Add one manual span around your agent's main LLM call and confirm it appears in your OTLP backend."
+      "try_today": "Wrap your agent's main run in one root OpenTelemetry span and add a child span around the first LLM call. Find that trace in your dashboard.",
+      "track": "ai-development"
     },
     {
       "id": "production-patterns-20260710-vercel-sandbox",
-      "title": "Execute untrusted agent-generated code in Vercel Sandbox microVMs",
-      "why": "Letting agents run shell commands on your laptop or CI host risks credential leaks; isolated Firecracker VMs contain side effects while still running real builds and tests.",
+      "title": "Run agent shell commands in a disposable VM, not on your laptop",
+      "why": "When an agent runs shell on your machine, a mistake or injection can read `.env`, keys, or your internal network. Vercel Sandbox gives each run its own short-lived VM.",
       "benefit": "robustness",
       "source_url": "https://vercel.com/docs/sandbox",
       "how_to_url": "https://vercel.com/kb/guide/building-an-agent-with-openai-agents-sdk-and-vercel-sandbox",
@@ -41,7 +42,8 @@
       "lens_id": "production-patterns",
       "corroboration": "supported",
       "corroboration_url": "https://vercel.com/blog/vercel-sandbox-is-now-generally-available",
-      "try_today": "Run one agent-generated script inside a Sandbox microVM instead of on your host and compare isolation setup time."
+      "try_today": "Install `@vercel/sandbox`, run one agent-generated script inside a sandbox, and note what never touched your host filesystem.",
+      "track": "ai-development"
     }
   ]
 }
