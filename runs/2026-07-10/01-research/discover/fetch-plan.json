@@ -1,0 +1,55 @@
+{
+  "day": "2026-07-10",
+  "queries": [
+    {
+      "lens": "ship-faster",
+      "query": "oxlint CI monorepo lint speed 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "ship-faster",
+      "query": "Turborepo 3 git worktrees parallel AI agents CI",
+      "tier": "primary"
+    },
+    {
+      "lens": "build-robust",
+      "query": "AgentAssay regression testing non-deterministic AI agents",
+      "tier": "primary"
+    },
+    {
+      "lens": "build-robust",
+      "query": "incremental mutation testing agent sandbox Stryker",
+      "tier": "secondary"
+    },
+    {
+      "lens": "production-patterns",
+      "query": "OpenTelemetry gen_ai agent tracing production setup",
+      "tier": "primary"
+    },
+    {
+      "lens": "production-patterns",
+      "query": "Vercel Sandbox AI agent untrusted code isolation",
+      "tier": "primary"
+    },
+    {
+      "lens": "tooling-setups",
+      "query": "AGENTS.md cursor rules layered setup 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "model-workflows",
+      "query": "prompt cache orchestration multi-agent batch parallel TTL",
+      "tier": "secondary"
+    }
+  ],
+  "urls_to_fetch": [
+    "https://oxc.rs/docs/guide/usage/linter.html",
+    "https://turborepo.dev/docs/crafting-your-repository/constructing-ci",
+    "https://arxiv.org/abs/2603.02601",
+    "https://visdom-maturity-matrix.virtuslab.com/guides/development/mutation-testing-agent-validation",
+    "https://developers.redhat.com/articles/2026/04/06/distributed-tracing-agentic-workflows-opentelemetry",
+    "https://vercel.com/docs/sandbox",
+    "https://cursor.com/docs/context/rules",
+    "https://dev.to/akaranjkar08/prompt-cache-orchestration-beat-the-5-min-ttl-miss-2026-2e31"
+  ]
+}

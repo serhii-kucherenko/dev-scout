@@ -1,0 +1,61 @@
+{
+  "day": "2026-07-10",
+  "items": [
+    {
+      "id": "ship-faster-20260710-oxlint-ci",
+      "status": "supported",
+      "primary": "https://oxc.rs/docs/guide/usage/linter.html",
+      "secondary": "https://dev.to/jimmyyeung/journey-of-systematically-cut-our-monorepo-ci-time-in-half-ec8",
+      "note": "Independent monorepo CI post reports oxlint as 30-40% per-job speedup alongside Turbo orchestration."
+    },
+    {
+      "id": "ship-faster-20260710-worktrees-turbo",
+      "status": "supported",
+      "primary": "https://turborepo.dev/docs/crafting-your-repository/constructing-ci",
+      "secondary": "https://callsphere.ai/blog/vw8h-build-ai-agent-cicd-turborepo-monorepo-2026.md",
+      "note": "Case study quantifies cold vs warm CI with worktree parallel agents."
+    },
+    {
+      "id": "build-robust-20260710-agentassay",
+      "status": "supported",
+      "primary": "https://arxiv.org/abs/2603.02601",
+      "secondary": "https://arxiv.org/pdf/2603.02601",
+      "note": "Full paper matches abstract claims on cost reduction and behavioral detection."
+    },
+    {
+      "id": "build-robust-20260710-incremental-mutation-sandbox",
+      "status": "supported",
+      "primary": "https://visdom-maturity-matrix.virtuslab.com/guides/development/mutation-testing-agent-validation",
+      "secondary": "https://tanhdev.com/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/",
+      "note": "Multi-agent review pipeline independently recommends mutation testing gate for business logic."
+    },
+    {
+      "id": "tooling-setups-20260710-agents-rules-layer",
+      "status": "supported",
+      "primary": "https://cursor.com/docs/context/rules",
+      "secondary": "https://taskprio.com/cursor-rules",
+      "note": "Community guide aligns on AGENTS.md for portable instructions plus scoped .mdc rules."
+    },
+    {
+      "id": "production-patterns-20260710-otel-genai",
+      "status": "supported",
+      "primary": "https://developers.redhat.com/articles/2026/04/06/distributed-tracing-agentic-workflows-opentelemetry",
+      "secondary": "https://geodocs.dev/ai-agents/agent-trace-instrumentation-spec",
+      "note": "Spec codifies gen_ai span hierarchy referenced in production quickstart."
+    },
+    {
+      "id": "production-patterns-20260710-vercel-sandbox",
+      "status": "supported",
+      "primary": "https://vercel.com/docs/sandbox",
+      "secondary": "https://vercel.com/blog/vercel-sandbox-is-now-generally-available",
+      "note": "GA announcement confirms sub-second starts and parallel agent dispatch pattern."
+    },
+    {
+      "id": "model-workflows-20260710-cws",
+      "status": "supported",
+      "primary": "https://dev.to/akaranjkar08/prompt-cache-orchestration-beat-the-5-min-ttl-miss-2026-2e31",
+      "secondary": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+      "note": "Anthropic docs confirm 5-minute TTL and cache_control mechanics underlying CWS scheduling."
+    }
+  ]
+}

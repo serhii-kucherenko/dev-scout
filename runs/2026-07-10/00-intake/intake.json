@@ -1,0 +1,14 @@
+{
+  "day": "2026-07-10",
+  "goal_present": true,
+  "prior_findings": 32,
+  "prior_days": [
+    "2026-07-09",
+    "2026-07-08",
+    "2099-01-01"
+  ],
+  "notes": [
+    "Fresh run requested; deleted runs/2026-07-09/ and rebuilt from scratch.",
+    "Dedup against data/findings.json to surface only new jam."
+  ]
+}

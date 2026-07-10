@@ -1,0 +1,47 @@
+{
+  "lens_id": "build-robust",
+  "items": [
+    {
+      "id": "build-robust-20260710-agentassay",
+      "title": "Regression-test stochastic agents with AgentAssay instead of brittle pass/fail",
+      "why": "Binary assertions on non-deterministic agent outputs miss behavioral regressions; statistical testing with agent-specific mutation operators catches prompt/tool/context drift cheaply.",
+      "benefit": "robustness",
+      "source_url": "https://arxiv.org/abs/2603.02601",
+      "how_to_url": "https://arxiv.org/abs/2603.02601",
+      "how_to_steps": [
+        "Define golden tasks for your agent workflow (inputs, expected behavioral properties, not exact strings).",
+        "Apply AgentAssay mutation operators on prompts, tool configs, model choice, and context windows.",
+        "Run SPRT-accelerated kill tests so you stop each mutant as soon as pass/fail is statistically clear.",
+        "Gate releases on mutation score and behavioral detection rate, not single-shot output equality."
+      ],
+      "setup_cost": "days",
+      "evidence": "AgentAssay reports 78–100% cost reduction vs fixed-trial regression at equivalent statistical guarantees and 86% behavioral detection where binary testing detects 0%.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "corroboration": "supported",
+      "corroboration_url": "https://arxiv.org/pdf/2603.02601",
+      "try_today": "Pick one agent workflow and replace a single `assert output == expected` test with a behavioral property check plus one prompt mutation."
+    },
+    {
+      "id": "build-robust-20260710-incremental-mutation-sandbox",
+      "title": "Run incremental mutation testing inside the agent sandbox before opening a PR",
+      "why": "Agents generate high-coverage tests with weak oracles; mutating only changed code in the sandbox catches superficial tests without adding 40-minute CI runs.",
+      "benefit": "robustness",
+      "source_url": "https://visdom-maturity-matrix.virtuslab.com/guides/development/mutation-testing-agent-validation",
+      "how_to_url": "https://stryker-mutator.io/docs/usage/incremental/",
+      "how_to_steps": [
+        "Add Stryker (or PIT/mutmut for your stack) to the agent sandbox CI loop after unit tests pass.",
+        "Enable incremental mode (`--since` / diff-only) so only changed files are mutated.",
+        "Set a minimum mutation kill rate (start 70–80%) for agent-generated tests before the PR is submitted.",
+        "When mutants survive, feed the report back to the agent to strengthen assertions, then re-run in sandbox."
+      ],
+      "setup_cost": "hours",
+      "evidence": "VirtusLab L4 guide: incremental mutation on a ~200-line diff takes 3–5 minutes vs ~40 for full-suite runs; teams start at 70–80% kill threshold for agent tests.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "corroboration": "supported",
+      "corroboration_url": "https://tanhdev.com/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/",
+      "try_today": "Run Stryker incremental on one agent-generated test file and fix the first three surviving mutants."
+    }
+  ]
+}

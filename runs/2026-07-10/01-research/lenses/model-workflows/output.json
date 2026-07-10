@@ -1,0 +1,26 @@
+{
+  "lens_id": "model-workflows",
+  "items": [
+    {
+      "id": "model-workflows-20260710-cws",
+      "title": "Schedule parallel subagents inside prompt-cache warm windows",
+      "why": "A 5-minute cache TTL means sequential subagent calls pay full prefix cost multiple times; batching independent calls into one warm window can cut shared-prefix spend sharply.",
+      "benefit": "speed",
+      "source_url": "https://dev.to/akaranjkar08/prompt-cache-orchestration-beat-the-5-min-ttl-miss-2026-2e31",
+      "how_to_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+      "how_to_steps": [
+        "Mark stable system prompt, tool defs, and RAG context with `cache_control` so the prefix is cacheable.",
+        "Map your pipeline's independent subagent steps and measure inter-call gaps against the ~270s warm budget (5 min TTL minus safety margin).",
+        "Fire independent subagents in parallel at T=0 so they share one cache write instead of spanning multiple TTL windows.",
+        "Monitor `cache_read_input_tokens` and target 80%+ hit rate on the shared prefix after one tuning iteration."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cache-Warm Sequencing case: five 200s sequential subagents span three cache windows; parallel batch at T=0 finishes in ~200s with one write plus four reads — up to ~10× prefix cost reduction cited in the framework write-up.",
+      "evidence_grade": "B",
+      "lens_id": "model-workflows",
+      "corroboration": "supported",
+      "corroboration_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+      "try_today": "Identify two independent agent calls in your pipeline and run them concurrently after a cache-warm request."
+    }
+  ]
+}

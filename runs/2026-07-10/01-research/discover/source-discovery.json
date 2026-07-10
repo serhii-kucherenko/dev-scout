@@ -1,0 +1,51 @@
+{
+  "day": "2026-07-10",
+  "sources_found": 14,
+  "by_tier": {
+    "primary": 9,
+    "secondary": 4,
+    "discussion": 1
+  },
+  "top_candidates": [
+    {
+      "url": "https://oxc.rs/docs/guide/usage/linter.html",
+      "lens": "ship-faster",
+      "reason": "Official oxlint docs with 50-100x ESLint benchmark and CI setup path"
+    },
+    {
+      "url": "https://turborepo.dev/docs/crafting-your-repository/constructing-ci",
+      "lens": "ship-faster",
+      "reason": "Remote cache + affected queries for CI; pairs with worktree parallel-agent pattern"
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.02601",
+      "lens": "build-robust",
+      "reason": "AgentAssay: 78-100% cost reduction for agent regression testing"
+    },
+    {
+      "url": "https://visdom-maturity-matrix.virtuslab.com/guides/development/mutation-testing-agent-validation",
+      "lens": "build-robust",
+      "reason": "Incremental mutation testing in agent sandbox with 70-80% kill threshold"
+    },
+    {
+      "url": "https://developers.redhat.com/articles/2026/04/06/distributed-tracing-agentic-workflows-opentelemetry",
+      "lens": "production-patterns",
+      "reason": "End-to-end OTel tracing across agents, MCP servers, and Llama Stack"
+    },
+    {
+      "url": "https://vercel.com/docs/sandbox",
+      "lens": "production-patterns",
+      "reason": "Firecracker microVM isolation for untrusted agent-generated code"
+    },
+    {
+      "url": "https://cursor.com/docs/context/rules",
+      "lens": "tooling-setups",
+      "reason": "Official AGENTS.md + .cursor/rules layering with glob scoping"
+    },
+    {
+      "url": "https://dev.to/akaranjkar08/prompt-cache-orchestration-beat-the-5-min-ttl-miss-2026-2e31",
+      "lens": "model-workflows",
+      "reason": "Cache-Warm Sequencing cuts multi-agent cache cost up to 10x"
+    }
+  ]
+}

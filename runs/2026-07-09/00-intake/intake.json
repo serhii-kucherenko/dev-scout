@@ -1,7 +1,0 @@
-{
-  "day": "2026-07-09",
-  "mission": "Find practical ways to ship faster and build more robust software with AI-assisted dev.",
-  "lenses": ["ship-faster", "build-robust", "model-workflows", "production-patterns", "tooling-setups"],
-  "prior_days_reviewed": ["2026-W28"],
-  "notes": "Chat-driven run: sources discovered via Cursor web search and read via web fetch; no API keys used."
-}

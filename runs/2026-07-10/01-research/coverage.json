@@ -1,0 +1,14 @@
+{
+  "day": "2026-07-10",
+  "excerpt_count": 13,
+  "lenses_with_findings": 5,
+  "promoted_candidates": 8,
+  "ab_grade_count": 8,
+  "corroborated_count": 8,
+  "benefit_mix": {
+    "speed": 3,
+    "robustness": 4,
+    "both": 1
+  },
+  "gaps": []
+}

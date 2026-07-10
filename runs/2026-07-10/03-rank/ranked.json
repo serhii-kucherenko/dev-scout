@@ -1,0 +1,69 @@
+{
+  "day": "2026-07-10",
+  "ranked": [
+    {
+      "rank": 1,
+      "id": "build-robust-20260710-agentassay",
+      "score": 95,
+      "title": "Regression-test stochastic agents with AgentAssay instead of brittle pass/fail",
+      "benefit": "robustness",
+      "evidence_grade": "A"
+    },
+    {
+      "rank": 2,
+      "id": "production-patterns-20260710-vercel-sandbox",
+      "score": 93,
+      "title": "Execute untrusted agent-generated code in Vercel Sandbox microVMs",
+      "benefit": "robustness",
+      "evidence_grade": "A"
+    },
+    {
+      "rank": 3,
+      "id": "ship-faster-20260710-oxlint-ci",
+      "score": 92,
+      "title": "Run oxlint before ESLint to cut monorepo lint time",
+      "benefit": "speed",
+      "evidence_grade": "A"
+    },
+    {
+      "rank": 4,
+      "id": "build-robust-20260710-incremental-mutation-sandbox",
+      "score": 91,
+      "title": "Run incremental mutation testing inside the agent sandbox before opening a PR",
+      "benefit": "robustness",
+      "evidence_grade": "A"
+    },
+    {
+      "rank": 5,
+      "id": "production-patterns-20260710-otel-genai",
+      "score": 90,
+      "title": "Trace agent runs with OpenTelemetry gen_ai spans end to end",
+      "benefit": "robustness",
+      "evidence_grade": "A"
+    },
+    {
+      "rank": 6,
+      "id": "tooling-setups-20260710-agents-rules-layer",
+      "score": 88,
+      "title": "Layer AGENTS.md for shared truth and .cursor/rules for scoped activation",
+      "benefit": "both",
+      "evidence_grade": "A"
+    },
+    {
+      "rank": 7,
+      "id": "model-workflows-20260710-cws",
+      "score": 85,
+      "title": "Schedule parallel subagents inside prompt-cache warm windows",
+      "benefit": "speed",
+      "evidence_grade": "B"
+    },
+    {
+      "rank": 8,
+      "id": "ship-faster-20260710-worktrees-turbo",
+      "score": 84,
+      "title": "Give each parallel agent its own git worktree under Turbo remote cache",
+      "benefit": "speed",
+      "evidence_grade": "B"
+    }
+  ]
+}

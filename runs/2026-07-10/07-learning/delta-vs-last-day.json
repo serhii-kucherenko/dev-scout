@@ -1,0 +1,20 @@
+{
+  "day": "2026-07-10",
+  "previous_day": "2026-07-09",
+  "new_findings": 8,
+  "duplicates_skipped": 0,
+  "added_ids": [
+    "ship-faster-20260710-oxlint-ci",
+    "ship-faster-20260710-worktrees-turbo",
+    "build-robust-20260710-agentassay",
+    "build-robust-20260710-incremental-mutation-sandbox",
+    "tooling-setups-20260710-agents-rules-layer",
+    "production-patterns-20260710-otel-genai",
+    "production-patterns-20260710-vercel-sandbox",
+    "model-workflows-20260710-cws"
+  ],
+  "notes": [
+    "Prior runs/2026-07-09/ deleted; ledger retained prior day sources for email dedupe.",
+    "All 8 promoted items are new vs data/findings.json source URLs."
+  ]
+}

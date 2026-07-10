@@ -1,0 +1,47 @@
+{
+  "lens_id": "ship-faster",
+  "items": [
+    {
+      "id": "ship-faster-20260710-oxlint-ci",
+      "title": "Run oxlint before ESLint to cut monorepo lint time",
+      "why": "Lint is often the slowest low-signal CI step; a Rust linter as first pass catches most issues in seconds so ESLint only runs on the remainder.",
+      "benefit": "speed",
+      "source_url": "https://oxc.rs/docs/guide/usage/linter.html",
+      "how_to_url": "https://oxc.rs/docs/guide/usage/linter.html",
+      "how_to_steps": [
+        "Install oxlint as a dev dependency: `pnpm add -D oxlint` (or bun/npm equivalent).",
+        "Add `\"lint:fast\": \"oxlint\"` and change CI to run `oxlint` before `eslint`.",
+        "Migrate overlapping rules with `@oxlint/migrate` or use `eslint-plugin-oxlint` to disable duplicates in ESLint.",
+        "Wire oxlint into Turbo as a cached task so unchanged packages skip re-lint on cache hit."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "Oxlint benchmarks show 50–100× faster than ESLint on equivalent rule sets; a monorepo team reported oxlint as a 30–40% per-job speedup as a drop-in pre-check.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "corroboration": "supported",
+      "corroboration_url": "https://dev.to/jimmyyeung/journey-of-systematically-cut-our-monorepo-ci-time-in-half-ec8",
+      "try_today": "Add oxlint to one repo's CI and compare lint-stage duration on the next green PR."
+    },
+    {
+      "id": "ship-faster-20260710-worktrees-turbo",
+      "title": "Give each parallel agent its own git worktree under Turbo remote cache",
+      "why": "Multiple agents on one checkout thrash the working tree and bust caches; worktrees isolate branches while Turbo 3 shares remote cache across them.",
+      "benefit": "speed",
+      "source_url": "https://turborepo.dev/docs/crafting-your-repository/constructing-ci",
+      "how_to_url": "https://callsphere.ai/blog/vw8h-build-ai-agent-cicd-turborepo-monorepo-2026.md",
+      "how_to_steps": [
+        "Enable Turborepo remote caching (`turbo login`, `turbo link`, set `TURBO_TOKEN`/`TURBO_TEAM` in CI).",
+        "For each agent task, `git worktree add ../agent-N feat/agent-N` instead of switching branches in-place.",
+        "Run `turbo run lint typecheck test build --filter=...[origin/main]` inside each worktree.",
+        "Remove worktrees when done: `git worktree remove ../agent-N`."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Turborepo 3.0 documents worktree-safe shared cache; a 4-app monorepo case study reports cold CI ~120s vs warm ~12s with parallel agent worktrees.",
+      "evidence_grade": "B",
+      "lens_id": "ship-faster",
+      "corroboration": "supported",
+      "corroboration_url": "https://callsphere.ai/blog/vw8h-build-ai-agent-cicd-turborepo-monorepo-2026.md",
+      "try_today": "Spin up two worktrees on one repo and confirm both hit the same remote Turbo cache on an unchanged package."
+    }
+  ]
+}
