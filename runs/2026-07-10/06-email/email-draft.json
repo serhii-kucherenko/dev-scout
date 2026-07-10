@@ -1,7 +1,7 @@
 {
   "subject": "Dev Scout 2026-07-10 \u2014 8 new ways to ship faster / build safer",
   "to": "$DEV_SCOUT_EMAIL",
-  "body_text": "Dev Scout \u2014 2026-07-10\n\nMission: ship faster & build more robust software with AI-assisted dev.\n\nRepo: https://github.com/serhii-kucherenko/dev-scout\n\nQuick review of previous email (2026-07-09):\n- Cache stable prompt prefixes to cut LLM cost and latency (both) \u2014 https://platform.claude.com/docs/en/build-with-claude/prompt-caching\n- Swap pip for uv to cut install and CI time (speed) \u2014 https://docs.astral.sh/uv/\n- Add a merge-queue integrity check so bad merges can't land silently (robustness) \u2014 https://mergify.com/blog/merge-queue-is-critical-infrastructure\n- Run mutation testing to find tests that don't actually assert (robustness) \u2014 https://stryker-mutator.io/docs/\n- Turn on Turborepo remote caching in CI (speed) \u2014 https://turborepo.dev/docs/core-concepts/remote-caching\n\nDo not re-read those unless you still need to act on them.\n\nNew since last brief: 8 (speed=3, robustness=4, both=1).\nTags read benefit \u00b7 setup effort \u00b7 evidence grade \u2014 skip anything that doesn't fit.\n\n1. Regression-test stochastic agents with AgentAssay  [robustness \u00b7 ~days to set up \u00b7 grade A]\n   Why it matters: Binary pass/fail on agent outputs misses behavioral regressions; AgentAssay uses statistical tests and prompt/tool/context mutations to catch drift at 78\u2013100% lower cost than fixed-trial regression.\n   Try: Replace one brittle `assert output == expected` with a behavioral property check plus one prompt mutation on a golden task.\n   Link: https://arxiv.org/abs/2603.02601\n\n2. Execute untrusted agent code in Vercel Sandbox microVMs  [robustness \u00b7 ~hours to set up \u00b7 grade A]\n   Why it matters: Firecracker-isolated VMs let agents run real builds and shell commands without touching your host credentials or production network.\n   Try: Run one agent-generated script via `@vercel/sandbox` instead of on your laptop.\n   Link: https://vercel.com/docs/sandbox\n\n3. Run oxlint before ESLint in CI  [speed \u00b7 ~minutes to set up \u00b7 grade A]\n   Why it matters: Oxlint is 50\u2013100\u00d7 faster than ESLint as a first pass, so monorepo lint stages shrink without dropping rule coverage on the remainder.\n   Try: Add `oxlint` as a cached Turbo task before ESLint on one repo and compare lint-stage timing.\n   Link: https://oxc.rs/docs/guide/usage/linter.html\n\n4. Incremental mutation testing in the agent sandbox  [robustness \u00b7 ~hours to set up \u00b7 grade A]\n   Why it matters: Agents ship high-coverage tests with weak oracles; mutating only changed code in the sandbox (3\u20135 min) catches gaps before a 40-minute full-suite run hits shared CI.\n   Try: Run Stryker `--since` on one agent-generated test file and fix the first three surviving mutants.\n   Link: https://visdom-maturity-matrix.virtuslab.com/guides/development/mutation-testing-agent-validation\n\n5. Trace agents with OpenTelemetry gen_ai spans  [robustness \u00b7 ~hours to set up \u00b7 grade A]\n   Why it matters: Nested spans for LLM calls, tools, and retrieval show which step failed, looped, or burned tokens \u2014 across MCP servers and downstream services.\n   Try: Wrap your agent's main LLM call in a root span with `gen_ai.request.model` and confirm it in your OTLP backend.\n   Link: https://developers.redhat.com/articles/2026/04/06/distributed-tracing-agentic-workflows-opentelemetry\n\n6. Layer AGENTS.md + scoped .cursor/rules  [both \u00b7 ~minutes to set up \u00b7 grade A]\n   Why it matters: One canonical AGENTS.md for cross-tool truth plus glob-scoped .mdc rules avoids instruction drift and context bloat from duplicated mega-prompts.\n   Try: Move shared policy into AGENTS.md and split the rest into two `.mdc` rules with globs.\n   Link: https://cursor.com/docs/context/rules\n\n7. Batch subagents inside prompt-cache warm windows  [speed \u00b7 ~hours to set up \u00b7 grade B]\n   Why it matters: Sequential subagent calls can span multiple 5-minute cache TTLs; firing independent calls in parallel at T=0 shares one cache write instead of paying prefix cost repeatedly.\n   Try: Run two independent agent calls concurrently after a cache-warm request and check `cache_read_input_tokens`.\n   Link: https://dev.to/akaranjkar08/prompt-cache-orchestration-beat-the-5-min-ttl-miss-2026-2e31\n\n8. Parallel agents via git worktrees + Turbo cache  [speed \u00b7 ~hours to set up \u00b7 grade B]\n   Why it matters: Worktrees isolate agent branches while Turborepo 3 shares remote cache across them \u2014 cold CI ~120s vs warm ~12s in a cited 4-app monorepo setup.\n   Try: Add two worktrees and confirm both hit remote Turbo cache on an unchanged package.\n   Link: https://turborepo.dev/docs/crafting-your-repository/constructing-ci\n\nFull detail (all steps + evidence): runs/2026-07-10/05-report/daily-digest.md",
+  "body_text": "Dev Scout \u2014 2026-07-10\n\nMission: ship faster & build more robust software with AI-assisted dev.\n\nRepo: https://github.com/serhii-kucherenko/dev-scout\n\nQuick review of previous email (2026-07-09):\n- Cache stable prompt prefixes to cut LLM cost and latency (both) \u2014 https://platform.claude.com/docs/en/build-with-claude/prompt-caching\n- Swap pip for uv to cut install and CI time (speed) \u2014 https://docs.astral.sh/uv/\n- Add a merge-queue integrity check so bad merges can't land silently (robustness) \u2014 https://mergify.com/blog/merge-queue-is-critical-infrastructure\n- Run mutation testing to find tests that don't actually assert (robustness) \u2014 https://stryker-mutator.io/docs/\n- Turn on Turborepo remote caching in CI (speed) \u2014 https://turborepo.dev/docs/core-concepts/remote-caching\n\nSkip those unless you still need to act on one.\n\nNew since last brief: 8 (speed=3, robustness=4, both=1).\nEach tag is benefit \u00b7 setup time \u00b7 evidence grade \u2014 skip what doesn't fit your stack.\n\n1. Test agent behavior, not exact output strings  [robustness \u00b7 ~days \u00b7 grade A]\n   Why it matters: Agent tests often pass even when behavior is wrong, because they only check \"did we get a response?\" AgentAssay nudges prompts and tools and asks whether your tests notice \u2014 without running hundreds of expensive full retries.\n   Do this next: Pick one agent test. Stop comparing the full output string. Check a behavior instead (e.g. \"must call the refund tool\" or \"must not mention internal IDs\"). Break the prompt slightly and confirm the test fails.\n   Link: https://arxiv.org/abs/2603.02601\n\n2. Run agent shell commands in a disposable VM, not on your laptop  [robustness \u00b7 ~hours \u00b7 grade A]\n   Why it matters: When an agent runs `npm test` or arbitrary shell on your machine, a mistake or injection can read `.env`, keys, or your internal network. Vercel Sandbox gives each run its own short-lived VM that goes away when finished.\n   Do this next: Install `@vercel/sandbox`, run one agent-generated script inside a sandbox, and note what never touched your host filesystem.\n   Link: https://vercel.com/docs/sandbox\n\n3. Run oxlint first to shrink CI lint time  [speed \u00b7 ~minutes \u00b7 grade A]\n   Why it matters: Full ESLint on a large monorepo can take minutes every PR. oxlint catches most problems in seconds; ESLint only needs to run on what oxlint already cleared.\n   Do this next: `pnpm add -D oxlint`, add a `lint:fast` script, run it before ESLint in CI on one repo, and compare lint job time on the next PR.\n   Link: https://oxc.rs/docs/guide/usage/linter.html\n\n4. Make the agent prove its tests actually catch bugs  [robustness \u00b7 ~hours \u00b7 grade A]\n   Why it matters: Agents write tests that execute code but don't assert much \u2014 coverage looks great, regressions slip through. Mutation testing makes tiny code changes and checks if tests fail. Incremental mode only touches changed files, so it finishes in a few minutes in the agent sandbox.\n   Do this next: Run Stryker with `--since` on tests the agent wrote for your last PR. Open the report and fix the first surviving mutant by adding a real assertion.\n   Link: https://visdom-maturity-matrix.virtuslab.com/guides/development/mutation-testing-agent-validation\n\n5. See which agent step burned time and tokens  [robustness \u00b7 ~hours \u00b7 grade A]\n   Why it matters: \"The agent was slow\" or \"the bill spiked\" isn't actionable. One trace with a span per LLM call, tool, and retrieval step shows exactly where the run went wrong or looped.\n   Do this next: Wrap your agent's main run in one root OpenTelemetry span and add a child span around the first LLM call. Trigger one request and find that trace in your dashboard (Tempo, Datadog, Honeycomb, etc.).\n   Link: https://developers.redhat.com/articles/2026/04/06/distributed-tracing-agentic-workflows-opentelemetry\n\n6. One AGENTS.md for everyone, small rules only where needed  [both \u00b7 ~minutes \u00b7 grade A]\n   Why it matters: Pasting the same instructions into CLAUDE.md, AGENTS.md, and a huge always-on Cursor rule means they drift apart. Shared basics live in AGENTS.md; folder-specific notes live in small `.mdc` rules that load only for matching files.\n   Do this next: Move your repo's shared \"how we work\" text into `AGENTS.md`. Delete duplicate copies. Add one `.cursor/rules/typescript.mdc` scoped to `src/**/*.ts` with only TS-specific guidance.\n   Link: https://cursor.com/docs/context/rules\n\n7. Run parallel subagents while the prompt cache is still warm  [speed \u00b7 ~hours \u00b7 grade B]\n   Why it matters: Cached system prompts expire after about five minutes. Subagents that run one-by-one often miss the cache and pay full price for the same prefix repeatedly. Independent subagents started together right after a warm-up call share one cache window.\n   Do this next: Find two subagent steps that don't need each other's output. Run them in parallel right after a cache-warm request. Compare `cache_read_input_tokens` to your usual sequential run.\n   Link: https://dev.to/akaranjkar08/prompt-cache-orchestration-beat-the-5-min-ttl-miss-2026-2e31\n\n8. Give each parallel agent its own folder, share Turbo cache  [speed \u00b7 ~hours \u00b7 grade B]\n   Why it matters: Two agents switching branches in one checkout overwrite each other's work and fight over local state. Git worktrees = separate folders, same repo. Turbo remote cache means both still reuse build results for unchanged packages.\n   Do this next: `git worktree add ../agent-b feat/other-branch`. Run `turbo build` in both folders without changing code. Confirm the second run reports a remote cache hit.\n   Link: https://turborepo.dev/docs/crafting-your-repository/constructing-ci\n\nFull steps and evidence: runs/2026-07-10/05-report/daily-digest.md",
   "body_html": null,
   "top_items": [
     {
@@ -23,7 +23,7 @@
       "lens_id": "build-robust",
       "corroboration": "supported",
       "corroboration_url": "https://arxiv.org/pdf/2603.02601",
-      "try_today": "Pick one agent workflow and replace a single `assert output == expected` test with a behavioral property check plus one prompt mutation."
+      "try_today": "Open one agent test. Replace a string-equality check with a behavior check (e.g. \"must call the refund tool\"). Break the prompt slightly and confirm the test fails."
     },
     {
       "id": "production-patterns-20260710-vercel-sandbox",
@@ -44,7 +44,7 @@
       "lens_id": "production-patterns",
       "corroboration": "supported",
       "corroboration_url": "https://vercel.com/blog/vercel-sandbox-is-now-generally-available",
-      "try_today": "Run one agent-generated script inside a Sandbox microVM instead of on your host and compare isolation setup time."
+      "try_today": "Install `@vercel/sandbox`, run one agent-generated script inside a sandbox, and note what never touched your host filesystem."
     },
     {
       "id": "ship-faster-20260710-oxlint-ci",
@@ -65,7 +65,7 @@
       "lens_id": "ship-faster",
       "corroboration": "supported",
       "corroboration_url": "https://dev.to/jimmyyeung/journey-of-systematically-cut-our-monorepo-ci-time-in-half-ec8",
-      "try_today": "Add oxlint to one repo's CI and compare lint-stage duration on the next green PR."
+      "try_today": "`pnpm add -D oxlint`, add a `lint:fast` script, run it before ESLint in CI on one repo, and compare lint job time on the next PR."
     },
     {
       "id": "build-robust-20260710-incremental-mutation-sandbox",
@@ -86,7 +86,7 @@
       "lens_id": "build-robust",
       "corroboration": "supported",
       "corroboration_url": "https://tanhdev.com/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/",
-      "try_today": "Run Stryker incremental on one agent-generated test file and fix the first three surviving mutants."
+      "try_today": "Run Stryker with `--since` on tests the agent wrote for your last PR. Fix the first surviving mutant by adding a real assertion."
     },
     {
       "id": "production-patterns-20260710-otel-genai",
@@ -107,7 +107,7 @@
       "lens_id": "production-patterns",
       "corroboration": "supported",
       "corroboration_url": "https://geodocs.dev/ai-agents/agent-trace-instrumentation-spec",
-      "try_today": "Add one manual span around your agent's main LLM call and confirm it appears in your OTLP backend."
+      "try_today": "Wrap your agent's main run in one root span and add a child span around the first LLM call. Trigger one request and find that trace in your dashboard."
     },
     {
       "id": "tooling-setups-20260710-agents-rules-layer",
@@ -128,7 +128,7 @@
       "lens_id": "tooling-setups",
       "corroboration": "supported",
       "corroboration_url": "https://taskprio.com/cursor-rules",
-      "try_today": "Move one always-on mega-prompt into AGENTS.md and split the rest into two scoped .mdc rules with globs."
+      "try_today": "Move your repo's shared \"how we work\" text into AGENTS.md, delete duplicate copies, and add one `.mdc` rule scoped to `src/**/*.ts`."
     },
     {
       "id": "model-workflows-20260710-cws",
@@ -149,7 +149,7 @@
       "lens_id": "model-workflows",
       "corroboration": "supported",
       "corroboration_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
-      "try_today": "Identify two independent agent calls in your pipeline and run them concurrently after a cache-warm request."
+      "try_today": "Find two subagent steps that don't need each other's output. Run them in parallel right after a cache-warm request and compare `cache_read_input_tokens` to your sequential run."
     },
     {
       "id": "ship-faster-20260710-worktrees-turbo",
@@ -170,7 +170,7 @@
       "lens_id": "ship-faster",
       "corroboration": "supported",
       "corroboration_url": "https://callsphere.ai/blog/vw8h-build-ai-agent-cicd-turborepo-monorepo-2026.md",
-      "try_today": "Spin up two worktrees on one repo and confirm both hit the same remote Turbo cache on an unchanged package."
+      "try_today": "`git worktree add ../agent-b feat/other-branch`, run `turbo build` in both folders without changing code, and confirm the second run reports a remote cache hit."
     }
   ]
 }

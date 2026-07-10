@@ -6,11 +6,11 @@ Repo: https://github.com/serhii-kucherenko/dev-scout
 
 ---
 
-## 1. Regression-test stochastic agents with AgentAssay instead of brittle pass/fail
+## 1. Test agent behavior, not exact output strings (AgentAssay)
 
 **Benefit:** robustness · **Setup:** days · **Grade:** A
 
-**Why:** Binary assertions on non-deterministic agent outputs miss behavioral regressions; statistical testing with agent-specific mutation operators catches prompt/tool/context drift cheaply.
+**Why:** Many agent tests only check "did we get a response?" — so when the model drifts, tests still pass. AgentAssay makes small changes to prompts, tools, and context, then checks whether your tests catch them. It's cheaper than running hundreds of full retries on every change.
 
 **Source:** https://arxiv.org/abs/2603.02601
 
@@ -25,15 +25,15 @@ Repo: https://github.com/serhii-kucherenko/dev-scout
 
 **Corroboration:** https://arxiv.org/pdf/2603.02601
 
-**Try today:** Pick one agent workflow and replace a single `assert output == expected` test with a behavioral property check plus one prompt mutation.
+**Try today:** Open one agent test. Replace a string-equality check with a behavior check (e.g. "must call the refund tool"). Break the prompt slightly and confirm the test fails.
 
 ---
 
-## 2. Execute untrusted agent-generated code in Vercel Sandbox microVMs
+## 2. Run agent shell commands in a disposable VM (Vercel Sandbox)
 
 **Benefit:** robustness · **Setup:** hours · **Grade:** A
 
-**Why:** Letting agents run shell commands on your laptop or CI host risks credential leaks; isolated Firecracker VMs contain side effects while still running real builds and tests.
+**Why:** When an agent runs shell commands on your laptop or CI host, a bad or hijacked command can read `.env`, keys, or reach your internal network. Sandbox runs each task in a throwaway Firecracker VM that disappears when done.
 
 **Source:** https://vercel.com/docs/sandbox
 
@@ -48,15 +48,15 @@ Repo: https://github.com/serhii-kucherenko/dev-scout
 
 **Corroboration:** https://vercel.com/blog/vercel-sandbox-is-now-generally-available
 
-**Try today:** Run one agent-generated script inside a Sandbox microVM instead of on your host and compare isolation setup time.
+**Try today:** Install `@vercel/sandbox`, run one agent-generated script inside a sandbox, and note what never touched your host filesystem.
 
 ---
 
-## 3. Run oxlint before ESLint to cut monorepo lint time
+## 3. Run oxlint first to shrink CI lint time
 
 **Benefit:** speed · **Setup:** minutes · **Grade:** A
 
-**Why:** Lint is often the slowest low-signal CI step; a Rust linter as first pass catches most issues in seconds so ESLint only runs on the remainder.
+**Why:** Full ESLint on a large monorepo can take minutes on every PR. oxlint catches most issues in seconds; ESLint only needs to handle what oxlint already cleared.
 
 **Source:** https://oxc.rs/docs/guide/usage/linter.html
 
@@ -71,15 +71,15 @@ Repo: https://github.com/serhii-kucherenko/dev-scout
 
 **Corroboration:** https://dev.to/jimmyyeung/journey-of-systematically-cut-our-monorepo-ci-time-in-half-ec8
 
-**Try today:** Add oxlint to one repo's CI and compare lint-stage duration on the next green PR.
+**Try today:** `pnpm add -D oxlint`, add a `lint:fast` script, run it before ESLint in CI on one repo, and compare lint job time on the next PR.
 
 ---
 
-## 4. Run incremental mutation testing inside the agent sandbox before opening a PR
+## 4. Make the agent prove its tests actually catch bugs (incremental mutation testing)
 
 **Benefit:** robustness · **Setup:** hours · **Grade:** A
 
-**Why:** Agents generate high-coverage tests with weak oracles; mutating only changed code in the sandbox catches superficial tests without adding 40-minute CI runs.
+**Why:** Agents write tests that run code but rarely assert meaningful outcomes — coverage looks high, regressions still slip through. Mutation testing makes tiny code changes and asks "did the test notice?" Incremental mode only checks changed files, so it finishes in minutes inside the agent sandbox instead of blocking shared CI for an hour.
 
 **Source:** https://visdom-maturity-matrix.virtuslab.com/guides/development/mutation-testing-agent-validation
 
@@ -94,15 +94,15 @@ Repo: https://github.com/serhii-kucherenko/dev-scout
 
 **Corroboration:** https://tanhdev.com/series/ai-code-review-vibe-coding/part-4-review-pipeline-multi-agent/
 
-**Try today:** Run Stryker incremental on one agent-generated test file and fix the first three surviving mutants.
+**Try today:** Run Stryker with `--since` on tests the agent wrote for your last PR. Fix the first surviving mutant by adding a real assertion.
 
 ---
 
-## 5. Trace agent runs with OpenTelemetry gen_ai spans end to end
+## 5. See which agent step burned time and tokens (OpenTelemetry gen_ai)
 
 **Benefit:** robustness · **Setup:** hours · **Grade:** A
 
-**Why:** Without nested spans for LLM calls, tools, and retrieval you cannot tell which step failed, looped, or blew the token budget in production.
+**Why:** "The agent was slow" or "the bill spiked" isn't enough to fix anything. One trace with a span per LLM call, tool call, and retrieval step shows exactly where the run failed, looped, or burned tokens — including across MCP servers and downstream services.
 
 **Source:** https://developers.redhat.com/articles/2026/04/06/distributed-tracing-agentic-workflows-opentelemetry
 
@@ -117,15 +117,15 @@ Repo: https://github.com/serhii-kucherenko/dev-scout
 
 **Corroboration:** https://geodocs.dev/ai-agents/agent-trace-instrumentation-spec
 
-**Try today:** Add one manual span around your agent's main LLM call and confirm it appears in your OTLP backend.
+**Try today:** Wrap your agent's main run in one root span and add a child span around the first LLM call. Trigger one request and find that trace in your dashboard.
 
 ---
 
-## 6. Layer AGENTS.md for shared truth and .cursor/rules for scoped activation
+## 6. One AGENTS.md for everyone, small rules only where needed
 
 **Benefit:** both · **Setup:** minutes · **Grade:** A
 
-**Why:** Duplicated instructions across CLAUDE.md, AGENTS.md, and always-on rules drift quickly; one canonical AGENTS.md plus thin glob-scoped .mdc rules keeps agents aligned without blowing the context budget.
+**Why:** Copying the same instructions into CLAUDE.md, AGENTS.md, and a huge always-on Cursor rule means they go stale at different speeds. Put shared basics in AGENTS.md; put folder-specific notes in small `.mdc` rules that load only for matching files.
 
 **Source:** https://cursor.com/docs/context/rules
 
@@ -140,15 +140,15 @@ Repo: https://github.com/serhii-kucherenko/dev-scout
 
 **Corroboration:** https://taskprio.com/cursor-rules
 
-**Try today:** Move one always-on mega-prompt into AGENTS.md and split the rest into two scoped .mdc rules with globs.
+**Try today:** Move your repo's shared "how we work" text into `AGENTS.md`, delete duplicate copies, and add one `.mdc` rule scoped to `src/**/*.ts`.
 
 ---
 
-## 7. Schedule parallel subagents inside prompt-cache warm windows
+## 7. Run parallel subagents while the prompt cache is still warm
 
 **Benefit:** speed · **Setup:** hours · **Grade:** B
 
-**Why:** A 5-minute cache TTL means sequential subagent calls pay full prefix cost multiple times; batching independent calls into one warm window can cut shared-prefix spend sharply.
+**Why:** Cached system prompts expire after about five minutes. Subagents that run one after another often miss the cache and pay full price for the same prefix again. Independent subagents started together right after a warm-up call share one cache window.
 
 **Source:** https://dev.to/akaranjkar08/prompt-cache-orchestration-beat-the-5-min-ttl-miss-2026-2e31
 
@@ -163,15 +163,15 @@ Repo: https://github.com/serhii-kucherenko/dev-scout
 
 **Corroboration:** https://platform.claude.com/docs/en/build-with-claude/prompt-caching
 
-**Try today:** Identify two independent agent calls in your pipeline and run them concurrently after a cache-warm request.
+**Try today:** Find two subagent steps that don't need each other's output. Run them in parallel right after a cache-warm request and compare `cache_read_input_tokens` to your sequential run.
 
 ---
 
-## 8. Give each parallel agent its own git worktree under Turbo remote cache
+## 8. Give each parallel agent its own folder, share Turbo cache (git worktrees)
 
 **Benefit:** speed · **Setup:** hours · **Grade:** B
 
-**Why:** Multiple agents on one checkout thrash the working tree and bust caches; worktrees isolate branches while Turbo 3 shares remote cache across them.
+**Why:** Two agents switching branches in one checkout overwrite each other's work and fight over local state. Git worktrees give each agent a separate folder for the same repo. Turbo remote cache lets both reuse build results for unchanged packages.
 
 **Source:** https://turborepo.dev/docs/crafting-your-repository/constructing-ci
 
@@ -186,4 +186,4 @@ Repo: https://github.com/serhii-kucherenko/dev-scout
 
 **Corroboration:** https://callsphere.ai/blog/vw8h-build-ai-agent-cicd-turborepo-monorepo-2026.md
 
-**Try today:** Spin up two worktrees on one repo and confirm both hit the same remote Turbo cache on an unchanged package.
+**Try today:** `git worktree add ../agent-b feat/other-branch`, run `turbo build` in both folders without changing code, and confirm the second run reports a remote cache hit.
