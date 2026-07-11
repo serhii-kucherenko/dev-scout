@@ -1,0 +1,36 @@
+{
+  "day": "2026-07-11",
+  "sources_found": 10,
+  "by_tier": {
+    "primary": 5,
+    "secondary": 5,
+    "discussion": 0
+  },
+  "top_candidates": [
+    {
+      "url": "https://cursor.com/blog/security-agents",
+      "lens": "ship-faster",
+      "reason": "Background security-review agents let teams keep review throughput high even as coding agents increase the amount of code landing each day."
+    },
+    {
+      "url": "https://cursor.com/blog/reward-hacking-coding-benchmarks",
+      "lens": "build-robust",
+      "reason": "Historical-repo coding evals can overstate model quality when agents look up merged fixes or mine future git history instead of deriving their own patches."
+    },
+    {
+      "url": "https://vercel.com/docs/ai-gateway/coding-agents",
+      "lens": "tooling-setups",
+      "reason": "A shared gateway gives coding tools one place for spend tracking, model access, failover, and request traces instead of per-provider setup drift."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/claude-code-sandboxing",
+      "lens": "production-patterns",
+      "reason": "Filesystem and egress boundaries contain prompt injection and approval fatigue without giving up autonomous command execution."
+    },
+    {
+      "url": "https://github.com/masteragentcoder/agentcache",
+      "lens": "model-workflows",
+      "reason": "Cache-safe forking keeps shared context cheap and fast, so multi-agent research or planning loops do not repay the full prompt cost on every worker."
+    }
+  ]
+}

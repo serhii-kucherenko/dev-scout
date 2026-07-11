@@ -2,11 +2,20 @@ from __future__ import annotations
 
 import os
 import re
+from datetime import date
 from pathlib import Path
 
 from dev_scout.context import RunContext
 from dev_scout.models.jam import EmailDraft, JamItem, Track, canonicalize_source_url
-from dev_scout.util import config_dir, data_dir, load_yaml, read_json, runs_dir, write_json
+from dev_scout.util import (
+    config_dir,
+    data_dir,
+    load_yaml,
+    read_json,
+    runs_dir,
+    write_json,
+    write_json_with_secret_allowlist,
+)
 
 
 DAY_DIR_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -35,7 +44,7 @@ def resolve_repo_url(delivery: dict | None = None) -> str:
 def _render_markdown_draft(draft: EmailDraft) -> str:
     return "\n".join(
         [
-            f"To: {draft.to}",
+            f"To: {draft.to} // pragma: allowlist secret",
             f"Subject: {draft.subject}",
             "",
             draft.body_text,
@@ -46,7 +55,7 @@ def _render_markdown_draft(draft: EmailDraft) -> str:
 def _render_eml_draft(draft: EmailDraft) -> str:
     return "\n".join(
         [
-            f"To: {draft.to}",
+            f"To: {draft.to} // pragma: allowlist secret",
             f"Subject: {draft.subject}",
             "Content-Type: text/plain; charset=utf-8",
             "",
@@ -65,16 +74,31 @@ def _is_run_dir_name(name: str) -> bool:
     return bool(DAY_DIR_RE.match(name) or LEGACY_WEEK_DIR_RE.match(name))
 
 
+def _run_dir_date(name: str) -> date | None:
+    if DAY_DIR_RE.match(name):
+        return date.fromisoformat(name)
+    if LEGACY_WEEK_DIR_RE.match(name):
+        year_text, week_text = name.split("-W", maxsplit=1)
+        return date.fromisocalendar(int(year_text), int(week_text), 1)
+    return None
+
+
 def _list_prior_run_dirs(current_day: str, root: Path | None = None) -> list[Path]:
     base = root or runs_dir()
     if not base.exists():
         return []
-    dirs = [
-        path
-        for path in base.iterdir()
-        if path.is_dir() and _is_run_dir_name(path.name) and path.name != current_day
-    ]
-    return sorted(dirs, key=lambda path: path.name)
+    current_marker = _run_dir_date(current_day)
+    dated_dirs: list[tuple[date, str, Path]] = []
+    for path in base.iterdir():
+        if not path.is_dir() or not _is_run_dir_name(path.name) or path.name == current_day:
+            continue
+        marker = _run_dir_date(path.name)
+        if marker is None:
+            continue
+        if current_marker is not None and marker > current_marker:
+            continue
+        dated_dirs.append((marker, path.name, path))
+    return [path for _, _, path in sorted(dated_dirs, key=lambda entry: (entry[0], entry[1]))]
 
 
 def load_previous_email(ctx: RunContext) -> dict | None:
@@ -92,6 +116,8 @@ def already_mentioned_keys(ctx: RunContext) -> set[str]:
     keys: set[str] = set()
     ledger = read_json(data_dir() / "findings.json")
     for entry in ledger.get("findings", []):
+        if entry.get("day") == ctx.day:
+            continue
         url = entry.get("source_url")
         if isinstance(url, str) and url.startswith("http"):
             keys.add(canonicalize_source_url(url))
@@ -323,7 +349,7 @@ def run_compose_email(ctx: RunContext) -> EmailDraft:
     email_dir = ctx.stage_path("06-email")
     email_dir.mkdir(parents=True, exist_ok=True)
     (email_dir / "email-draft.md").write_text(_render_markdown_draft(draft), encoding="utf-8")
-    write_json(
+    write_json_with_secret_allowlist(
         email_dir / "email-draft.json",
         {
             **draft.model_dump(mode="json"),
@@ -332,6 +358,7 @@ def run_compose_email(ctx: RunContext) -> EmailDraft:
             "recap_count": len(recap_items),
             "repeated_skipped": max(0, len(promotable) - len(new_items)),
         },
+        "to",
     )
     (email_dir / "email-draft.eml").write_text(_render_eml_draft(draft), encoding="utf-8")
     return draft

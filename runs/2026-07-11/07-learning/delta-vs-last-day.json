@@ -1,0 +1,13 @@
+{
+  "day": "2026-07-11",
+  "prior_day": "2026-07-10",
+  "new_count": 5,
+  "promoted_count": 5,
+  "new_item_ids": [
+    "tooling-setups-20260711-ai-gateway-coding-agents",
+    "model-workflows-20260711-prefix-forks",
+    "production-patterns-20260711-sandboxed-bash",
+    "ship-faster-20260711-security-automations",
+    "build-robust-20260711-strict-eval-harness"
+  ]
+}

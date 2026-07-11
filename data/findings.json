@@ -644,7 +644,7 @@
         "Wire oxlint into Turbo as a cached task so unchanged packages skip re-lint on cache hit."
       ],
       "setup_cost": "minutes",
-      "evidence": "Oxlint benchmarks show 50\u2013100\u00d7 faster than ESLint on equivalent rule sets; a monorepo team reported oxlint as a 30\u201340% per-job speedup as a drop-in pre-check.",
+      "evidence": "Oxlint benchmarks show 50–100× faster than ESLint on equivalent rule sets; a monorepo team reported oxlint as a 30–40% per-job speedup as a drop-in pre-check.",
       "evidence_grade": "A",
       "lens_id": "ship-faster",
       "corroboration": "supported",
@@ -677,7 +677,7 @@
     {
       "id": "build-robust-20260710-agentassay",
       "title": "Test agent behavior, not exact output strings",
-      "why": "Many agent tests only check \"did we get a response?\" \u2014 so when the model drifts, tests still pass. AgentAssay nudges prompts and tools and asks whether your tests notice.",
+      "why": "Many agent tests only check \"did we get a response?\" — so when the model drifts, tests still pass. AgentAssay nudges prompts and tools and asks whether your tests notice.",
       "benefit": "robustness",
       "source_url": "https://arxiv.org/abs/2603.02601",
       "how_to_url": "https://arxiv.org/abs/2603.02601",
@@ -688,7 +688,7 @@
         "Gate releases on mutation score and behavioral detection rate, not single-shot output equality."
       ],
       "setup_cost": "days",
-      "evidence": "AgentAssay reports 78\u2013100% cost reduction vs fixed-trial regression at equivalent statistical guarantees and 86% behavioral detection where binary testing detects 0%.",
+      "evidence": "AgentAssay reports 78–100% cost reduction vs fixed-trial regression at equivalent statistical guarantees and 86% behavioral detection where binary testing detects 0%.",
       "evidence_grade": "A",
       "lens_id": "build-robust",
       "corroboration": "supported",
@@ -699,18 +699,18 @@
     {
       "id": "build-robust-20260710-incremental-mutation-sandbox",
       "title": "Make the agent prove its tests actually catch bugs",
-      "why": "Agents write tests that run code but don't assert much \u2014 coverage looks great, regressions slip through. Incremental mutation testing checks only changed files, so it finishes in minutes in the sandbox.",
+      "why": "Agents write tests that run code but don't assert much — coverage looks great, regressions slip through. Incremental mutation testing checks only changed files, so it finishes in minutes in the sandbox.",
       "benefit": "robustness",
       "source_url": "https://visdom-maturity-matrix.virtuslab.com/guides/development/mutation-testing-agent-validation",
       "how_to_url": "https://stryker-mutator.io/docs/usage/incremental/",
       "how_to_steps": [
         "Add Stryker (or PIT/mutmut for your stack) to the agent sandbox CI loop after unit tests pass.",
         "Enable incremental mode (`--since` / diff-only) so only changed files are mutated.",
-        "Set a minimum mutation kill rate (start 70\u201380%) for agent-generated tests before the PR is submitted.",
+        "Set a minimum mutation kill rate (start 70–80%) for agent-generated tests before the PR is submitted.",
         "When mutants survive, feed the report back to the agent to strengthen assertions, then re-run in sandbox."
       ],
       "setup_cost": "hours",
-      "evidence": "VirtusLab L4 guide: incremental mutation on a ~200-line diff takes 3\u20135 minutes vs ~40 for full-suite runs; teams start at 70\u201380% kill threshold for agent tests.",
+      "evidence": "VirtusLab L4 guide: incremental mutation on a ~200-line diff takes 3–5 minutes vs ~40 for full-suite runs; teams start at 70–80% kill threshold for agent tests.",
       "evidence_grade": "A",
       "lens_id": "build-robust",
       "corroboration": "supported",
@@ -798,19 +798,130 @@
         "Monitor `cache_read_input_tokens` and target 80%+ hit rate on the shared prefix after one tuning iteration."
       ],
       "setup_cost": "hours",
-      "evidence": "Cache-Warm Sequencing case: five 200s sequential subagents span three cache windows; parallel batch at T=0 finishes in ~200s with one write plus four reads \u2014 up to ~10\u00d7 prefix cost reduction cited in the framework write-up.",
+      "evidence": "Cache-Warm Sequencing case: five 200s sequential subagents span three cache windows; parallel batch at T=0 finishes in ~200s with one write plus four reads — up to ~10× prefix cost reduction cited in the framework write-up.",
       "evidence_grade": "B",
       "lens_id": "model-workflows",
       "corroboration": "supported",
       "corroboration_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
       "try_today": "Find two subagent steps that don't need each other's output. Run them in parallel after a cache-warm request and compare `cache_read_input_tokens`.",
       "track": "ai-development"
+    },
+    {
+      "id": "tooling-setups-20260711-ai-gateway-coding-agents",
+      "title": "Point your coding agents at one gateway instead of wiring every provider separately",
+      "why": "A shared gateway gives coding tools one place for spend tracking, model access, failover, and request traces instead of per-provider setup drift.",
+      "benefit": "both",
+      "source_url": "https://vercel.com/docs/ai-gateway/coding-agents",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/coding-agents",
+      "how_to_steps": [
+        "Create an AI Gateway API key and choose which coding agents you want to standardize first, such as Claude Code, Codex, Cline, Roo Code, or Conductor.",
+        "Update each tool's provider config so its base URL points at `https://ai-gateway.vercel.sh` (or `/v1` where required) instead of a direct model vendor endpoint.",
+        "Launch the agent with the gateway profile or environment variables and confirm requests still work exactly as before from the developer's point of view.",
+        "Use the gateway observability views to watch spend by agent, model mix, and request traces before adding provider fallbacks or broader team rollout."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "Vercel documents one unified dashboard for spend tracking, 200+ models, one invoice, automatic provider fallbacks, and full request traces; its Agent Stack blog describes the same single endpoint as the production routing layer for multi-model agents.",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Take one existing CLI agent, point its base URL at the gateway, and compare the next day's model spend and request trace visibility against the direct-provider setup.",
+      "day": "2026-07-11"
+    },
+    {
+      "id": "model-workflows-20260711-prefix-forks",
+      "title": "Fork parallel workers from one cached session instead of starting fresh conversations",
+      "why": "Cache-safe forking keeps shared context cheap and fast, so multi-agent research or planning loops do not repay the full prompt cost on every worker.",
+      "benefit": "both",
+      "source_url": "https://github.com/masteragentcoder/agentcache",
+      "how_to_url": "https://github.com/masteragentcoder/agentcache",
+      "how_to_steps": [
+        "Start one parent agent session with the shared system prompt and make one initial call so the provider creates a cached prefix.",
+        "Fork each worker by appending only the new task prompt to the parent history instead of creating separate sessions with duplicated context.",
+        "Freeze cache-relevant state such as model, tool schema, messages, and reasoning settings before forking so the shared prefix stays byte-identical.",
+        "Track cache hits and break causes, then compact stale tool output deterministically so long-running forks keep the same cacheable prefix."
+      ],
+      "setup_cost": "hours",
+      "evidence": "The repo's benchmarks report 80-99% per-fork cache hit rates, a 75.8% cache hit rate and 2.3x faster wall time versus text-injection workers, and a 1.64x speedup for a 7-task DAG.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "try_today": "Replace one multi-worker research or planning flow that opens separate sessions with parent-session forks and compare cache-hit rate plus wall time on the next run.",
+      "day": "2026-07-11"
+    },
+    {
+      "id": "production-patterns-20260711-sandboxed-bash",
+      "title": "Put agent bash and MCP processes inside an OS sandbox before you trust them",
+      "why": "Filesystem and egress boundaries contain prompt injection and approval fatigue without giving up autonomous command execution.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/engineering/claude-code-sandboxing",
+      "how_to_url": "https://www.anthropic.com/engineering/claude-code-sandboxing",
+      "how_to_steps": [
+        "Enable a sandboxed runtime for bash or tool execution and define which directories the agent can read or write before the session starts.",
+        "Deny outbound network by default, then allow only approved domains through a proxy that can enforce host-level or request-level rules.",
+        "Let the agent run autonomously inside that boundary and require approval only when it tries to step outside the allowed filesystem or network scope.",
+        "For cloud execution, proxy git interactions and keep raw git credentials or signing keys outside the sandbox so a compromised session cannot exfiltrate them."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic reports that Claude Code sandboxing reduced permission prompts by 84% internally while enforcing both filesystem isolation and network isolation.",
+      "evidence_grade": "A",
+      "lens_id": "production-patterns",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Take the highest-risk shell-enabled agent in your stack, put it in a workspace-only sandbox with a domain allowlist, and see how much manual approval you can remove safely.",
+      "day": "2026-07-11"
+    },
+    {
+      "id": "ship-faster-20260711-security-automations",
+      "title": "Use dedicated security review automations so PR velocity can scale without trading away safety",
+      "why": "Background security-review agents let teams keep review throughput high even as coding agents increase the amount of code landing each day.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/security-agents",
+      "how_to_url": "https://cursor.com/blog/security-agents",
+      "how_to_steps": [
+        "Create a PR-triggered security review automation with the repo hooks and communication channels it needs, such as GitHub plus Slack.",
+        "Route findings through a persistence or MCP layer that deduplicates semantically similar issues and emits a consistent report format.",
+        "Start in report-only mode, then enable PR comments, and only add a blocking gate after the automation proves it is finding real issues with acceptable precision.",
+        "Add follow-on automations for invariant drift and dependency patching so agents can re-check old code, run tests, and repair findings continuously."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says PR velocity increased 5x over nine months, and its Agentic Security Review ran on thousands of PRs and prevented hundreds of issues from reaching production.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Create one report-only security-review automation for active PRs, let it post to a private Slack channel for a week, and measure how many issues it catches before humans do.",
+      "day": "2026-07-11"
+    },
+    {
+      "id": "build-robust-20260711-strict-eval-harness",
+      "title": "Seal eval runtime so coding-agent scores measure problem solving, not answer retrieval",
+      "why": "Historical-repo coding evals can overstate model quality when agents look up merged fixes or mine future git history instead of deriving their own patches.",
+      "benefit": "robustness",
+      "source_url": "https://cursor.com/blog/reward-hacking-coding-benchmarks",
+      "how_to_url": "https://cursor.com/blog/reward-hacking-coding-benchmarks",
+      "how_to_steps": [
+        "Reinitialize each benchmark repository as a fresh single-commit snapshot before the run so future git history cannot be searched during the task.",
+        "Deny network access by default and allow only the minimum package registries or other endpoints needed to install dependencies through a pinned proxy.",
+        "Audit full agent trajectories with a classifier or investigator agent so you can label upstream lookup, git-history mining, and other reward-hacking patterns.",
+        "Publish the exact harness constraints next to every reported score and compare strict-vs-standard runs so leakage becomes visible instead of being baked into the headline number."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor found that 63% of successful Opus 4.8 Max SWE-bench Pro resolutions retrieved the known fix rather than deriving it; in a stricter harness, Opus 4.8 Max fell from 87.1% to 73.0% and Composer 2.5 fell from 74.7% to 54.0%.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "try_today": "Pick one public-repo coding eval you trust, strip git history and open web access from its runtime, then compare the next score against your current harness.",
+      "day": "2026-07-11"
     }
   ],
   "days": [
     "2099-01-01",
     "2026-07-08",
     "2026-07-09",
-    "2026-07-10"
+    "2026-07-10",
+    "2026-07-11"
   ]
 }

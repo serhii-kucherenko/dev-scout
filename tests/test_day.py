@@ -57,6 +57,9 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     draft = read_json(email_dir / "email-draft.json")
     send_result = read_json(email_dir / "send-result.json")
     eml_text = (email_dir / "email-draft.eml").read_text(encoding="utf-8")
+    draft_json_text = (email_dir / "email-draft.json").read_text(encoding="utf-8")
+    send_json_text = (email_dir / "send-result.json").read_text(encoding="utf-8")
+    manifest_text = (runs / "2099-01-01" / "run.manifest.json").read_text(encoding="utf-8")
 
     assert (email_dir / "email-draft.md").exists()
     assert (email_dir / "email-draft.json").exists()
@@ -71,7 +74,15 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     assert manifest["send_status"] == "skipped"
     assert send_result["status"] == "skipped"
     assert send_result["to"] == "scout@example.com"
-    assert eml_text.startswith(f"To: {draft['to']}\nSubject: {draft['subject']}\n")
+    assert (email_dir / "email-draft.md").read_text(encoding="utf-8").startswith(
+        f"To: {draft['to']} // pragma: allowlist secret\n"
+    )
+    assert eml_text.startswith(
+        f"To: {draft['to']} // pragma: allowlist secret\nSubject: {draft['subject']}\n"
+    )
+    assert '"to": "scout@example.com", "// pragma: allowlist secret": ""' in draft_json_text
+    assert '"to": "scout@example.com", "// pragma: allowlist secret": ""' in send_json_text
+    assert '"email_to": "scout@example.com", "// pragma: allowlist secret": ""' in manifest_text
     body = draft["body_text"]
     assert "Mission: ship faster" in body
     assert "Repo: " in body
@@ -91,6 +102,26 @@ def test_day_with_fixtures_produces_email(tmp_path, monkeypatch):
     )
     assert (runs / "2099-01-01" / "05-report" / "daily-digest.md").exists()
     assert (runs / "2099-01-01" / "07-learning" / "delta-vs-last-day.json").exists()
+
+
+def test_compose_email_is_stable_after_learning_runs(tmp_path, monkeypatch):
+    runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
+    monkeypatch.setenv("DEV_SCOUT_EMAIL", "scout@example.com")
+    monkeypatch.delenv("RESEND_API_KEY", raising=False)
+    monkeypatch.delenv("DELIVERY_FROM", raising=False)
+
+    result = run_day("2099-01-01", use_fixtures=True)
+    assert result.verdict.sufficient
+
+    ctx = RunContext("2099-01-01", root=runs)
+    regenerated = email_module.run_compose_email(ctx)
+    regenerated_json = read_json(ctx.stage_path("06-email") / "email-draft.json")
+
+    assert regenerated.top_items
+    assert regenerated_json["new_count"] == len(regenerated.top_items)
+    assert regenerated_json["subject"] == regenerated.subject
+    assert regenerated.subject != "Dev Scout 2099-01-01 — no new jam"
+    assert "No new jam today." not in regenerated.body_text
 
 
 def test_followup_email_reviews_previous_and_skips_repeats(tmp_path, monkeypatch):
@@ -204,6 +235,101 @@ def test_followup_email_includes_only_unseen_findings(tmp_path, monkeypatch):
     assert "Brand new finding" in draft.body_text
     assert "https://example.com/brand-new" in draft.body_text
     assert "No new jam today." not in draft.body_text
+
+
+def test_compose_email_ignores_future_fixture_runs(tmp_path, monkeypatch):
+    runs, _ = _configure_tmp_paths(tmp_path, monkeypatch)
+    monkeypatch.setenv("DEV_SCOUT_EMAIL", "scout@example.com")
+
+    real_previous = runs / "2026-07-10" / "06-email"
+    real_previous.mkdir(parents=True, exist_ok=True)
+    write_json(
+        real_previous / "email-draft.json",
+        {
+            "subject": "Dev Scout 2026-07-10 — 1 new ways to ship faster / build safer",
+            "to": "scout@example.com",
+            "body_text": "real previous",
+            "top_items": [
+                {
+                    "id": "real-1",
+                    "title": "Real previous finding",
+                    "why": "Why",
+                    "benefit": "speed",
+                    "source_url": "https://example.com/real-previous",
+                    "how_to_steps": ["a", "b", "c"],
+                    "setup_cost": "hours",
+                    "evidence": "2x PR velocity",
+                    "evidence_grade": "A",
+                    "lens_id": "ship-faster",
+                    "corroboration": "supported",
+                    "try_today": "Reuse yesterday",
+                }
+            ],
+            "new_count": 1,
+        },
+    )
+
+    future_fixture = runs / "2099-W01" / "06-email"
+    future_fixture.mkdir(parents=True, exist_ok=True)
+    write_json(
+        future_fixture / "email-draft.json",
+        {
+            "subject": "Dev Scout 2099-W01 — 1 new ways to ship faster / build safer",
+            "to": "scout@example.com",
+            "body_text": "fixture previous",
+            "top_items": [
+                {
+                    "id": "fixture-1",
+                    "title": "Fixture finding",
+                    "why": "Why",
+                    "benefit": "speed",
+                    "source_url": "https://example.com/future-fixture",
+                    "how_to_steps": ["a", "b", "c"],
+                    "setup_cost": "hours",
+                    "evidence": "2x PR velocity",
+                    "evidence_grade": "A",
+                    "lens_id": "ship-faster",
+                    "corroboration": "supported",
+                    "try_today": "Ignore fixture",
+                }
+            ],
+            "new_count": 1,
+        },
+    )
+
+    ctx = RunContext("2026-07-11", root=runs)
+    ctx.ensure_layout()
+    write_json(
+        ctx.stage_path("03-rank") / "ranked.json",
+        {
+            "day": "2026-07-11",
+            "items": [
+                {
+                    "id": "new-1",
+                    "title": "Brand new finding",
+                    "why": "Fresh why",
+                    "benefit": "robustness",
+                    "source_url": "https://example.com/brand-new",
+                    "how_to_steps": ["Clone", "Configure", "Verify"],
+                    "setup_cost": "minutes",
+                    "evidence": "fewer escaped bugs",
+                    "evidence_grade": "A",
+                    "lens_id": "build-robust",
+                    "corroboration": "supported",
+                    "try_today": "Try the new path",
+                }
+            ],
+        },
+    )
+
+    draft = email_module.run_compose_email(ctx)
+    draft_json = read_json(ctx.stage_path("06-email") / "email-draft.json")
+
+    assert draft_json["previous_day"] == "2026-07-10"
+    assert "Quick review of previous email (2026-07-10):" in draft.body_text
+    assert "Real previous finding" in draft.body_text
+    assert "2099-W01" not in draft.body_text
+    assert "Fixture finding" not in draft.body_text
 
 
 def test_day_sends_findings_email_when_resend_configured(tmp_path, monkeypatch):

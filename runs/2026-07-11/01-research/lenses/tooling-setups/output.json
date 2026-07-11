@@ -1,0 +1,26 @@
+{
+  "lens_id": "tooling-setups",
+  "items": [
+    {
+      "id": "tooling-setups-20260711-ai-gateway-coding-agents",
+      "title": "Point your coding agents at one gateway instead of wiring every provider separately",
+      "why": "A shared gateway gives coding tools one place for spend tracking, model access, failover, and request traces instead of per-provider setup drift.",
+      "benefit": "both",
+      "source_url": "https://vercel.com/docs/ai-gateway/coding-agents",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/coding-agents",
+      "how_to_steps": [
+        "Create an AI Gateway API key and choose which coding agents you want to standardize first, such as Claude Code, Codex, Cline, Roo Code, or Conductor.",
+        "Update each tool's provider config so its base URL points at `https://ai-gateway.vercel.sh` (or `/v1` where required) instead of a direct model vendor endpoint.",
+        "Launch the agent with the gateway profile or environment variables and confirm requests still work exactly as before from the developer's point of view.",
+        "Use the gateway observability views to watch spend by agent, model mix, and request traces before adding provider fallbacks or broader team rollout."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "Vercel documents one unified dashboard for spend tracking, 200+ models, one invoice, automatic provider fallbacks, and full request traces; its Agent Stack blog describes the same single endpoint as the production routing layer for multi-model agents.",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Take one existing CLI agent, point its base URL at the gateway, and compare the next day's model spend and request trace visibility against the direct-provider setup."
+    }
+  ]
+}

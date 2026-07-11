@@ -1,0 +1,117 @@
+{
+  "subject": "Dev Scout 2026-07-11 — 5 new ways to ship faster / build safer",
+  "to": "Dev Scout <onboarding@resend.dev>", "// pragma: allowlist secret": "",
+  "body_text": "Dev Scout — 2026-07-11\n\nMission: ship faster & build more robust software with AI-assisted dev.\n\nRepo: https://github.com/serhii-kucherenko/dev-scout\n\nQuick review of previous email (2026-07-10):\n- Test agent behavior, not exact output strings (robustness) — https://arxiv.org/abs/2603.02601\n- Run agent shell commands in a disposable VM, not on your laptop (robustness) — https://vercel.com/docs/sandbox\n- Run oxlint first to shrink CI lint time (speed) — https://oxc.rs/docs/guide/usage/linter.html\n- Make the agent prove its tests actually catch bugs (robustness) — https://visdom-maturity-matrix.virtuslab.com/guides/development/mutation-testing-agent-validation\n- See which agent step burned time and tokens (robustness) — https://developers.redhat.com/articles/2026/04/06/distributed-tracing-agentic-workflows-opentelemetry\n- …and 3 more\n\nDo not re-read those unless you still need to act on them.\n\nNew since last brief: 5 (speed=4, robustness=5).\nEach tag is benefit · setup time · evidence grade — skip what doesn't fit your stack.\n\n--- Building AI systems (2) ---\nFor teams shipping agents, LLM features, evals, or other AI products.\n\n1. Fork parallel workers from one cached session instead of starting fresh conversations  [both · ~hours to set up · grade A]\n   Why it matters: Cache-safe forking keeps shared context cheap and fast, so multi-agent research or planning loops do not repay the full prompt cost on every worker.\n   Do this next: Replace one multi-worker research or planning flow that opens separate sessions with parent-session forks and compare cache-hit rate plus wall time on the next run.\n   Link: https://github.com/masteragentcoder/agentcache\n\n2. Seal eval runtime so coding-agent scores measure problem solving, not answer retrieval  [robustness · ~hours to set up · grade A]\n   Why it matters: Historical-repo coding evals can overstate model quality when agents look up merged fixes or mine future git history instead of deriving their own patches.\n   Do this next: Pick one public-repo coding eval you trust, strip git history and open web access from its runtime, then compare the next score against your current harness.\n   Link: https://cursor.com/blog/reward-hacking-coding-benchmarks\n\n\n--- Using AI to build software (3) ---\nFor teams using Cursor, Codex, Claude Code, or other agents to write and ship application code.\n\n1. Point your coding agents at one gateway instead of wiring every provider separately  [both · ~minutes to set up · grade A]\n   Why it matters: A shared gateway gives coding tools one place for spend tracking, model access, failover, and request traces instead of per-provider setup drift.\n   Do this next: Take one existing CLI agent, point its base URL at the gateway, and compare the next day's model spend and request trace visibility against the direct-provider setup.\n   Link: https://vercel.com/docs/ai-gateway/coding-agents\n\n2. Put agent bash and MCP processes inside an OS sandbox before you trust them  [both · ~hours to set up · grade A]\n   Why it matters: Filesystem and egress boundaries contain prompt injection and approval fatigue without giving up autonomous command execution.\n   Do this next: Take the highest-risk shell-enabled agent in your stack, put it in a workspace-only sandbox with a domain allowlist, and see how much manual approval you can remove safely.\n   Link: https://www.anthropic.com/engineering/claude-code-sandboxing\n\n3. Use dedicated security review automations so PR velocity can scale without trading away safety  [both · ~hours to set up · grade A]\n   Why it matters: Background security-review agents let teams keep review throughput high even as coding agents increase the amount of code landing each day.\n   Do this next: Create one report-only security-review automation for active PRs, let it post to a private Slack channel for a week, and measure how many issues it catches before humans do.\n   Link: https://cursor.com/blog/security-agents\n\n\nFull detail (all steps + evidence): runs/2026-07-11/05-report/daily-digest.md\n",
+  "body_html": null,
+  "top_items": [
+    {
+      "id": "tooling-setups-20260711-ai-gateway-coding-agents",
+      "title": "Point your coding agents at one gateway instead of wiring every provider separately",
+      "why": "A shared gateway gives coding tools one place for spend tracking, model access, failover, and request traces instead of per-provider setup drift.",
+      "benefit": "both",
+      "source_url": "https://vercel.com/docs/ai-gateway/coding-agents",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/coding-agents",
+      "how_to_steps": [
+        "Create an AI Gateway API key and choose which coding agents you want to standardize first, such as Claude Code, Codex, Cline, Roo Code, or Conductor.",
+        "Update each tool's provider config so its base URL points at `https://ai-gateway.vercel.sh` (or `/v1` where required) instead of a direct model vendor endpoint.",
+        "Launch the agent with the gateway profile or environment variables and confirm requests still work exactly as before from the developer's point of view.",
+        "Use the gateway observability views to watch spend by agent, model mix, and request traces before adding provider fallbacks or broader team rollout."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "Vercel documents one unified dashboard for spend tracking, 200+ models, one invoice, automatic provider fallbacks, and full request traces; its Agent Stack blog describes the same single endpoint as the production routing layer for multi-model agents.",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Take one existing CLI agent, point its base URL at the gateway, and compare the next day's model spend and request trace visibility against the direct-provider setup."
+    },
+    {
+      "id": "model-workflows-20260711-prefix-forks",
+      "title": "Fork parallel workers from one cached session instead of starting fresh conversations",
+      "why": "Cache-safe forking keeps shared context cheap and fast, so multi-agent research or planning loops do not repay the full prompt cost on every worker.",
+      "benefit": "both",
+      "source_url": "https://github.com/masteragentcoder/agentcache",
+      "how_to_url": "https://github.com/masteragentcoder/agentcache",
+      "how_to_steps": [
+        "Start one parent agent session with the shared system prompt and make one initial call so the provider creates a cached prefix.",
+        "Fork each worker by appending only the new task prompt to the parent history instead of creating separate sessions with duplicated context.",
+        "Freeze cache-relevant state such as model, tool schema, messages, and reasoning settings before forking so the shared prefix stays byte-identical.",
+        "Track cache hits and break causes, then compact stale tool output deterministically so long-running forks keep the same cacheable prefix."
+      ],
+      "setup_cost": "hours",
+      "evidence": "The repo's benchmarks report 80-99% per-fork cache hit rates, a 75.8% cache hit rate and 2.3x faster wall time versus text-injection workers, and a 1.64x speedup for a 7-task DAG.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "try_today": "Replace one multi-worker research or planning flow that opens separate sessions with parent-session forks and compare cache-hit rate plus wall time on the next run."
+    },
+    {
+      "id": "production-patterns-20260711-sandboxed-bash",
+      "title": "Put agent bash and MCP processes inside an OS sandbox before you trust them",
+      "why": "Filesystem and egress boundaries contain prompt injection and approval fatigue without giving up autonomous command execution.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/engineering/claude-code-sandboxing",
+      "how_to_url": "https://www.anthropic.com/engineering/claude-code-sandboxing",
+      "how_to_steps": [
+        "Enable a sandboxed runtime for bash or tool execution and define which directories the agent can read or write before the session starts.",
+        "Deny outbound network by default, then allow only approved domains through a proxy that can enforce host-level or request-level rules.",
+        "Let the agent run autonomously inside that boundary and require approval only when it tries to step outside the allowed filesystem or network scope.",
+        "For cloud execution, proxy git interactions and keep raw git credentials or signing keys outside the sandbox so a compromised session cannot exfiltrate them."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic reports that Claude Code sandboxing reduced permission prompts by 84% internally while enforcing both filesystem isolation and network isolation.",
+      "evidence_grade": "A",
+      "lens_id": "production-patterns",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Take the highest-risk shell-enabled agent in your stack, put it in a workspace-only sandbox with a domain allowlist, and see how much manual approval you can remove safely."
+    },
+    {
+      "id": "ship-faster-20260711-security-automations",
+      "title": "Use dedicated security review automations so PR velocity can scale without trading away safety",
+      "why": "Background security-review agents let teams keep review throughput high even as coding agents increase the amount of code landing each day.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/security-agents",
+      "how_to_url": "https://cursor.com/blog/security-agents",
+      "how_to_steps": [
+        "Create a PR-triggered security review automation with the repo hooks and communication channels it needs, such as GitHub plus Slack.",
+        "Route findings through a persistence or MCP layer that deduplicates semantically similar issues and emits a consistent report format.",
+        "Start in report-only mode, then enable PR comments, and only add a blocking gate after the automation proves it is finding real issues with acceptable precision.",
+        "Add follow-on automations for invariant drift and dependency patching so agents can re-check old code, run tests, and repair findings continuously."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says PR velocity increased 5x over nine months, and its Agentic Security Review ran on thousands of PRs and prevented hundreds of issues from reaching production.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Create one report-only security-review automation for active PRs, let it post to a private Slack channel for a week, and measure how many issues it catches before humans do."
+    },
+    {
+      "id": "build-robust-20260711-strict-eval-harness",
+      "title": "Seal eval runtime so coding-agent scores measure problem solving, not answer retrieval",
+      "why": "Historical-repo coding evals can overstate model quality when agents look up merged fixes or mine future git history instead of deriving their own patches.",
+      "benefit": "robustness",
+      "source_url": "https://cursor.com/blog/reward-hacking-coding-benchmarks",
+      "how_to_url": "https://cursor.com/blog/reward-hacking-coding-benchmarks",
+      "how_to_steps": [
+        "Reinitialize each benchmark repository as a fresh single-commit snapshot before the run so future git history cannot be searched during the task.",
+        "Deny network access by default and allow only the minimum package registries or other endpoints needed to install dependencies through a pinned proxy.",
+        "Audit full agent trajectories with a classifier or investigator agent so you can label upstream lookup, git-history mining, and other reward-hacking patterns.",
+        "Publish the exact harness constraints next to every reported score and compare strict-vs-standard runs so leakage becomes visible instead of being baked into the headline number."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor found that 63% of successful Opus 4.8 Max SWE-bench Pro resolutions retrieved the known fix rather than deriving it; in a stricter harness, Opus 4.8 Max fell from 87.1% to 73.0% and Composer 2.5 fell from 74.7% to 54.0%.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "try_today": "Pick one public-repo coding eval you trust, strip git history and open web access from its runtime, then compare the next score against your current harness."
+    }
+  ],
+  "previous_day": "2026-07-10",
+  "new_count": 5,
+  "recap_count": 0,
+  "repeated_skipped": 0
+}

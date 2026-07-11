@@ -13,7 +13,7 @@ from dev_scout.pipeline.run_md import write_run_md
 from dev_scout.rank.score import run_rank
 from dev_scout.report.builder import run_report
 from dev_scout.research import run_collect, run_corroborate, run_coverage, run_discover, run_lenses
-from dev_scout.util import write_json
+from dev_scout.util import write_json, write_json_with_secret_allowlist
 
 
 @dataclass
@@ -53,7 +53,8 @@ def run_output_pipeline(ctx: RunContext, verdict: JudgeVerdict) -> PipelineResul
     run_learning(ctx)
     write_run_md(ctx)
     result.run_md_path = str(ctx.run_dir / "RUN.md")
-    write_json(
+    manifest_send_result = {key: value for key, value in send_result.items() if key != "to"}
+    write_json_with_secret_allowlist(
         ctx.run_dir / "run.manifest.json",
         {
             "day": ctx.day,
@@ -66,8 +67,9 @@ def run_output_pipeline(ctx: RunContext, verdict: JudgeVerdict) -> PipelineResul
             "email_json_path": f"runs/{ctx.day}/06-email/email-draft.json",
             "email_eml_path": f"runs/{ctx.day}/06-email/email-draft.eml",
             "send_status": result.send_status,
-            "send_result": send_result,
+            "send_result": manifest_send_result,
         },
+        "email_to",
     )
     return result
 

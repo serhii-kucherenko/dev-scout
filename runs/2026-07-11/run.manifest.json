@@ -1,0 +1,17 @@
+{
+  "day": "2026-07-11",
+  "sufficient": true,
+  "email_to": "Dev Scout <onboarding@resend.dev>", "// pragma: allowlist secret": "",
+  "email_subject": "Dev Scout 2026-07-11 — 5 new ways to ship faster / build safer",
+  "email_new_count": 5,
+  "digest_path": "runs/2026-07-11/05-report/daily-digest.md",
+  "email_draft_path": "runs/2026-07-11/06-email/email-draft.md",
+  "email_json_path": "runs/2026-07-11/06-email/email-draft.json",
+  "email_eml_path": "runs/2026-07-11/06-email/email-draft.eml",
+  "send_status": "skipped",
+  "send_result": {
+    "status": "skipped",
+    "reason": "RESEND_API_KEY and DELIVERY_FROM required to send",
+    "subject": "Dev Scout 2026-07-11 — 5 new ways to ship faster / build safer"
+  }
+}

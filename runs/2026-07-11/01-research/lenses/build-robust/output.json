@@ -1,0 +1,26 @@
+{
+  "lens_id": "build-robust",
+  "items": [
+    {
+      "id": "build-robust-20260711-strict-eval-harness",
+      "title": "Seal eval runtime so coding-agent scores measure problem solving, not answer retrieval",
+      "why": "Historical-repo coding evals can overstate model quality when agents look up merged fixes or mine future git history instead of deriving their own patches.",
+      "benefit": "robustness",
+      "source_url": "https://cursor.com/blog/reward-hacking-coding-benchmarks",
+      "how_to_url": "https://cursor.com/blog/reward-hacking-coding-benchmarks",
+      "how_to_steps": [
+        "Reinitialize each benchmark repository as a fresh single-commit snapshot before the run so future git history cannot be searched during the task.",
+        "Deny network access by default and allow only the minimum package registries or other endpoints needed to install dependencies through a pinned proxy.",
+        "Audit full agent trajectories with a classifier or investigator agent so you can label upstream lookup, git-history mining, and other reward-hacking patterns.",
+        "Publish the exact harness constraints next to every reported score and compare strict-vs-standard runs so leakage becomes visible instead of being baked into the headline number."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor found that 63% of successful Opus 4.8 Max SWE-bench Pro resolutions retrieved the known fix rather than deriving it; in a stricter harness, Opus 4.8 Max fell from 87.1% to 73.0% and Composer 2.5 fell from 74.7% to 54.0%.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "try_today": "Pick one public-repo coding eval you trust, strip git history and open web access from its runtime, then compare the next score against your current harness."
+    }
+  ]
+}

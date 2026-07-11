@@ -1,0 +1,105 @@
+{
+  "day": "2026-07-11",
+  "planned": 10,
+  "queries": [
+    {
+      "lens": "ship-faster",
+      "query": "Cursor security agents PR velocity automation templates 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "build-robust",
+      "query": "reward hacking coding benchmarks strict harness git history internet access 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "tooling-setups",
+      "query": "Vercel AI Gateway coding agents configure Claude Code Codex Cline 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "production-patterns",
+      "query": "Claude Code sandboxing filesystem network isolation permission prompts 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "model-workflows",
+      "query": "agentcache prefix preserving forks prompt cache multi agent 2026",
+      "tier": "primary"
+    }
+  ],
+  "urls_to_fetch": [
+    "https://cursor.com/blog/security-agents",
+    "https://cursor.com/blog/automations",
+    "https://cursor.com/blog/reward-hacking-coding-benchmarks",
+    "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
+    "https://vercel.com/docs/ai-gateway/coding-agents",
+    "https://vercel.com/blog/agent-stack",
+    "https://www.anthropic.com/engineering/claude-code-sandboxing",
+    "https://www.anthropic.com/engineering/how-we-contain-claude",
+    "https://github.com/masteragentcoder/agentcache",
+    "https://www.anthropic.com/news/prompt-caching"
+  ],
+  "entries": [
+    {
+      "url": "https://cursor.com/blog/security-agents",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Use dedicated security review automations so PR velocity can scale without trading away safety"
+    },
+    {
+      "url": "https://cursor.com/blog/automations",
+      "tier": "secondary",
+      "lens_id": "ship-faster",
+      "reason": "Automations post adds the runtime details: cloud sandboxes, verification, memory, and security review/incident-response examples."
+    },
+    {
+      "url": "https://cursor.com/blog/reward-hacking-coding-benchmarks",
+      "tier": "primary",
+      "lens_id": "build-robust",
+      "reason": "Seal eval runtime so coding-agent scores measure problem solving, not answer retrieval"
+    },
+    {
+      "url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
+      "tier": "secondary",
+      "lens_id": "build-robust",
+      "reason": "OpenAI's audit of SWE-bench Pro independently argues that benchmark quality needs agent-assisted review and reports that roughly 30% of tasks are broken."
+    },
+    {
+      "url": "https://vercel.com/docs/ai-gateway/coding-agents",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "Point your coding agents at one gateway instead of wiring every provider separately"
+    },
+    {
+      "url": "https://vercel.com/blog/agent-stack",
+      "tier": "secondary",
+      "lens_id": "tooling-setups",
+      "reason": "Agent Stack explains the single-endpoint routing, failover, and usage tracking that the coding-agents setup page turns into concrete per-tool config."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/claude-code-sandboxing",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "Put agent bash and MCP processes inside an OS sandbox before you trust them"
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "tier": "secondary",
+      "lens_id": "production-patterns",
+      "reason": "Containment write-up confirms the same 84% prompt reduction and broadens the pattern into environment-first security design."
+    },
+    {
+      "url": "https://github.com/masteragentcoder/agentcache",
+      "tier": "primary",
+      "lens_id": "model-workflows",
+      "reason": "Fork parallel workers from one cached session instead of starting fresh conversations"
+    },
+    {
+      "url": "https://www.anthropic.com/news/prompt-caching",
+      "tier": "secondary",
+      "lens_id": "model-workflows",
+      "reason": "Anthropic's prompt-caching announcement independently documents up to 90% cost reduction and up to 85% lower latency when the same prompt prefix is reused across calls."
+    }
+  ]
+}

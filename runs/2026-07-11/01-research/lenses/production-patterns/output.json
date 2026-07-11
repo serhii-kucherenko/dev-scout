@@ -1,0 +1,26 @@
+{
+  "lens_id": "production-patterns",
+  "items": [
+    {
+      "id": "production-patterns-20260711-sandboxed-bash",
+      "title": "Put agent bash and MCP processes inside an OS sandbox before you trust them",
+      "why": "Filesystem and egress boundaries contain prompt injection and approval fatigue without giving up autonomous command execution.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/engineering/claude-code-sandboxing",
+      "how_to_url": "https://www.anthropic.com/engineering/claude-code-sandboxing",
+      "how_to_steps": [
+        "Enable a sandboxed runtime for bash or tool execution and define which directories the agent can read or write before the session starts.",
+        "Deny outbound network by default, then allow only approved domains through a proxy that can enforce host-level or request-level rules.",
+        "Let the agent run autonomously inside that boundary and require approval only when it tries to step outside the allowed filesystem or network scope.",
+        "For cloud execution, proxy git interactions and keep raw git credentials or signing keys outside the sandbox so a compromised session cannot exfiltrate them."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic reports that Claude Code sandboxing reduced permission prompts by 84% internally while enforcing both filesystem isolation and network isolation.",
+      "evidence_grade": "A",
+      "lens_id": "production-patterns",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Take the highest-risk shell-enabled agent in your stack, put it in a workspace-only sandbox with a domain allowlist, and see how much manual approval you can remove safely."
+    }
+  ]
+}

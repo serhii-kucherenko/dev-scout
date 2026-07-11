@@ -1,0 +1,26 @@
+{
+  "lens_id": "model-workflows",
+  "items": [
+    {
+      "id": "model-workflows-20260711-prefix-forks",
+      "title": "Fork parallel workers from one cached session instead of starting fresh conversations",
+      "why": "Cache-safe forking keeps shared context cheap and fast, so multi-agent research or planning loops do not repay the full prompt cost on every worker.",
+      "benefit": "both",
+      "source_url": "https://github.com/masteragentcoder/agentcache",
+      "how_to_url": "https://github.com/masteragentcoder/agentcache",
+      "how_to_steps": [
+        "Start one parent agent session with the shared system prompt and make one initial call so the provider creates a cached prefix.",
+        "Fork each worker by appending only the new task prompt to the parent history instead of creating separate sessions with duplicated context.",
+        "Freeze cache-relevant state such as model, tool schema, messages, and reasoning settings before forking so the shared prefix stays byte-identical.",
+        "Track cache hits and break causes, then compact stale tool output deterministically so long-running forks keep the same cacheable prefix."
+      ],
+      "setup_cost": "hours",
+      "evidence": "The repo's benchmarks report 80-99% per-fork cache hit rates, a 75.8% cache hit rate and 2.3x faster wall time versus text-injection workers, and a 1.64x speedup for a 7-task DAG.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "try_today": "Replace one multi-worker research or planning flow that opens separate sessions with parent-session forks and compare cache-hit rate plus wall time on the next run."
+    }
+  ]
+}

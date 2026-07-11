@@ -7,7 +7,7 @@ import httpx
 from dev_scout.compose.email import resolve_recipient
 from dev_scout.context import RunContext
 from dev_scout.models.jam import EmailDraft
-from dev_scout.util import config_dir, load_yaml, read_json, write_json
+from dev_scout.util import config_dir, load_yaml, read_json, write_json, write_json_with_secret_allowlist
 
 
 def _delivery_mode(delivery: dict) -> str:
@@ -96,4 +96,7 @@ def run_send(ctx: RunContext, *, dry_run: bool = False) -> dict[str, str]:
 def _write_send_result(ctx: RunContext, result: dict[str, str]) -> None:
     email_dir = ctx.stage_path("06-email")
     email_dir.mkdir(parents=True, exist_ok=True)
+    if "to" in result:
+        write_json_with_secret_allowlist(email_dir / "send-result.json", result, "to")
+        return
     write_json(email_dir / "send-result.json", result)

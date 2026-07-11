@@ -1,0 +1,26 @@
+{
+  "lens_id": "ship-faster",
+  "items": [
+    {
+      "id": "ship-faster-20260711-security-automations",
+      "title": "Use dedicated security review automations so PR velocity can scale without trading away safety",
+      "why": "Background security-review agents let teams keep review throughput high even as coding agents increase the amount of code landing each day.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/security-agents",
+      "how_to_url": "https://cursor.com/blog/security-agents",
+      "how_to_steps": [
+        "Create a PR-triggered security review automation with the repo hooks and communication channels it needs, such as GitHub plus Slack.",
+        "Route findings through a persistence or MCP layer that deduplicates semantically similar issues and emits a consistent report format.",
+        "Start in report-only mode, then enable PR comments, and only add a blocking gate after the automation proves it is finding real issues with acceptable precision.",
+        "Add follow-on automations for invariant drift and dependency patching so agents can re-check old code, run tests, and repair findings continuously."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says PR velocity increased 5x over nine months, and its Agentic Security Review ran on thousands of PRs and prevented hundreds of issues from reaching production.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Create one report-only security-review automation for active PRs, let it post to a private Slack channel for a week, and measure how many issues it catches before humans do."
+    }
+  ]
+}

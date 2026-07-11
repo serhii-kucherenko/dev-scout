@@ -41,7 +41,12 @@ def run_learning(ctx: RunContext) -> dict[str, int]:
     ledger["days"] = days
     ledger.pop("weeks", None)
     for item in new_items:
-        ledger["findings"].append(item.model_dump(mode="json"))
+        ledger["findings"].append(
+            {
+                **item.model_dump(mode="json"),
+                "day": ctx.day,
+            }
+        )
     if ctx.day not in ledger["days"]:
         ledger["days"].append(ctx.day)
     write_json(ledger_path, ledger)
