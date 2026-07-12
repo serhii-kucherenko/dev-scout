@@ -1,0 +1,27 @@
+{
+  "lens_id": "build-robust",
+  "items": [
+    {
+      "id": "build-robust-20260712-resource-floor-ceiling",
+      "title": "Separate guaranteed resources from kill limits in agentic evals",
+      "why": "Benchmark scores move when containers are OOM-killed for transient spikes, so resource policy needs to be part of the eval design.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "how_to_url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "how_to_steps": [
+        "Publish both the guaranteed allocation and the hard kill threshold for each task instead of a single exact resource number.",
+        "Calibrate headroom by rerunning the eval at several ceilings and find the smallest band where score changes stay within noise while infrastructure failures drop.",
+        "Report infra error rate, time limits, and concurrency alongside pass rate so consumers can judge whether the setup is stable.",
+        "Treat small leaderboard deltas as suspect until the resource methodology matches across runs."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic reports a 6-point spread on Terminal-Bench 2.0 between the strictest and most generous setups; a 3x ceiling cut infra errors from 5.8% to 2.1% while keeping score lift within noise.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://github.com/harbor-framework/terminal-bench-2/pull/53",
+      "try_today": "Re-run one coding eval with separate floor and ceiling settings and log how much of today's failure rate is infrastructure rather than model behavior."
+    }
+  ]
+}

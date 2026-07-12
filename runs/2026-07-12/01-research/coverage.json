@@ -1,0 +1,12 @@
+{
+  "urls_planned": 9,
+  "urls_fetched": 9,
+  "urls_extracted": 9,
+  "lenses_run": 5,
+  "lenses_with_findings": 4,
+  "grade_distribution": {
+    "A": 4,
+    "B": 1
+  },
+  "corroboration_rate": 0.8
+}

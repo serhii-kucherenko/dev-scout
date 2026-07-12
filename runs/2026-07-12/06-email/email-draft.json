@@ -1,0 +1,122 @@
+{
+  "subject": "Dev Scout 2026-07-12 — 5 new ways to ship faster / build safer",
+  "to": "kucherenko.web@gmail.com", "// pragma: allowlist secret": "",
+  "body_text": "Dev Scout — 2026-07-12\n\nMission: ship faster & build more robust software with AI-assisted dev.\n\nRepo: https://github.com/serhii-kucherenko/dev-scout\n\nQuick review of previous email (2026-07-11):\n- Point your coding agents at one gateway instead of wiring every provider separately (both) — https://vercel.com/docs/ai-gateway/coding-agents\n- Fork parallel workers from one cached session instead of starting fresh conversations (both) — https://github.com/masteragentcoder/agentcache\n- Put agent bash and MCP processes inside an OS sandbox before you trust them (both) — https://www.anthropic.com/engineering/claude-code-sandboxing\n- Use dedicated security review automations so PR velocity can scale without trading away safety (both) — https://cursor.com/blog/security-agents\n- Seal eval runtime so coding-agent scores measure problem solving, not answer retrieval (robustness) — https://cursor.com/blog/reward-hacking-coding-benchmarks\n\nDo not re-read those unless you still need to act on them.\n\nNew since last brief: 5 (speed=3, robustness=5).\nEach tag is benefit · setup time · evidence grade — skip what doesn't fit your stack.\n\n--- Building AI systems (4) ---\nFor teams shipping agents, LLM features, evals, or other AI products.\n\n1. Separate guaranteed resources from kill limits in agentic evals  [robustness · ~hours to set up · grade A]\n   Why it matters: Benchmark scores move when containers are OOM-killed for transient spikes, so resource policy needs to be part of the eval design.\n   Do this next: Re-run one coding eval with separate floor and ceiling settings and log how much of today's failure rate is infrastructure rather than model behavior.\n   Link: https://www.anthropic.com/engineering/infrastructure-noise\n\n2. Keep session, harness, and sandboxes separate in long-running agents  [both · ~hours to set up · grade A]\n   Why it matters: Decoupling the brain from the session log and execution hands makes agents recoverable, faster to start, and easier to secure.\n   Do this next: Take one long-running agent loop, split its event log out of the worker container, and measure startup latency before and after.\n   Link: https://www.anthropic.com/engineering/managed-agents\n\n3. Let production agents act only inside an approved plan  [robustness · ~hours to set up · grade B]\n   Why it matters: Production agents need least-privilege changes that are scoped to one plan, not standing access that lives for the whole session.\n   Do this next: Take the highest-risk agent in your stack, force it into read-only mode by default, and make every write path go through a single approved-plan capability grant.\n   Link: https://vercel.com/blog/vercel-agent\n\n4. Make tiered reasoning the default model policy  [both · ~hours to set up · grade A]\n   Why it matters: A Sol/Terra/Luna ladder keeps routine coding cheap and fast while reserving max and ultra for work that truly benefits from more compute and more agents.\n   Do this next: Pick one coding workflow, route the happy path to Terra, escalate only retries to Sol max, and compare solve rate plus cost over the next day.\n   Link: https://openai.com/index/gpt-5-6/\n\n\n--- Using AI to build software (1) ---\nFor teams using Cursor, Codex, Claude Code, or other agents to write and ship application code.\n\n1. Measure review agents by resolved bugs, not comment volume  [both · ~hours to set up · grade A]\n   Why it matters: Resolved-bug rate gives review agents a quality target tied to real fixes instead of noisy comment counts.\n   Do this next: Take one review agent, add a post-merge “was this actually fixed?” audit, and compare resolved bugs per PR before changing anything else.\n   Link: https://cursor.com/blog/building-bugbot\n\n\nFull detail (all steps + evidence): runs/2026-07-12/05-report/daily-digest.md\n",
+  "body_html": null,
+  "top_items": [
+    {
+      "id": "ship-faster-20260712-resolution-rate",
+      "title": "Measure review agents by resolved bugs, not comment volume",
+      "why": "Resolved-bug rate gives review agents a quality target tied to real fixes instead of noisy comment counts.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/building-bugbot",
+      "how_to_url": "https://cursor.com/blog/building-bugbot",
+      "how_to_steps": [
+        "Run several review passes in parallel with different diff orderings so the agent explores multiple bug hypotheses.",
+        "Cluster overlapping findings, keep only issues confirmed by majority voting, and pass the survivors through a validator model before posting.",
+        "At merge time, measure which reported bugs were actually fixed in the final code and treat that resolution rate as the main quality metric.",
+        "Hill-climb prompts, tools, and filters against resolved-bugs-per-PR instead of raw comment volume."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says 40 experiments raised Bugbot's resolution rate from 52% to over 70% and increased resolved bugs per PR from roughly 0.2 to about 0.5, while Bugbot now reviews more than two million PRs per month.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/blog/automations",
+      "try_today": "Take one review agent, add a post-merge “was this actually fixed?” audit, and compare resolved bugs per PR before changing anything else."
+    },
+    {
+      "id": "build-robust-20260712-resource-floor-ceiling",
+      "title": "Separate guaranteed resources from kill limits in agentic evals",
+      "why": "Benchmark scores move when containers are OOM-killed for transient spikes, so resource policy needs to be part of the eval design.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "how_to_url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "how_to_steps": [
+        "Publish both the guaranteed allocation and the hard kill threshold for each task instead of a single exact resource number.",
+        "Calibrate headroom by rerunning the eval at several ceilings and find the smallest band where score changes stay within noise while infrastructure failures drop.",
+        "Report infra error rate, time limits, and concurrency alongside pass rate so consumers can judge whether the setup is stable.",
+        "Treat small leaderboard deltas as suspect until the resource methodology matches across runs."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic reports a 6-point spread on Terminal-Bench 2.0 between the strictest and most generous setups; a 3x ceiling cut infra errors from 5.8% to 2.1% while keeping score lift within noise.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://github.com/harbor-framework/terminal-bench-2/pull/53",
+      "try_today": "Re-run one coding eval with separate floor and ceiling settings and log how much of today's failure rate is infrastructure rather than model behavior."
+    },
+    {
+      "id": "production-patterns-20260712-decouple-brain-session-hands",
+      "title": "Keep session, harness, and sandboxes separate in long-running agents",
+      "why": "Decoupling the brain from the session log and execution hands makes agents recoverable, faster to start, and easier to secure.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/engineering/managed-agents",
+      "how_to_url": "https://www.anthropic.com/engineering/managed-agents",
+      "how_to_steps": [
+        "Move the durable session log out of the sandbox so a crashed harness can be restarted from recorded events instead of losing the run.",
+        "Run the harness outside the execution environment and reach sandboxes or tools through a narrow execute-style interface.",
+        "Provision a sandbox only when a task actually needs one so inference can start before repo clone or container setup finishes.",
+        "Keep secrets outside the sandbox and expose external systems through scoped repo credentials, proxies, or vault-backed tools."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic says decoupling brain from hands cut p50 time-to-first-token by roughly 60% and p95 by over 90% while improving recoverability and secret isolation.",
+      "evidence_grade": "A",
+      "lens_id": "production-patterns",
+      "track": "ai-development",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_today": "Take one long-running agent loop, split its event log out of the worker container, and measure startup latency before and after."
+    },
+    {
+      "id": "production-patterns-20260712-plan-scoped-prod-agents",
+      "title": "Let production agents act only inside an approved plan",
+      "why": "Production agents need least-privilege changes that are scoped to one plan, not standing access that lives for the whole session.",
+      "benefit": "robustness",
+      "source_url": "https://vercel.com/blog/vercel-agent",
+      "how_to_url": "https://vercel.com/blog/vercel-agent",
+      "how_to_steps": [
+        "Run the agent under its own service identity so every action is attributable and does not automatically inherit a human's full access.",
+        "Keep the agent read-only by default and require it to propose a concrete plan before it can roll back, change config, or touch production.",
+        "Mint short-lived capabilities only for the tasks named in that approved plan, then drop the agent back to read-only when the plan ends.",
+        "Execute generated fixes inside an isolated sandbox against the real project build, tests, and linters before surfacing a PR or rollback recommendation."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Vercel says its agent traced a bad deploy, recommended rollback, and mitigated the incident in under three minutes; the same system is read-only by default and verifies generated fixes in Sandbox before surfacing them.",
+      "evidence_grade": "B",
+      "lens_id": "production-patterns",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://vercel.com/blog/vercel-ship-2026-recap",
+      "try_today": "Take the highest-risk agent in your stack, force it into read-only mode by default, and make every write path go through a single approved-plan capability grant."
+    },
+    {
+      "id": "model-workflows-20260712-tiered-gpt56-routing",
+      "title": "Make tiered reasoning the default model policy",
+      "why": "A Sol/Terra/Luna ladder keeps routine coding cheap and fast while reserving max and ultra for work that truly benefits from more compute and more agents.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/gpt-5-6/",
+      "how_to_url": "https://openai.com/index/gpt-5-6/",
+      "how_to_steps": [
+        "Default routine implementation, search, and refactor tasks to the cheaper tier that still clears your quality bar, such as Terra or Luna.",
+        "Escalate only stalled or high-stakes tasks to Sol with max reasoning, and reserve ultra or multi-agent mode for long-horizon work where faster time-to-result matters.",
+        "Log solve rate, latency, tool-call volume, and token cost by task class so escalation rules are based on evidence instead of instinct.",
+        "Use prompt caching and programmatic tool calling when the workflow repeatedly resends the same context or processes large intermediate outputs."
+      ],
+      "setup_cost": "hours",
+      "evidence": "OpenAI says GPT-5.6 Sol reaches 80 on the Artificial Analysis Coding Agent Index, 2.8 points above Claude Fable 5 at about one-third lower cost; Terra performs just above Fable 5 and Luna beats Opus 4.8 at about one-quarter the estimated cost, while ultra coordinates four agents in parallel by default.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+      "try_today": "Pick one coding workflow, route the happy path to Terra, escalate only retries to Sol max, and compare solve rate plus cost over the next day."
+    }
+  ],
+  "previous_day": "2026-07-11",
+  "new_count": 5,
+  "recap_count": 0,
+  "repeated_skipped": 0
+}

@@ -1,0 +1,98 @@
+{
+  "day": "2026-07-12",
+  "planned": 9,
+  "queries": [
+    {
+      "lens": "ship-faster",
+      "query": "Cursor Bugbot resolution rate automations review metrics 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "build-robust",
+      "query": "Anthropic infrastructure noise Terminal-Bench resource limits 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "production-patterns",
+      "query": "Anthropic managed agents decouple brain hands session sandbox 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "production-patterns",
+      "query": "Vercel Agent plan permissions sandbox production July 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "model-workflows",
+      "query": "OpenAI GPT-5.6 Sol Terra Luna ultra coding July 2026",
+      "tier": "primary"
+    }
+  ],
+  "urls_to_fetch": [
+    "https://cursor.com/blog/building-bugbot",
+    "https://cursor.com/blog/automations",
+    "https://www.anthropic.com/engineering/infrastructure-noise",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/53",
+    "https://www.anthropic.com/engineering/managed-agents",
+    "https://vercel.com/blog/vercel-agent",
+    "https://vercel.com/blog/vercel-ship-2026-recap",
+    "https://openai.com/index/gpt-5-6/",
+    "https://openai.com/index/previewing-gpt-5-6-sol/"
+  ],
+  "entries": [
+    {
+      "url": "https://cursor.com/blog/building-bugbot",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Measure review agents by resolved bugs, not comment volume"
+    },
+    {
+      "url": "https://cursor.com/blog/automations",
+      "tier": "secondary",
+      "lens_id": "ship-faster",
+      "reason": "Automations post corroborates Bugbot's scale and shows how review agents verify output in cloud sandboxes."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "tier": "primary",
+      "lens_id": "build-robust",
+      "reason": "Separate guaranteed resources from kill limits in agentic evals"
+    },
+    {
+      "url": "https://github.com/harbor-framework/terminal-bench-2/pull/53",
+      "tier": "secondary",
+      "lens_id": "build-robust",
+      "reason": "Terminal-Bench 2.1 changes show the benchmark maintainers themselves raised memory, CPU, and timeouts to improve reliability."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/managed-agents",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "Keep session, harness, and sandboxes separate in long-running agents"
+    },
+    {
+      "url": "https://vercel.com/blog/vercel-agent",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "Let production agents act only inside an approved plan"
+    },
+    {
+      "url": "https://vercel.com/blog/vercel-ship-2026-recap",
+      "tier": "secondary",
+      "lens_id": "production-patterns",
+      "reason": "Ship recap corroborates the plan-plus-permissions model and notes that Vercel Agent stays read-only until it gets narrow temporary permission."
+    },
+    {
+      "url": "https://openai.com/index/gpt-5-6/",
+      "tier": "primary",
+      "lens_id": "model-workflows",
+      "reason": "Make tiered reasoning the default model policy"
+    },
+    {
+      "url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+      "tier": "secondary",
+      "lens_id": "model-workflows",
+      "reason": "Preview post corroborates max reasoning, ultra subagents, and GPT-5.6 Sol's coding benchmark gains before general availability."
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+To: kucherenko.web@gmail.com // pragma: allowlist secret
+Subject: Dev Scout 2026-07-12 — 5 new ways to ship faster / build safer
+
+Dev Scout — 2026-07-12
+
+Mission: ship faster & build more robust software with AI-assisted dev.
+
+Repo: https://github.com/serhii-kucherenko/dev-scout
+
+Quick review of previous email (2026-07-11):
+- Point your coding agents at one gateway instead of wiring every provider separately (both) — https://vercel.com/docs/ai-gateway/coding-agents
+- Fork parallel workers from one cached session instead of starting fresh conversations (both) — https://github.com/masteragentcoder/agentcache
+- Put agent bash and MCP processes inside an OS sandbox before you trust them (both) — https://www.anthropic.com/engineering/claude-code-sandboxing
+- Use dedicated security review automations so PR velocity can scale without trading away safety (both) — https://cursor.com/blog/security-agents
+- Seal eval runtime so coding-agent scores measure problem solving, not answer retrieval (robustness) — https://cursor.com/blog/reward-hacking-coding-benchmarks
+
+Do not re-read those unless you still need to act on them.
+
+New since last brief: 5 (speed=3, robustness=5).
+Each tag is benefit · setup time · evidence grade — skip what doesn't fit your stack.
+
+--- Building AI systems (4) ---
+For teams shipping agents, LLM features, evals, or other AI products.
+
+1. Separate guaranteed resources from kill limits in agentic evals  [robustness · ~hours to set up · grade A]
+   Why it matters: Benchmark scores move when containers are OOM-killed for transient spikes, so resource policy needs to be part of the eval design.
+   Do this next: Re-run one coding eval with separate floor and ceiling settings and log how much of today's failure rate is infrastructure rather than model behavior.
+   Link: https://www.anthropic.com/engineering/infrastructure-noise
+
+2. Keep session, harness, and sandboxes separate in long-running agents  [both · ~hours to set up · grade A]
+   Why it matters: Decoupling the brain from the session log and execution hands makes agents recoverable, faster to start, and easier to secure.
+   Do this next: Take one long-running agent loop, split its event log out of the worker container, and measure startup latency before and after.
+   Link: https://www.anthropic.com/engineering/managed-agents
+
+3. Let production agents act only inside an approved plan  [robustness · ~hours to set up · grade B]
+   Why it matters: Production agents need least-privilege changes that are scoped to one plan, not standing access that lives for the whole session.
+   Do this next: Take the highest-risk agent in your stack, force it into read-only mode by default, and make every write path go through a single approved-plan capability grant.
+   Link: https://vercel.com/blog/vercel-agent
+
+4. Make tiered reasoning the default model policy  [both · ~hours to set up · grade A]
+   Why it matters: A Sol/Terra/Luna ladder keeps routine coding cheap and fast while reserving max and ultra for work that truly benefits from more compute and more agents.
+   Do this next: Pick one coding workflow, route the happy path to Terra, escalate only retries to Sol max, and compare solve rate plus cost over the next day.
+   Link: https://openai.com/index/gpt-5-6/
+
+
+--- Using AI to build software (1) ---
+For teams using Cursor, Codex, Claude Code, or other agents to write and ship application code.
+
+1. Measure review agents by resolved bugs, not comment volume  [both · ~hours to set up · grade A]
+   Why it matters: Resolved-bug rate gives review agents a quality target tied to real fixes instead of noisy comment counts.
+   Do this next: Take one review agent, add a post-merge “was this actually fixed?” audit, and compare resolved bugs per PR before changing anything else.
+   Link: https://cursor.com/blog/building-bugbot
+
+
+Full detail (all steps + evidence): runs/2026-07-12/05-report/daily-digest.md

@@ -1,0 +1,7 @@
+{
+  "ship-faster-20260712-resolution-rate": "supported",
+  "build-robust-20260712-resource-floor-ceiling": "supported",
+  "production-patterns-20260712-decouple-brain-session-hands": "weak",
+  "production-patterns-20260712-plan-scoped-prod-agents": "supported",
+  "model-workflows-20260712-tiered-gpt56-routing": "supported"
+}

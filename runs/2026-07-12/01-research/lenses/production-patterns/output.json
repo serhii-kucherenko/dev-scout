@@ -1,0 +1,49 @@
+{
+  "lens_id": "production-patterns",
+  "items": [
+    {
+      "id": "production-patterns-20260712-decouple-brain-session-hands",
+      "title": "Keep session, harness, and sandboxes separate in long-running agents",
+      "why": "Decoupling the brain from the session log and execution hands makes agents recoverable, faster to start, and easier to secure.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/engineering/managed-agents",
+      "how_to_url": "https://www.anthropic.com/engineering/managed-agents",
+      "how_to_steps": [
+        "Move the durable session log out of the sandbox so a crashed harness can be restarted from recorded events instead of losing the run.",
+        "Run the harness outside the execution environment and reach sandboxes or tools through a narrow execute-style interface.",
+        "Provision a sandbox only when a task actually needs one so inference can start before repo clone or container setup finishes.",
+        "Keep secrets outside the sandbox and expose external systems through scoped repo credentials, proxies, or vault-backed tools."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic says decoupling brain from hands cut p50 time-to-first-token by roughly 60% and p95 by over 90% while improving recoverability and secret isolation.",
+      "evidence_grade": "A",
+      "lens_id": "production-patterns",
+      "track": "ai-development",
+      "corroboration": "weak",
+      "corroboration_url": null,
+      "try_today": "Take one long-running agent loop, split its event log out of the worker container, and measure startup latency before and after."
+    },
+    {
+      "id": "production-patterns-20260712-plan-scoped-prod-agents",
+      "title": "Let production agents act only inside an approved plan",
+      "why": "Production agents need least-privilege changes that are scoped to one plan, not standing access that lives for the whole session.",
+      "benefit": "robustness",
+      "source_url": "https://vercel.com/blog/vercel-agent",
+      "how_to_url": "https://vercel.com/blog/vercel-agent",
+      "how_to_steps": [
+        "Run the agent under its own service identity so every action is attributable and does not automatically inherit a human's full access.",
+        "Keep the agent read-only by default and require it to propose a concrete plan before it can roll back, change config, or touch production.",
+        "Mint short-lived capabilities only for the tasks named in that approved plan, then drop the agent back to read-only when the plan ends.",
+        "Execute generated fixes inside an isolated sandbox against the real project build, tests, and linters before surfacing a PR or rollback recommendation."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Vercel says its agent traced a bad deploy, recommended rollback, and mitigated the incident in under three minutes; the same system is read-only by default and verifies generated fixes in Sandbox before surfacing them.",
+      "evidence_grade": "B",
+      "lens_id": "production-patterns",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://vercel.com/blog/vercel-ship-2026-recap",
+      "try_today": "Take the highest-risk agent in your stack, force it into read-only mode by default, and make every write path go through a single approved-plan capability grant."
+    }
+  ]
+}

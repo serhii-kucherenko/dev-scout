@@ -1,0 +1,36 @@
+{
+  "day": "2026-07-12",
+  "sources_found": 9,
+  "by_tier": {
+    "primary": 5,
+    "secondary": 4,
+    "discussion": 0
+  },
+  "top_candidates": [
+    {
+      "url": "https://cursor.com/blog/building-bugbot",
+      "lens": "ship-faster",
+      "reason": "Resolved-bug rate gives review agents a quality target tied to real fixes instead of noisy comment counts."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "lens": "build-robust",
+      "reason": "Benchmark scores move when containers are OOM-killed for transient spikes, so resource policy needs to be part of the eval design."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/managed-agents",
+      "lens": "production-patterns",
+      "reason": "Decoupling the brain from the session log and execution hands makes agents recoverable, faster to start, and easier to secure."
+    },
+    {
+      "url": "https://vercel.com/blog/vercel-agent",
+      "lens": "production-patterns",
+      "reason": "Production agents need least-privilege changes that are scoped to one plan, not standing access that lives for the whole session."
+    },
+    {
+      "url": "https://openai.com/index/gpt-5-6/",
+      "lens": "model-workflows",
+      "reason": "A Sol/Terra/Luna ladder keeps routine coding cheap and fast while reserving max and ultra for work that truly benefits from more compute and more agents."
+    }
+  ]
+}
