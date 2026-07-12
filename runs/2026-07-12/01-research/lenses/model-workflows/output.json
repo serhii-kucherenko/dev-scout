@@ -1,0 +1,27 @@
+{
+  "lens_id": "model-workflows",
+  "items": [
+    {
+      "id": "model-workflows-20260712-tiered-gpt56-routing",
+      "title": "Make tiered reasoning the default model policy",
+      "why": "A Sol/Terra/Luna ladder keeps routine coding cheap and fast while reserving max and ultra for work that truly benefits from more compute and more agents.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/gpt-5-6/",
+      "how_to_url": "https://openai.com/index/gpt-5-6/",
+      "how_to_steps": [
+        "Default routine implementation, search, and refactor tasks to the cheaper tier that still clears your quality bar, such as Terra or Luna.",
+        "Escalate only stalled or high-stakes tasks to Sol with max reasoning, and reserve ultra or multi-agent mode for long-horizon work where faster time-to-result matters.",
+        "Log solve rate, latency, tool-call volume, and token cost by task class so escalation rules are based on evidence instead of instinct.",
+        "Use prompt caching and programmatic tool calling when the workflow repeatedly resends the same context or processes large intermediate outputs."
+      ],
+      "setup_cost": "hours",
+      "evidence": "OpenAI says GPT-5.6 Sol reaches 80 on the Artificial Analysis Coding Agent Index, 2.8 points above Claude Fable 5 at about one-third lower cost; Terra performs just above Fable 5 and Luna beats Opus 4.8 at about one-quarter the estimated cost, while ultra coordinates four agents in parallel by default.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+      "try_today": "Pick one coding workflow, route the happy path to Terra, escalate only retries to Sol max, and compare solve rate plus cost over the next day."
+    }
+  ]
+}

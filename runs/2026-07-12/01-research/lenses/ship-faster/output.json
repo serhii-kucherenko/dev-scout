@@ -1,0 +1,27 @@
+{
+  "lens_id": "ship-faster",
+  "items": [
+    {
+      "id": "ship-faster-20260712-resolution-rate",
+      "title": "Measure review agents by resolved bugs, not comment volume",
+      "why": "Resolved-bug rate gives review agents a quality target tied to real fixes instead of noisy comment counts.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/building-bugbot",
+      "how_to_url": "https://cursor.com/blog/building-bugbot",
+      "how_to_steps": [
+        "Run several review passes in parallel with different diff orderings so the agent explores multiple bug hypotheses.",
+        "Cluster overlapping findings, keep only issues confirmed by majority voting, and pass the survivors through a validator model before posting.",
+        "At merge time, measure which reported bugs were actually fixed in the final code and treat that resolution rate as the main quality metric.",
+        "Hill-climb prompts, tools, and filters against resolved-bugs-per-PR instead of raw comment volume."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says 40 experiments raised Bugbot's resolution rate from 52% to over 70% and increased resolved bugs per PR from roughly 0.2 to about 0.5, while Bugbot now reviews more than two million PRs per month.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/blog/automations",
+      "try_today": "Take one review agent, add a post-merge “was this actually fixed?” audit, and compare resolved bugs per PR before changing anything else."
+    }
+  ]
+}

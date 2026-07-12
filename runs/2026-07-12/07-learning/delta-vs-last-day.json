@@ -1,0 +1,13 @@
+{
+  "day": "2026-07-12",
+  "prior_day": "2026-07-11",
+  "new_count": 5,
+  "promoted_count": 5,
+  "new_item_ids": [
+    "ship-faster-20260712-resolution-rate",
+    "build-robust-20260712-resource-floor-ceiling",
+    "production-patterns-20260712-decouple-brain-session-hands",
+    "production-patterns-20260712-plan-scoped-prod-agents",
+    "model-workflows-20260712-tiered-gpt56-routing"
+  ]
+}
