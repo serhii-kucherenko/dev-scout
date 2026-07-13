@@ -1,0 +1,26 @@
+{
+  "lens_id": "tooling-setups",
+  "items": [
+    {
+      "id": "tooling-setups-20260713-bootable-worktree-observability",
+      "title": "Make every agent task bootable in its own worktree with its own logs and traces",
+      "why": "Agents validate faster when each task gets a self-contained app instance and local observability instead of fighting shared state or asking humans to reproduce bugs.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/harness-engineering/",
+      "how_to_url": "https://openai.com/index/harness-engineering/",
+      "how_to_steps": [
+        "Make the app bootable from any git worktree or branch so each agent can launch an isolated runtime for just the code it is changing.",
+        "Expose browser-driving or CDP-style tooling plus screenshots or DOM snapshots so the agent can reproduce and validate UI behavior directly inside that worktree.",
+        "Attach an ephemeral local observability stack to the worktree and teach agents the query surface for logs, metrics, and traces so they can inspect their own runs.",
+        "Tear the per-task runtime down when the work ends so the next task starts from a clean state rather than inheriting another agent's leftovers."
+      ],
+      "setup_cost": "hours",
+      "evidence": "OpenAI says the product was built in about one-tenth the hand-written time, reached roughly 1,500 merged PRs at about 3.5 PRs per engineer per day, and regularly lets Codex work on a single task for six hours while using per-worktree app and observability instances.",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "track": "ai-driven-development",
+      "corroboration": "weak",
+      "try_today": "Pick one service, make it boot from a fresh worktree with an isolated log stream, and have the agent reproduce one bug without touching your shared dev stack."
+    }
+  ]
+}

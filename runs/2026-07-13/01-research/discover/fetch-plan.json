@@ -1,0 +1,91 @@
+{
+  "day": "2026-07-13",
+  "planned": 8,
+  "queries": [
+    {
+      "lens": "ship-faster",
+      "query": "cursor scaling long-running autonomous coding planner worker hierarchy 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "build-robust",
+      "query": "cursor auto-review classifier risky tool calls interruptions 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "tooling-setups",
+      "query": "openai codex worktree observability logs traces agent-first repo 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "model-workflows",
+      "query": "anthropic advanced tool use defer loading tool search prompt caching",
+      "tier": "primary"
+    },
+    {
+      "lens": "build-robust",
+      "query": "openai benchmark audit investigator agents broken tasks coding evaluations 2026",
+      "tier": "primary"
+    }
+  ],
+  "urls_to_fetch": [
+    "https://cursor.com/blog/scaling-agents",
+    "https://cursor.com/blog/self-driving-codebases",
+    "https://cursor.com/blog/agent-autonomy-auto-review",
+    "https://openai.com/index/harness-engineering/",
+    "https://www.anthropic.com/engineering/advanced-tool-use",
+    "https://www.anthropic.com/news/prompt-caching?s=09",
+    "https://openai.com/index/separating-signal-from-noise-coding-evaluations/",
+    "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/"
+  ],
+  "entries": [
+    {
+      "url": "https://cursor.com/blog/scaling-agents",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Split long agent projects into recursive planners and isolated workers"
+    },
+    {
+      "url": "https://cursor.com/blog/self-driving-codebases",
+      "tier": "secondary",
+      "lens_id": "ship-faster",
+      "reason": "Deeper harness write-up with the planner/subplanner/worker architecture, throughput numbers, and the reasons they removed locks and integrators."
+    },
+    {
+      "url": "https://cursor.com/blog/agent-autonomy-auto-review",
+      "tier": "primary",
+      "lens_id": "build-robust",
+      "reason": "Put a contextual reviewer in front of risky agent actions"
+    },
+    {
+      "url": "https://openai.com/index/harness-engineering/",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "Make every agent task bootable in its own worktree with its own logs and traces"
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/advanced-tool-use",
+      "tier": "primary",
+      "lens_id": "model-workflows",
+      "reason": "Defer tool loading so agents search for tools instead of hauling them into every prompt"
+    },
+    {
+      "url": "https://www.anthropic.com/news/prompt-caching?s=09",
+      "tier": "secondary",
+      "lens_id": "model-workflows",
+      "reason": "Prompt-caching note independently supports the cost and latency gains from keeping the initial prompt stable while deferring tool definitions."
+    },
+    {
+      "url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations/",
+      "tier": "primary",
+      "lens_id": "build-robust",
+      "reason": "Audit coding benchmarks with investigator agents before you trust the score"
+    },
+    {
+      "url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "tier": "secondary",
+      "lens_id": "build-robust",
+      "reason": "Earlier contamination audit independently shows why coding-eval scorekeeping needs its own QA pipeline."
+    }
+  ]
+}

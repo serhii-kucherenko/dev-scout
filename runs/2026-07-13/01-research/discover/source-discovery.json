@@ -1,0 +1,36 @@
+{
+  "day": "2026-07-13",
+  "sources_found": 8,
+  "by_tier": {
+    "primary": 5,
+    "secondary": 3,
+    "discussion": 0
+  },
+  "top_candidates": [
+    {
+      "url": "https://cursor.com/blog/scaling-agents",
+      "lens": "ship-faster",
+      "reason": "Hierarchical ownership avoids shared-lock bottlenecks and keeps many agents moving on one codebase without waiting on each other."
+    },
+    {
+      "url": "https://cursor.com/blog/agent-autonomy-auto-review",
+      "lens": "build-robust",
+      "reason": "A small classifier agent cuts unsafe tool calls without turning autonomy into constant approval fatigue."
+    },
+    {
+      "url": "https://openai.com/index/harness-engineering/",
+      "lens": "tooling-setups",
+      "reason": "Agents validate faster when each task gets a self-contained app instance and local observability instead of fighting shared state or asking humans to reproduce bugs."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/advanced-tool-use",
+      "lens": "model-workflows",
+      "reason": "Large MCP and tool catalogs crush context windows and hurt tool selection; on-demand discovery preserves prompt cacheability and improves accuracy."
+    },
+    {
+      "url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations/",
+      "lens": "build-robust",
+      "reason": "Broken tasks and contaminated benchmarks can hide real regressions or fake progress, so benchmark quality needs its own QA loop."
+    }
+  ]
+}

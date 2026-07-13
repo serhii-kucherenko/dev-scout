@@ -1,0 +1,120 @@
+{
+  "subject": "Dev Scout 2026-07-13 \u2014 5 new ways to ship faster / build safer",
+  "to": "kucherenko.web@gmail.com", "// pragma: allowlist secret": "",
+  "body_text": "Dev Scout \u2014 2026-07-13\n\nMission: ship faster & build more robust software with AI-assisted dev.\n\nRepo: https://github.com/serhii-kucherenko/dev-scout\n\nQuick review of previous email (2026-07-11):\n- Point your coding agents at one gateway instead of wiring every provider separately (both) \u2014 https://vercel.com/docs/ai-gateway/coding-agents\n- Fork parallel workers from one cached session instead of starting fresh conversations (both) \u2014 https://github.com/masteragentcoder/agentcache\n- Put agent bash and MCP processes inside an OS sandbox before you trust them (both) \u2014 https://www.anthropic.com/engineering/claude-code-sandboxing\n- Use dedicated security review automations so PR velocity can scale without trading away safety (both) \u2014 https://cursor.com/blog/security-agents\n- Seal eval runtime so coding-agent scores measure problem solving, not answer retrieval (robustness) \u2014 https://cursor.com/blog/reward-hacking-coding-benchmarks\n\nDo not re-read those unless you still need to act on them.\n\nNew since last brief: 5 (speed=3, robustness=4).\nEach tag is benefit \u00b7 setup time \u00b7 evidence grade \u2014 skip what doesn't fit your stack.\n\n--- Building AI systems (2) ---\nFor teams shipping agents, LLM features, evals, or other AI products.\n\n1. Defer tool loading so agents search for tools instead of hauling them into every prompt  [both \u00b7 ~hours to set up \u00b7 grade A]\n   Why it matters: Large MCP and tool catalogs crush context windows and hurt tool selection; on-demand discovery preserves prompt cacheability and improves accuracy.\n   Do this next: Take one 20-plus-tool setup, defer-load the rarely used tools, and compare prompt size plus tool-choice accuracy on the next five real tasks.\n   Link: https://www.anthropic.com/engineering/advanced-tool-use\n\n2. Audit coding benchmarks with investigator agents before you trust the score  [robustness \u00b7 ~hours to set up \u00b7 grade A]\n   Why it matters: Broken tasks and contaminated benchmarks can hide real regressions or fake progress, so benchmark quality needs its own QA loop.\n   Do this next: Take the benchmark or internal eval you cite most often, audit the first 20 recent failures with an investigator-agent plus human review, and see how many are actually dataset defects.\n   Link: https://openai.com/index/separating-signal-from-noise-coding-evaluations/\n\n\n--- Using AI to build software (3) ---\nFor teams using Cursor, Codex, Claude Code, or other agents to write and ship application code.\n\n1. Split long agent projects into recursive planners and isolated workers  [speed \u00b7 ~hours to set up \u00b7 grade A]\n   Why it matters: Hierarchical ownership avoids shared-lock bottlenecks and keeps many agents moving on one codebase without waiting on each other.\n   Do this next: Run one thorny multi-file task with one planner prompt and three isolated worker branches/worktrees, then compare waiting time against your usual single-agent loop.\n   Link: https://cursor.com/blog/scaling-agents\n\n2. Put a contextual reviewer in front of risky agent actions  [robustness \u00b7 ~hours to set up \u00b7 grade A]\n   Why it matters: A small classifier agent cuts unsafe tool calls without turning autonomy into constant approval fatigue.\n   Do this next: Label 50 real agent actions from your own repo, add 10 synthetic 'read secret or touch prod' cases, and see whether a small reviewer can narrow the action instead of asking a human.\n   Link: https://cursor.com/blog/agent-autonomy-auto-review\n\n3. Make every agent task bootable in its own worktree with its own logs and traces  [both \u00b7 ~hours to set up \u00b7 grade A]\n   Why it matters: Agents validate faster when each task gets a self-contained app instance and local observability instead of fighting shared state or asking humans to reproduce bugs.\n   Do this next: Pick one service, make it boot from a fresh worktree with an isolated log stream, and have the agent reproduce one bug without touching your shared dev stack.\n   Link: https://openai.com/index/harness-engineering/\n\n\nFull detail (all steps + evidence): runs/2026-07-13/05-report/daily-digest.md",
+  "body_html": null,
+  "top_items": [
+    {
+      "id": "ship-faster-20260713-planner-worker-hierarchy",
+      "title": "Split long agent projects into recursive planners and isolated workers",
+      "why": "Hierarchical ownership avoids shared-lock bottlenecks and keeps many agents moving on one codebase without waiting on each other.",
+      "benefit": "speed",
+      "source_url": "https://cursor.com/blog/scaling-agents",
+      "how_to_url": "https://cursor.com/blog/self-driving-codebases",
+      "how_to_steps": [
+        "Create one root planner prompt whose only job is to own the user goal and emit specific task handoffs; keep it out of direct coding work.",
+        "Let the root planner spawn subplanners whenever a slice of the problem can be owned independently, so planning fans out recursively instead of becoming one giant static plan.",
+        "Give each worker its own copy of the repo or worktree and require a single written handoff back to the requesting planner instead of direct worker-to-worker coordination.",
+        "Delete shared locking files and central integrators unless runtime data proves you need them; keep a separate reconciliation pass for final cleanup instead of blocking every worker on perfect intermediate state."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says hundreds of concurrent agents wrote over 1 million lines across 1,000 files in a week, and its deeper harness write-up says the system later peaked at roughly 1,000 commits per hour across 10 million tool calls with root planners, subplanners, and isolated workers.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/blog/self-driving-codebases",
+      "try_today": "Run one thorny multi-file task with one planner prompt and three isolated worker branches/worktrees, then compare waiting time against your usual single-agent loop."
+    },
+    {
+      "id": "build-robust-20260713-contextual-auto-review",
+      "title": "Put a contextual reviewer in front of risky agent actions",
+      "why": "A small classifier agent cuts unsafe tool calls without turning autonomy into constant approval fatigue.",
+      "benefit": "robustness",
+      "source_url": "https://cursor.com/blog/agent-autonomy-auto-review",
+      "how_to_url": "https://cursor.com/blog/agent-autonomy-auto-review",
+      "how_to_steps": [
+        "Collect representative internal agent traces, deduplicate them into labeled eval rows, and mark which actions should pass versus block in normal development work.",
+        "Add synthetic cases for the failures you rarely see in organic usage, especially secret reads, production data writes, untrusted instructions, and commands with large side effects.",
+        "Run the reviewer in the same execution path as the parent agent so it can inspect files or nearby context before deciding, rather than forcing an extra approval round-trip for every action.",
+        "Return block explanations to the parent agent, then rerun unstable cases until flapping disappears so the reviewer rarely interrupts the user directly."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor reports training against 6,122 labeled rows; the Auto-review classifier blocks only about 4% of reviewed actions, and only about 7% of total Auto-review chats lead to an interruption versus roughly 40% blocked actions some enterprises had seen before.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-driven-development",
+      "corroboration": "weak",
+      "try_today": "Label 50 real agent actions from your own repo, add 10 synthetic 'read secret or touch prod' cases, and see whether a small reviewer can narrow the action instead of asking a human."
+    },
+    {
+      "id": "tooling-setups-20260713-bootable-worktree-observability",
+      "title": "Make every agent task bootable in its own worktree with its own logs and traces",
+      "why": "Agents validate faster when each task gets a self-contained app instance and local observability instead of fighting shared state or asking humans to reproduce bugs.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/harness-engineering/",
+      "how_to_url": "https://openai.com/index/harness-engineering/",
+      "how_to_steps": [
+        "Make the app bootable from any git worktree or branch so each agent can launch an isolated runtime for just the code it is changing.",
+        "Expose browser-driving or CDP-style tooling plus screenshots or DOM snapshots so the agent can reproduce and validate UI behavior directly inside that worktree.",
+        "Attach an ephemeral local observability stack to the worktree and teach agents the query surface for logs, metrics, and traces so they can inspect their own runs.",
+        "Tear the per-task runtime down when the work ends so the next task starts from a clean state rather than inheriting another agent's leftovers."
+      ],
+      "setup_cost": "hours",
+      "evidence": "OpenAI says the product was built in about one-tenth the hand-written time, reached roughly 1,500 merged PRs at about 3.5 PRs per engineer per day, and regularly lets Codex work on a single task for six hours while using per-worktree app and observability instances.",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "track": "ai-driven-development",
+      "corroboration": "weak",
+      "try_today": "Pick one service, make it boot from a fresh worktree with an isolated log stream, and have the agent reproduce one bug without touching your shared dev stack."
+    },
+    {
+      "id": "model-workflows-20260713-tool-search-defer-loading",
+      "title": "Defer tool loading so agents search for tools instead of hauling them into every prompt",
+      "why": "Large MCP and tool catalogs crush context windows and hurt tool selection; on-demand discovery preserves prompt cacheability and improves accuracy.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/engineering/advanced-tool-use",
+      "how_to_url": "https://www.anthropic.com/engineering/advanced-tool-use",
+      "how_to_steps": [
+        "Keep only a small always-loaded core toolset and add a Tool Search tool to the initial prompt so the agent starts with discovery rather than a giant schema dump.",
+        "Mark the long tail of tools or even whole MCP servers with defer_loading so they are discovered on demand instead of occupying context from turn one.",
+        "Keep the shared system prompt and core tools byte-stable across calls so prompt caching still hits while deferred tools are pulled in only after search.",
+        "Measure token use and tool-selection accuracy before and after the change, then promote only the tools that are truly used on nearly every task back into the always-loaded set."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic says Tool Search cut context usage from roughly 77K tokens to about 8.7K, preserved 95% of the context window, reduced token usage 85%, and improved MCP-eval accuracy from 49% to 74% on Opus 4 and from 79.5% to 88.1% on Opus 4.5.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://www.anthropic.com/news/prompt-caching?s=09",
+      "try_today": "Take one 20-plus-tool setup, defer-load the rarely used tools, and compare prompt size plus tool-choice accuracy on the next five real tasks."
+    },
+    {
+      "id": "build-robust-20260713-eval-audit-pipeline",
+      "title": "Audit coding benchmarks with investigator agents before you trust the score",
+      "why": "Broken tasks and contaminated benchmarks can hide real regressions or fake progress, so benchmark quality needs its own QA loop.",
+      "benefit": "robustness",
+      "source_url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations/",
+      "how_to_url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations/",
+      "how_to_steps": [
+        "Run an automated filter over prompts, hidden tests, model attempts, and failure traces so you flag suspect benchmark tasks before treating misses as capability gaps.",
+        "Give investigator agents access to the task repository and environment so they can run tests, inspect files, and classify likely failure modes instead of guessing from the score alone.",
+        "Add multi-review human adjudication for flagged tasks, and escalate disagreements or low-confidence labels until you know whether the problem is real or a dataset flaw.",
+        "Publish benchmark caveats, quarantine broken tasks, and stop headline reporting when the dataset no longer reflects actual engineering capability."
+      ],
+      "setup_cost": "hours",
+      "evidence": "OpenAI says its SWE-Bench Pro audit pipeline flagged 200 tasks (27.4%) as broken, human reviewers labeled 249 (34.1%) broken, and the company now estimates that roughly 30% of the dataset is broken.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "try_today": "Take the benchmark or internal eval you cite most often, audit the first 20 recent failures with an investigator-agent plus human review, and see how many are actually dataset defects."
+    }
+  ],
+  "previous_day": "2026-07-11",
+  "new_count": 5,
+  "recap_count": 0,
+  "repeated_skipped": 0
+}

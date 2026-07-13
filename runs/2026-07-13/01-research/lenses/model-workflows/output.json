@@ -1,0 +1,27 @@
+{
+  "lens_id": "model-workflows",
+  "items": [
+    {
+      "id": "model-workflows-20260713-tool-search-defer-loading",
+      "title": "Defer tool loading so agents search for tools instead of hauling them into every prompt",
+      "why": "Large MCP and tool catalogs crush context windows and hurt tool selection; on-demand discovery preserves prompt cacheability and improves accuracy.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/engineering/advanced-tool-use",
+      "how_to_url": "https://www.anthropic.com/engineering/advanced-tool-use",
+      "how_to_steps": [
+        "Keep only a small always-loaded core toolset and add a Tool Search tool to the initial prompt so the agent starts with discovery rather than a giant schema dump.",
+        "Mark the long tail of tools or even whole MCP servers with defer_loading so they are discovered on demand instead of occupying context from turn one.",
+        "Keep the shared system prompt and core tools byte-stable across calls so prompt caching still hits while deferred tools are pulled in only after search.",
+        "Measure token use and tool-selection accuracy before and after the change, then promote only the tools that are truly used on nearly every task back into the always-loaded set."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic says Tool Search cut context usage from roughly 77K tokens to about 8.7K, preserved 95% of the context window, reduced token usage 85%, and improved MCP-eval accuracy from 49% to 74% on Opus 4 and from 79.5% to 88.1% on Opus 4.5.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://www.anthropic.com/news/prompt-caching?s=09",
+      "try_today": "Take one 20-plus-tool setup, defer-load the rarely used tools, and compare prompt size plus tool-choice accuracy on the next five real tasks."
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+To: kucherenko.web@gmail.com // pragma: allowlist secret
+Subject: Dev Scout 2026-07-13 — 5 new ways to ship faster / build safer
+
+Dev Scout — 2026-07-13
+
+Mission: ship faster & build more robust software with AI-assisted dev.
+
+Repo: https://github.com/serhii-kucherenko/dev-scout
+
+Quick review of previous email (2026-07-11):
+- Point your coding agents at one gateway instead of wiring every provider separately (both) — https://vercel.com/docs/ai-gateway/coding-agents
+- Fork parallel workers from one cached session instead of starting fresh conversations (both) — https://github.com/masteragentcoder/agentcache
+- Put agent bash and MCP processes inside an OS sandbox before you trust them (both) — https://www.anthropic.com/engineering/claude-code-sandboxing
+- Use dedicated security review automations so PR velocity can scale without trading away safety (both) — https://cursor.com/blog/security-agents
+- Seal eval runtime so coding-agent scores measure problem solving, not answer retrieval (robustness) — https://cursor.com/blog/reward-hacking-coding-benchmarks
+
+Do not re-read those unless you still need to act on them.
+
+New since last brief: 5 (speed=3, robustness=4).
+Each tag is benefit · setup time · evidence grade — skip what doesn't fit your stack.
+
+--- Building AI systems (2) ---
+For teams shipping agents, LLM features, evals, or other AI products.
+
+1. Defer tool loading so agents search for tools instead of hauling them into every prompt  [both · ~hours to set up · grade A]
+   Why it matters: Large MCP and tool catalogs crush context windows and hurt tool selection; on-demand discovery preserves prompt cacheability and improves accuracy.
+   Do this next: Take one 20-plus-tool setup, defer-load the rarely used tools, and compare prompt size plus tool-choice accuracy on the next five real tasks.
+   Link: https://www.anthropic.com/engineering/advanced-tool-use
+
+2. Audit coding benchmarks with investigator agents before you trust the score  [robustness · ~hours to set up · grade A]
+   Why it matters: Broken tasks and contaminated benchmarks can hide real regressions or fake progress, so benchmark quality needs its own QA loop.
+   Do this next: Take the benchmark or internal eval you cite most often, audit the first 20 recent failures with an investigator-agent plus human review, and see how many are actually dataset defects.
+   Link: https://openai.com/index/separating-signal-from-noise-coding-evaluations/
+
+
+--- Using AI to build software (3) ---
+For teams using Cursor, Codex, Claude Code, or other agents to write and ship application code.
+
+1. Split long agent projects into recursive planners and isolated workers  [speed · ~hours to set up · grade A]
+   Why it matters: Hierarchical ownership avoids shared-lock bottlenecks and keeps many agents moving on one codebase without waiting on each other.
+   Do this next: Run one thorny multi-file task with one planner prompt and three isolated worker branches/worktrees, then compare waiting time against your usual single-agent loop.
+   Link: https://cursor.com/blog/scaling-agents
+
+2. Put a contextual reviewer in front of risky agent actions  [robustness · ~hours to set up · grade A]
+   Why it matters: A small classifier agent cuts unsafe tool calls without turning autonomy into constant approval fatigue.
+   Do this next: Label 50 real agent actions from your own repo, add 10 synthetic 'read secret or touch prod' cases, and see whether a small reviewer can narrow the action instead of asking a human.
+   Link: https://cursor.com/blog/agent-autonomy-auto-review
+
+3. Make every agent task bootable in its own worktree with its own logs and traces  [both · ~hours to set up · grade A]
+   Why it matters: Agents validate faster when each task gets a self-contained app instance and local observability instead of fighting shared state or asking humans to reproduce bugs.
+   Do this next: Pick one service, make it boot from a fresh worktree with an isolated log stream, and have the agent reproduce one bug without touching your shared dev stack.
+   Link: https://openai.com/index/harness-engineering/
+
+
+Full detail (all steps + evidence): runs/2026-07-13/05-report/daily-digest.md

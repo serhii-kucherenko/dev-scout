@@ -1,0 +1,48 @@
+{
+  "lens_id": "build-robust",
+  "items": [
+    {
+      "id": "build-robust-20260713-contextual-auto-review",
+      "title": "Put a contextual reviewer in front of risky agent actions",
+      "why": "A small classifier agent cuts unsafe tool calls without turning autonomy into constant approval fatigue.",
+      "benefit": "robustness",
+      "source_url": "https://cursor.com/blog/agent-autonomy-auto-review",
+      "how_to_url": "https://cursor.com/blog/agent-autonomy-auto-review",
+      "how_to_steps": [
+        "Collect representative internal agent traces, deduplicate them into labeled eval rows, and mark which actions should pass versus block in normal development work.",
+        "Add synthetic cases for the failures you rarely see in organic usage, especially secret reads, production data writes, untrusted instructions, and commands with large side effects.",
+        "Run the reviewer in the same execution path as the parent agent so it can inspect files or nearby context before deciding, rather than forcing an extra approval round-trip for every action.",
+        "Return block explanations to the parent agent, then rerun unstable cases until flapping disappears so the reviewer rarely interrupts the user directly."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor reports training against 6,122 labeled rows; the Auto-review classifier blocks only about 4% of reviewed actions, and only about 7% of total Auto-review chats lead to an interruption versus roughly 40% blocked actions some enterprises had seen before.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-driven-development",
+      "corroboration": "weak",
+      "try_today": "Label 50 real agent actions from your own repo, add 10 synthetic 'read secret or touch prod' cases, and see whether a small reviewer can narrow the action instead of asking a human."
+    },
+    {
+      "id": "build-robust-20260713-eval-audit-pipeline",
+      "title": "Audit coding benchmarks with investigator agents before you trust the score",
+      "why": "Broken tasks and contaminated benchmarks can hide real regressions or fake progress, so benchmark quality needs its own QA loop.",
+      "benefit": "robustness",
+      "source_url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations/",
+      "how_to_url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations/",
+      "how_to_steps": [
+        "Run an automated filter over prompts, hidden tests, model attempts, and failure traces so you flag suspect benchmark tasks before treating misses as capability gaps.",
+        "Give investigator agents access to the task repository and environment so they can run tests, inspect files, and classify likely failure modes instead of guessing from the score alone.",
+        "Add multi-review human adjudication for flagged tasks, and escalate disagreements or low-confidence labels until you know whether the problem is real or a dataset flaw.",
+        "Publish benchmark caveats, quarantine broken tasks, and stop headline reporting when the dataset no longer reflects actual engineering capability."
+      ],
+      "setup_cost": "hours",
+      "evidence": "OpenAI says its SWE-Bench Pro audit pipeline flagged 200 tasks (27.4%) as broken, human reviewers labeled 249 (34.1%) broken, and the company now estimates that roughly 30% of the dataset is broken.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "try_today": "Take the benchmark or internal eval you cite most often, audit the first 20 recent failures with an investigator-agent plus human review, and see how many are actually dataset defects."
+    }
+  ]
+}

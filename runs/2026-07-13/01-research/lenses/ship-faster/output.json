@@ -1,0 +1,27 @@
+{
+  "lens_id": "ship-faster",
+  "items": [
+    {
+      "id": "ship-faster-20260713-planner-worker-hierarchy",
+      "title": "Split long agent projects into recursive planners and isolated workers",
+      "why": "Hierarchical ownership avoids shared-lock bottlenecks and keeps many agents moving on one codebase without waiting on each other.",
+      "benefit": "speed",
+      "source_url": "https://cursor.com/blog/scaling-agents",
+      "how_to_url": "https://cursor.com/blog/self-driving-codebases",
+      "how_to_steps": [
+        "Create one root planner prompt whose only job is to own the user goal and emit specific task handoffs; keep it out of direct coding work.",
+        "Let the root planner spawn subplanners whenever a slice of the problem can be owned independently, so planning fans out recursively instead of becoming one giant static plan.",
+        "Give each worker its own copy of the repo or worktree and require a single written handoff back to the requesting planner instead of direct worker-to-worker coordination.",
+        "Delete shared locking files and central integrators unless runtime data proves you need them; keep a separate reconciliation pass for final cleanup instead of blocking every worker on perfect intermediate state."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says hundreds of concurrent agents wrote over 1 million lines across 1,000 files in a week, and its deeper harness write-up says the system later peaked at roughly 1,000 commits per hour across 10 million tool calls with root planners, subplanners, and isolated workers.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/blog/self-driving-codebases",
+      "try_today": "Run one thorny multi-file task with one planner prompt and three isolated worker branches/worktrees, then compare waiting time against your usual single-agent loop."
+    }
+  ]
+}
