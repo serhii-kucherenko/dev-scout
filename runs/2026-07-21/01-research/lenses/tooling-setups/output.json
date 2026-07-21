@@ -1,0 +1,27 @@
+{
+  "lens_id": "tooling-setups",
+  "items": [
+    {
+      "id": "tooling-setups-20260721-tool-eval-loop",
+      "title": "Build tool evaluations before you polish the prompt",
+      "why": "Agent performance often improves more from better tool interfaces and leaner responses than from prompt tweaks alone.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+      "how_to_url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+      "how_to_steps": [
+        "Wrap the tool or MCP server locally and test it inside a real agent client before you optimize anything else.",
+        "Generate dozens of held-out tasks from real workflows, then verify both answer quality and whether the agent used the right tools to solve them.",
+        "Track runtime, token use, redundant calls, and parameter errors so you can see where schemas or descriptions are confusing the agent.",
+        "Iterate the tool itself: collapse low-level APIs into higher-level workflows, namespace similar tools, and return concise high-signal responses by default."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic shows one concise tool response cutting output from 206 tokens to 72, describes fixing Claude's web-search bias by improving the tool description, and says precise tool-description refinements pushed Claude Sonnet 3.5 to state-of-the-art SWE-bench Verified performance.",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "try_today": "Pick one noisy MCP server, add a 20-task held-out eval, and fix the first schema or response-shape issue that causes repeated retries."
+    }
+  ]
+}

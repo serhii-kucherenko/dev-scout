@@ -1,0 +1,98 @@
+{
+  "day": "2026-07-21",
+  "planned": 9,
+  "queries": [
+    {
+      "lens": "ship-faster",
+      "query": "cursor agent swarm model economics planner worker cost 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "build-robust",
+      "query": "anthropic infrastructure noise agentic coding evals Terminal-Bench 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "tooling-setups",
+      "query": "anthropic writing tools for agents MCP evaluation tool descriptions",
+      "tier": "primary"
+    },
+    {
+      "lens": "production-patterns",
+      "query": "cursor cloud agent lessons durable execution Temporal 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "model-workflows",
+      "query": "openai gpt-5.6 coding agent index useful intelligence per dollar 2026",
+      "tier": "primary"
+    }
+  ],
+  "urls_to_fetch": [
+    "https://cursor.com/blog/agent-swarm-model-economics",
+    "https://cursor.com/blog/scaling-agents",
+    "https://www.anthropic.com/engineering/infrastructure-noise",
+    "https://www.anthropic.com/engineering/writing-tools-for-agents",
+    "https://www.anthropic.com/engineering/building-effective-agents",
+    "https://cursor.com/blog/cloud-agent-lessons",
+    "https://cursor.com/blog/cloud-agent-development-environments",
+    "https://openai.com/index/gpt-5-6/",
+    "https://openai.com/index/a-scorecard-for-the-ai-age/"
+  ],
+  "entries": [
+    {
+      "url": "https://cursor.com/blog/agent-swarm-model-economics",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Use frontier planners plus cheaper workers to preserve quality while slashing multi-agent coding cost."
+    },
+    {
+      "url": "https://cursor.com/blog/scaling-agents",
+      "tier": "secondary",
+      "lens_id": "ship-faster",
+      "reason": "Planner-worker coordination post independently supports the role split and explains why the hierarchy beats flat coordination."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "tier": "primary",
+      "lens_id": "build-robust",
+      "reason": "Treat resource configuration as a first-class variable in coding-agent evaluations."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "Build tool evaluations before prompt polish, and optimize MCP tools around real tasks."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "tier": "secondary",
+      "lens_id": "tooling-setups",
+      "reason": "Broader agent-building guidance reinforces evaluator-optimizer loops and careful tool-interface design."
+    },
+    {
+      "url": "https://cursor.com/blog/cloud-agent-lessons",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "Break long cloud-agent jobs into short durable workflows with decoupled state."
+    },
+    {
+      "url": "https://cursor.com/blog/cloud-agent-development-environments",
+      "tier": "secondary",
+      "lens_id": "production-patterns",
+      "reason": "Environment-as-code and environment governance details corroborate the cloud-agent durability and verification story."
+    },
+    {
+      "url": "https://openai.com/index/gpt-5-6/",
+      "tier": "primary",
+      "lens_id": "model-workflows",
+      "reason": "Use tiered reasoning and selective escalation so coding-agent cost follows task difficulty."
+    },
+    {
+      "url": "https://openai.com/index/a-scorecard-for-the-ai-age/",
+      "tier": "secondary",
+      "lens_id": "model-workflows",
+      "reason": "Useful-intelligence-per-dollar framing supports measuring model routing by cost per successful task instead of token price."
+    }
+  ]
+}

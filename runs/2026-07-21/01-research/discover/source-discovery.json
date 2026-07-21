@@ -1,0 +1,36 @@
+{
+  "day": "2026-07-21",
+  "sources_found": 9,
+  "by_tier": {
+    "primary": 5,
+    "secondary": 4,
+    "discussion": 0
+  },
+  "top_candidates": [
+    {
+      "url": "https://cursor.com/blog/agent-swarm-model-economics",
+      "lens": "ship-faster",
+      "reason": "Planner-worker model mixes preserved quality while cutting the cost of long-running coding swarms by almost an order of magnitude."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "lens": "build-robust",
+      "reason": "Benchmark scores moved by more than the leaderboard gap when only infra limits changed."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+      "lens": "tooling-setups",
+      "reason": "Concrete MCP and tool-interface advice connects eval loops, schema design, and token-efficient responses."
+    },
+    {
+      "url": "https://cursor.com/blog/cloud-agent-lessons",
+      "lens": "production-patterns",
+      "reason": "Durable execution, decoupled state, and self-healing environments are framed as the real operating layer for background agents."
+    },
+    {
+      "url": "https://openai.com/index/gpt-5-6/",
+      "lens": "model-workflows",
+      "reason": "Tiered coding-model economics and selective multi-agent escalation give a current routing playbook with hard numbers."
+    }
+  ]
+}

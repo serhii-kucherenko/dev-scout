@@ -1,0 +1,27 @@
+{
+  "lens_id": "production-patterns",
+  "items": [
+    {
+      "id": "production-patterns-20260721-short-durable-cloud-workflows",
+      "title": "Break long cloud-agent jobs into short durable workflows with resumable state",
+      "why": "Long-lived agent runs become reliable only when the loop, VM, and conversation can recover independently from outages and retries.",
+      "benefit": "robustness",
+      "source_url": "https://cursor.com/blog/cloud-agent-lessons",
+      "how_to_url": "https://cursor.com/blog/cloud-agent-lessons",
+      "how_to_steps": [
+        "Put the agent loop on a durable workflow engine so retries, pauses, and resumptions survive pod replacements and provider outages.",
+        "Replace eternal runs with shorter task-bounded workflows that exit cleanly and can be versioned or retried independently.",
+        "Store machine state, conversation state, and agent-loop state separately so VMs can hibernate, fork, or swap without losing the run.",
+        "Expose environment, CI, and log access as tools so the agent can diagnose blocked secrets, egress, or missing dependencies instead of hardcoding more harness behavior."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says its move from a work-stealing loop to Temporal took cloud-agent reliability from one 9 to past two 9s; the system now handles more than 50 million actions per day across more than 7 million unique workflows, and more than 40% of internal PRs come from cloud agents.",
+      "evidence_grade": "A",
+      "lens_id": "production-patterns",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/blog/cloud-agent-development-environments",
+      "try_today": "Take one background agent job, split it into a single-task durable workflow, then simulate a pod restart and confirm the run resumes without losing streamed state."
+    }
+  ]
+}

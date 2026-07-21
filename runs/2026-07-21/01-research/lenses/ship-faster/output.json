@@ -1,0 +1,27 @@
+{
+  "lens_id": "ship-faster",
+  "items": [
+    {
+      "id": "ship-faster-20260721-frontier-planner-cheap-workers",
+      "title": "Put your best model on planning and your cheap model on execution",
+      "why": "Frontier planning plus inexpensive worker execution preserved multi-agent coding quality while cutting the cost of long autonomous runs dramatically.",
+      "benefit": "speed",
+      "source_url": "https://cursor.com/blog/agent-swarm-model-economics",
+      "how_to_url": "https://cursor.com/blog/agent-swarm-model-economics",
+      "how_to_steps": [
+        "Split the swarm into planner and worker roles, and reserve frontier models for decomposition, design decisions, and trade-offs rather than every edit.",
+        "Run workers on a faster cheaper model with narrowly scoped tasks, clear done conditions, and no responsibility for global coordination.",
+        "Stack multiple decorrelated review lenses on worker output so review stays cheaper than the work it audits while still catching different failure modes.",
+        "Compare solved scope, wall-clock time, and total spend against an all-frontier run, then keep frontier pricing only where it changes the result."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor's new swarm hit 73-85% of the held-out SQLite suite by the four-hour cutoff across model mixes and later reached 100% in every new configuration; the Opus 4.8 planner plus Composer 2.5 workers run cost $1,339 versus $10,565 for GPT-5.5 everywhere, and the worker fleet cost only $411 versus $9,373 in the all-GPT-5.5 run.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/blog/scaling-agents",
+      "try_today": "Take one long-running coding task, keep your strongest model only on planning, and measure solved scope per dollar against your usual single-model loop."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "ship-faster-20260721-frontier-planner-cheap-workers": "supported",
+  "build-robust-20260721-resource-specs-are-part-of-the-eval": "weak",
+  "tooling-setups-20260721-tool-eval-loop": "supported",
+  "production-patterns-20260721-short-durable-cloud-workflows": "supported",
+  "model-workflows-20260721-tiered-gpt56-routing": "supported"
+}

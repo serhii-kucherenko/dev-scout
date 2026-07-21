@@ -1,0 +1,27 @@
+{
+  "lens_id": "model-workflows",
+  "items": [
+    {
+      "id": "model-workflows-20260721-tiered-gpt56-routing",
+      "title": "Default to the cheaper GPT-5.6 tiers and escalate only when the task earns it",
+      "why": "Tiered reasoning lets teams buy successful outcomes instead of paying frontier rates for every coding request.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/gpt-5-6/",
+      "how_to_url": "https://openai.com/index/gpt-5-6/",
+      "how_to_steps": [
+        "Define task classes first—routine edits, medium-depth coding, and hardest multi-tool runs—before you pick a default model.",
+        "Start routine coding loops on Luna or Terra and reserve Sol with higher reasoning effort for work that genuinely needs stronger judgment.",
+        "Use multi-agent or ultra-style parallelism only on demanding tasks where faster time-to-result is worth the extra token spend.",
+        "Track cost per successful task, retries, and human correction rate so routing follows outcomes instead of habit or raw token price."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "OpenAI reports GPT-5.6 Sol hitting 80 on the Artificial Analysis Coding Agent Index, 2.8 points above Claude Fable 5 while using 54% fewer output tokens, taking 57% less time, and costing about one-third less; Terra and Luna preserve much of that coding quality at far lower price points. Lovable says GPT-5.6 cut steps by about 25%, tool calls by 35-48%, and stuck runs by 15%.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://openai.com/index/a-scorecard-for-the-ai-age/",
+      "try_today": "Route one coding workflow to Terra by default, escalate only when tests fail or the task stalls, and compare cost per accepted change after a day."
+    }
+  ]
+}

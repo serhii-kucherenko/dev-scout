@@ -1,0 +1,56 @@
+To: kucherenko.web@gmail.com // pragma: allowlist secret
+Subject: Dev Scout 2026-07-21 — 5 new ways to ship faster / build safer
+Content-Type: text/plain; charset="utf-8"
+
+Dev Scout — 2026-07-21
+
+Mission: ship faster & build more robust software with AI-assisted dev.
+
+Repo: https://github.com/serhii-kucherenko/dev-scout
+
+Quick review of previous email (2026-07-13):
+- Split long agent projects into recursive planners and isolated workers (speed) — https://cursor.com/blog/scaling-agents
+- Put a contextual reviewer in front of risky agent actions (robustness) — https://cursor.com/blog/agent-autonomy-auto-review
+- Make every agent task bootable in its own worktree with its own logs and traces (both) — https://openai.com/index/harness-engineering/
+- Defer tool loading so agents search for tools instead of hauling them into every prompt (both) — https://www.anthropic.com/engineering/advanced-tool-use
+- Audit coding benchmarks with investigator agents before you trust the score (robustness) — https://openai.com/index/separating-signal-from-noise-coding-evaluations/
+
+Do not re-read those unless you still need to act on them.
+
+New since last brief: 5 (speed=3, robustness=4).
+Each tag is benefit · setup time · evidence grade — skip what doesn't fit your stack.
+
+--- Building AI systems (3) ---
+For teams shipping agents, LLM features, evals, or other AI products.
+
+1. Treat CPU, RAM, and time limits as part of the benchmark, not background noise  [robustness · ~hours to set up · grade A]
+   Why it matters: Small infrastructure differences can shift coding-agent benchmark scores enough to fake or erase a model improvement.
+   Do this next: Audit one agent benchmark you rely on, write down its real CPU, RAM, timeout, and failure-budget settings, and see whether the next score still means what you think it means.
+   Link: https://www.anthropic.com/engineering/infrastructure-noise
+
+2. Build tool evaluations before you polish the prompt  [both · ~hours to set up · grade A]
+   Why it matters: Agent performance often improves more from better tool interfaces and leaner responses than from prompt tweaks alone.
+   Do this next: Pick one noisy MCP server, add a 20-task held-out eval, and fix the first schema or response-shape issue that causes repeated retries.
+   Link: https://www.anthropic.com/engineering/writing-tools-for-agents
+
+3. Default to the cheaper GPT-5.6 tiers and escalate only when the task earns it  [both · ~minutes to set up · grade A]
+   Why it matters: Tiered reasoning lets teams buy successful outcomes instead of paying frontier rates for every coding request.
+   Do this next: Route one coding workflow to Terra by default, escalate only when tests fail or the task stalls, and compare cost per accepted change after a day.
+   Link: https://openai.com/index/gpt-5-6/
+
+
+--- Using AI to build software (2) ---
+For teams using Cursor, Codex, Claude Code, or other agents to write and ship application code.
+
+1. Put your best model on planning and your cheap model on execution  [speed · ~hours to set up · grade A]
+   Why it matters: Frontier planning plus inexpensive worker execution preserved multi-agent coding quality while cutting the cost of long autonomous runs dramatically.
+   Do this next: Take one long-running coding task, keep your strongest model only on planning, and measure solved scope per dollar against your usual single-model loop.
+   Link: https://cursor.com/blog/agent-swarm-model-economics
+
+2. Break long cloud-agent jobs into short durable workflows with resumable state  [robustness · ~hours to set up · grade A]
+   Why it matters: Long-lived agent runs become reliable only when the loop, VM, and conversation can recover independently from outages and retries.
+   Do this next: Take one background agent job, split it into a single-task durable workflow, then simulate a pod restart and confirm the run resumes without losing streamed state.
+   Link: https://cursor.com/blog/cloud-agent-lessons
+
+
+Full detail (all steps + evidence): runs/2026-07-21/05-report/daily-digest.md

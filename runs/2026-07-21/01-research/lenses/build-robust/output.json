@@ -1,0 +1,26 @@
+{
+  "lens_id": "build-robust",
+  "items": [
+    {
+      "id": "build-robust-20260721-resource-specs-are-part-of-the-eval",
+      "title": "Treat CPU, RAM, and time limits as part of the benchmark, not background noise",
+      "why": "Small infrastructure differences can shift coding-agent benchmark scores enough to fake or erase a model improvement.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "how_to_url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "how_to_steps": [
+        "Document both the guaranteed allocation and the hard kill threshold for each benchmark task instead of publishing one pinned resource number.",
+        "Calibrate headroom by sweeping a few resource multipliers until infra error rates fall without giving the agent enough extra capacity to change what the task is testing.",
+        "Report infra error rate, resource multiplier, and runtime conditions next to pass rate so leaderboard deltas are interpretable.",
+        "Re-run a representative benchmark slice whenever cluster, sandbox, or timeout settings change before you claim a model regression or improvement."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic found a 6 point swing on Terminal-Bench 2.0 between the strictest and most generous resource setups, with infra errors dropping from 5.8% to 2.1% at 3x headroom and to 0.5% uncapped; on SWE-bench, moving from 1x to 5x RAM still lifted scores by 1.54 points.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "weak",
+      "try_today": "Audit one agent benchmark you rely on, write down its real CPU, RAM, timeout, and failure-budget settings, and see whether the next score still means what you think it means."
+    }
+  ]
+}

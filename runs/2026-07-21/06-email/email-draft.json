@@ -1,0 +1,121 @@
+{
+  "subject": "Dev Scout 2026-07-21 — 5 new ways to ship faster / build safer",
+  "to": "kucherenko.web@gmail.com", "// pragma: allowlist secret": "",
+  "body_text": "Dev Scout — 2026-07-21\n\nMission: ship faster & build more robust software with AI-assisted dev.\n\nRepo: https://github.com/serhii-kucherenko/dev-scout\n\nQuick review of previous email (2026-07-13):\n- Split long agent projects into recursive planners and isolated workers (speed) — https://cursor.com/blog/scaling-agents\n- Put a contextual reviewer in front of risky agent actions (robustness) — https://cursor.com/blog/agent-autonomy-auto-review\n- Make every agent task bootable in its own worktree with its own logs and traces (both) — https://openai.com/index/harness-engineering/\n- Defer tool loading so agents search for tools instead of hauling them into every prompt (both) — https://www.anthropic.com/engineering/advanced-tool-use\n- Audit coding benchmarks with investigator agents before you trust the score (robustness) — https://openai.com/index/separating-signal-from-noise-coding-evaluations/\n\nDo not re-read those unless you still need to act on them.\n\nNew since last brief: 5 (speed=3, robustness=4).\nEach tag is benefit · setup time · evidence grade — skip what doesn't fit your stack.\n\n--- Building AI systems (3) ---\nFor teams shipping agents, LLM features, evals, or other AI products.\n\n1. Treat CPU, RAM, and time limits as part of the benchmark, not background noise  [robustness · ~hours to set up · grade A]\n   Why it matters: Small infrastructure differences can shift coding-agent benchmark scores enough to fake or erase a model improvement.\n   Do this next: Audit one agent benchmark you rely on, write down its real CPU, RAM, timeout, and failure-budget settings, and see whether the next score still means what you think it means.\n   Link: https://www.anthropic.com/engineering/infrastructure-noise\n\n2. Build tool evaluations before you polish the prompt  [both · ~hours to set up · grade A]\n   Why it matters: Agent performance often improves more from better tool interfaces and leaner responses than from prompt tweaks alone.\n   Do this next: Pick one noisy MCP server, add a 20-task held-out eval, and fix the first schema or response-shape issue that causes repeated retries.\n   Link: https://www.anthropic.com/engineering/writing-tools-for-agents\n\n3. Default to the cheaper GPT-5.6 tiers and escalate only when the task earns it  [both · ~minutes to set up · grade A]\n   Why it matters: Tiered reasoning lets teams buy successful outcomes instead of paying frontier rates for every coding request.\n   Do this next: Route one coding workflow to Terra by default, escalate only when tests fail or the task stalls, and compare cost per accepted change after a day.\n   Link: https://openai.com/index/gpt-5-6/\n\n\n--- Using AI to build software (2) ---\nFor teams using Cursor, Codex, Claude Code, or other agents to write and ship application code.\n\n1. Put your best model on planning and your cheap model on execution  [speed · ~hours to set up · grade A]\n   Why it matters: Frontier planning plus inexpensive worker execution preserved multi-agent coding quality while cutting the cost of long autonomous runs dramatically.\n   Do this next: Take one long-running coding task, keep your strongest model only on planning, and measure solved scope per dollar against your usual single-model loop.\n   Link: https://cursor.com/blog/agent-swarm-model-economics\n\n2. Break long cloud-agent jobs into short durable workflows with resumable state  [robustness · ~hours to set up · grade A]\n   Why it matters: Long-lived agent runs become reliable only when the loop, VM, and conversation can recover independently from outages and retries.\n   Do this next: Take one background agent job, split it into a single-task durable workflow, then simulate a pod restart and confirm the run resumes without losing streamed state.\n   Link: https://cursor.com/blog/cloud-agent-lessons\n\n\nFull detail (all steps + evidence): runs/2026-07-21/05-report/daily-digest.md",
+  "body_html": null,
+  "top_items": [
+    {
+      "id": "ship-faster-20260721-frontier-planner-cheap-workers",
+      "title": "Put your best model on planning and your cheap model on execution",
+      "why": "Frontier planning plus inexpensive worker execution preserved multi-agent coding quality while cutting the cost of long autonomous runs dramatically.",
+      "benefit": "speed",
+      "source_url": "https://cursor.com/blog/agent-swarm-model-economics",
+      "how_to_url": "https://cursor.com/blog/agent-swarm-model-economics",
+      "how_to_steps": [
+        "Split the swarm into planner and worker roles, and reserve frontier models for decomposition, design decisions, and trade-offs rather than every edit.",
+        "Run workers on a faster cheaper model with narrowly scoped tasks, clear done conditions, and no responsibility for global coordination.",
+        "Stack multiple decorrelated review lenses on worker output so review stays cheaper than the work it audits while still catching different failure modes.",
+        "Compare solved scope, wall-clock time, and total spend against an all-frontier run, then keep frontier pricing only where it changes the result."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor's new swarm hit 73-85% of the held-out SQLite suite by the four-hour cutoff across model mixes and later reached 100% in every new configuration; the Opus 4.8 planner plus Composer 2.5 workers run cost $1,339 versus $10,565 for GPT-5.5 everywhere, and the worker fleet cost only $411 versus $9,373 in the all-GPT-5.5 run.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/blog/scaling-agents",
+      "try_today": "Take one long-running coding task, keep your strongest model only on planning, and measure solved scope per dollar against your usual single-model loop."
+    },
+    {
+      "id": "production-patterns-20260721-short-durable-cloud-workflows",
+      "title": "Break long cloud-agent jobs into short durable workflows with resumable state",
+      "why": "Long-lived agent runs become reliable only when the loop, VM, and conversation can recover independently from outages and retries.",
+      "benefit": "robustness",
+      "source_url": "https://cursor.com/blog/cloud-agent-lessons",
+      "how_to_url": "https://cursor.com/blog/cloud-agent-lessons",
+      "how_to_steps": [
+        "Put the agent loop on a durable workflow engine so retries, pauses, and resumptions survive pod replacements and provider outages.",
+        "Replace eternal runs with shorter task-bounded workflows that exit cleanly and can be versioned or retried independently.",
+        "Store machine state, conversation state, and agent-loop state separately so VMs can hibernate, fork, or swap without losing the run.",
+        "Expose environment, CI, and log access as tools so the agent can diagnose blocked secrets, egress, or missing dependencies instead of hardcoding more harness behavior."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says its move from a work-stealing loop to Temporal took cloud-agent reliability from one 9 to past two 9s; the system now handles more than 50 million actions per day across more than 7 million unique workflows, and more than 40% of internal PRs come from cloud agents.",
+      "evidence_grade": "A",
+      "lens_id": "production-patterns",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://cursor.com/blog/cloud-agent-development-environments",
+      "try_today": "Take one background agent job, split it into a single-task durable workflow, then simulate a pod restart and confirm the run resumes without losing streamed state."
+    },
+    {
+      "id": "tooling-setups-20260721-tool-eval-loop",
+      "title": "Build tool evaluations before you polish the prompt",
+      "why": "Agent performance often improves more from better tool interfaces and leaner responses than from prompt tweaks alone.",
+      "benefit": "both",
+      "source_url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+      "how_to_url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+      "how_to_steps": [
+        "Wrap the tool or MCP server locally and test it inside a real agent client before you optimize anything else.",
+        "Generate dozens of held-out tasks from real workflows, then verify both answer quality and whether the agent used the right tools to solve them.",
+        "Track runtime, token use, redundant calls, and parameter errors so you can see where schemas or descriptions are confusing the agent.",
+        "Iterate the tool itself: collapse low-level APIs into higher-level workflows, namespace similar tools, and return concise high-signal responses by default."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic shows one concise tool response cutting output from 206 tokens to 72, describes fixing Claude's web-search bias by improving the tool description, and says precise tool-description refinements pushed Claude Sonnet 3.5 to state-of-the-art SWE-bench Verified performance.",
+      "evidence_grade": "A",
+      "lens_id": "tooling-setups",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "try_today": "Pick one noisy MCP server, add a 20-task held-out eval, and fix the first schema or response-shape issue that causes repeated retries."
+    },
+    {
+      "id": "model-workflows-20260721-tiered-gpt56-routing",
+      "title": "Default to the cheaper GPT-5.6 tiers and escalate only when the task earns it",
+      "why": "Tiered reasoning lets teams buy successful outcomes instead of paying frontier rates for every coding request.",
+      "benefit": "both",
+      "source_url": "https://openai.com/index/gpt-5-6/",
+      "how_to_url": "https://openai.com/index/gpt-5-6/",
+      "how_to_steps": [
+        "Define task classes first—routine edits, medium-depth coding, and hardest multi-tool runs—before you pick a default model.",
+        "Start routine coding loops on Luna or Terra and reserve Sol with higher reasoning effort for work that genuinely needs stronger judgment.",
+        "Use multi-agent or ultra-style parallelism only on demanding tasks where faster time-to-result is worth the extra token spend.",
+        "Track cost per successful task, retries, and human correction rate so routing follows outcomes instead of habit or raw token price."
+      ],
+      "setup_cost": "minutes",
+      "evidence": "OpenAI reports GPT-5.6 Sol hitting 80 on the Artificial Analysis Coding Agent Index, 2.8 points above Claude Fable 5 while using 54% fewer output tokens, taking 57% less time, and costing about one-third less; Terra and Luna preserve much of that coding quality at far lower price points. Lovable says GPT-5.6 cut steps by about 25%, tool calls by 35-48%, and stuck runs by 15%.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "corroboration_url": "https://openai.com/index/a-scorecard-for-the-ai-age/",
+      "try_today": "Route one coding workflow to Terra by default, escalate only when tests fail or the task stalls, and compare cost per accepted change after a day."
+    },
+    {
+      "id": "build-robust-20260721-resource-specs-are-part-of-the-eval",
+      "title": "Treat CPU, RAM, and time limits as part of the benchmark, not background noise",
+      "why": "Small infrastructure differences can shift coding-agent benchmark scores enough to fake or erase a model improvement.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "how_to_url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "how_to_steps": [
+        "Document both the guaranteed allocation and the hard kill threshold for each benchmark task instead of publishing one pinned resource number.",
+        "Calibrate headroom by sweeping a few resource multipliers until infra error rates fall without giving the agent enough extra capacity to change what the task is testing.",
+        "Report infra error rate, resource multiplier, and runtime conditions next to pass rate so leaderboard deltas are interpretable.",
+        "Re-run a representative benchmark slice whenever cluster, sandbox, or timeout settings change before you claim a model regression or improvement."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic found a 6 point swing on Terminal-Bench 2.0 between the strictest and most generous resource setups, with infra errors dropping from 5.8% to 2.1% at 3x headroom and to 0.5% uncapped; on SWE-bench, moving from 1x to 5x RAM still lifted scores by 1.54 points.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "weak",
+      "try_today": "Audit one agent benchmark you rely on, write down its real CPU, RAM, timeout, and failure-budget settings, and see whether the next score still means what you think it means."
+    }
+  ],
+  "previous_day": "2026-07-13",
+  "new_count": 5,
+  "recap_count": 0,
+  "repeated_skipped": 0
+}
