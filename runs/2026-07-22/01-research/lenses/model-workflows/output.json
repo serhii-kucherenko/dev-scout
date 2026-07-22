@@ -1,0 +1,26 @@
+{
+  "lens_id": "model-workflows",
+  "items": [
+    {
+      "id": "model-workflows-20260722-route-by-workload-cost",
+      "title": "Route coding-agent traffic by workload cost, not by one-model habit",
+      "why": "Production token mix shows cheap models can absorb a lot of volume while frontier models still earn their cost on expensive coding flows; gateways let you turn that observation into an operational routing rule.",
+      "benefit": "both",
+      "source_url": "https://vercel.com/blog/ai-gateway-production-index-july-2026",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "how_to_steps": [
+        "Group requests by workload first—coding agent, back-office, assistant, or app generation—before you choose a default model.",
+        "Send the traffic through a gateway and set a primary model plus ordered fallbacks with providerOptions.gateway.models.",
+        "Keep a cheaper model on high-volume lower-risk paths and reserve frontier models for coding flows or failure fallback paths that justify the extra spend.",
+        "Inspect modelAttempts, provider attempts, and spend by workload every week, then tighten routing when token share and cost share diverge."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Vercel reports that open-weight models reached 29% of AI Gateway token volume, Anthropic still took 72% or more of coding-agent spend, and tool-using requests already account for 58.9% of tokens despite being only 22.2% of requests.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Move one coding-agent workflow behind a gateway, set one cheaper fallback model plus one frontier fallback, and compare accepted outcomes per dollar after the next workday."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "lens_id": "build-robust",
+  "items": [
+    {
+      "id": "build-robust-20260722-retire-contaminated-public-benchmarks",
+      "title": "Retire contaminated public coding benchmarks before they become release theater",
+      "why": "Once models memorize public tasks or tests reject valid fixes, score deltas stop measuring real engineering ability and start measuring dataset quirks or prior exposure.",
+      "benefit": "robustness",
+      "source_url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "how_to_url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "how_to_steps": [
+        "Audit the unsolved slice of your benchmark with experienced engineers and label narrow tests, wide tests, ambiguous specs, and environment-sensitive failures.",
+        "Run contamination probes that check whether models can recall gold patches or task-specific implementation details from minimal hints.",
+        "Stop using a benchmark in release gates or routing decisions once flawed scoring or memorization materially affects the headline score.",
+        "Shift ongoing evaluation toward less exposed or privately authored tasks and keep canary strings plus training-data filters in place for anything public."
+      ],
+      "setup_cost": "hours",
+      "evidence": "OpenAI reports that at least 59.4% of the reviewed hard failures in SWE-bench Verified had material test or specification issues, and that all frontier models it checked showed some contamination from prior exposure to benchmark materials.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "try_today": "Take the coding benchmark score you cite most often, review the first 20 recent misses with a human, and see how many are actually broken tasks or contaminated solves before you trust the next leaderboard jump."
+    }
+  ]
+}

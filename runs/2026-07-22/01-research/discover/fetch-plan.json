@@ -1,0 +1,91 @@
+{
+  "day": "2026-07-22",
+  "planned": 8,
+  "queries": [
+    {
+      "lens": "ship-faster",
+      "query": "cursor continually improving our agent harness keep rate satisfaction 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "tooling-setups",
+      "query": "cursorbench real sessions internal eval suite 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "build-robust",
+      "query": "openai why swe-bench verified no longer measures frontier coding capabilities 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "production-patterns",
+      "query": "anthropic eval awareness browsecomp blocklist benchmark contamination 2026",
+      "tier": "primary"
+    },
+    {
+      "lens": "model-workflows",
+      "query": "vercel ai gateway production index july 2026 coding agents routing spend fallbacks",
+      "tier": "primary"
+    }
+  ],
+  "urls_to_fetch": [
+    "https://cursor.com/blog/continually-improving-agent-harness",
+    "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "https://cursor.com/blog/cursorbench",
+    "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+    "https://openai.com/index/trustworthy-third-party-evaluations-foundations/",
+    "https://www.anthropic.com/engineering/eval-awareness-browsecomp",
+    "https://vercel.com/blog/ai-gateway-production-index-july-2026",
+    "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks"
+  ],
+  "entries": [
+    {
+      "url": "https://cursor.com/blog/continually-improving-agent-harness",
+      "tier": "primary",
+      "lens_id": "ship-faster",
+      "reason": "Live A/B testing plus keep-rate and tool-error alerts gives a concrete harness iteration loop with measured operational gains."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "tier": "secondary",
+      "lens_id": "ship-faster",
+      "reason": "Independent guidance reinforces using evals, production monitoring, A/B tests, and transcript review together instead of relying on one layer."
+    },
+    {
+      "url": "https://cursor.com/blog/cursorbench",
+      "tier": "primary",
+      "lens_id": "tooling-setups",
+      "reason": "An internal benchmark built from real coding sessions is more aligned than public bug-fix suites and comes with a repeatable maintenance pattern."
+    },
+    {
+      "url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "tier": "primary",
+      "lens_id": "build-robust",
+      "reason": "Strong evidence that contaminated or flawed public coding benchmarks stop measuring real engineering capability."
+    },
+    {
+      "url": "https://openai.com/index/trustworthy-third-party-evaluations-foundations/",
+      "tier": "secondary",
+      "lens_id": "build-robust",
+      "reason": "OpenAI\u2019s harness-reporting playbook independently supports publishing budgets, harnesses, and validity checks with every serious evaluation claim."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/eval-awareness-browsecomp",
+      "tier": "primary",
+      "lens_id": "production-patterns",
+      "reason": "Web-enabled eval integrity needs runtime controls such as blocklists, dataset gating, and trace review, not just careful benchmark design."
+    },
+    {
+      "url": "https://vercel.com/blog/ai-gateway-production-index-july-2026",
+      "tier": "primary",
+      "lens_id": "model-workflows",
+      "reason": "Gateway production data shows where cheap models can absorb volume and where frontier models still earn their cost in coding workflows."
+    },
+    {
+      "url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "tier": "secondary",
+      "lens_id": "model-workflows",
+      "reason": "The fallback docs provide the concrete routing mechanism behind the workload-based model split."
+    }
+  ]
+}

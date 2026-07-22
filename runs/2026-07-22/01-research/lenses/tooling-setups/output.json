@@ -1,0 +1,26 @@
+{
+  "lens_id": "tooling-setups",
+  "items": [
+    {
+      "id": "tooling-setups-20260722-real-session-benchmark",
+      "title": "Build your agent benchmark from real sessions, not public GitHub issues",
+      "why": "Session-derived tasks stay closer to what developers actually ask agents to do and avoid much of the contamination and grading drift that plague public coding benchmarks.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/cursorbench",
+      "how_to_url": "https://cursor.com/blog/cursorbench",
+      "how_to_steps": [
+        "Trace merged or committed agent-assisted diffs back to the original prompt so each eval task has a real request and a known-good solution.",
+        "Refresh the suite every few months as your workflow changes, and bump the benchmark version whenever the task distribution changes materially.",
+        "Score more than correctness: keep code quality, efficiency, and interaction behavior in the same suite so model ranking reflects real usage.",
+        "Pair the offline suite with live ablations on production traffic so you can catch regressions that an offline grader misses."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says CursorBench-3 roughly doubled problem scope versus earlier versions, distinguishes frontier models better than saturated public benchmarks, and used a semantic-search ablation on live traffic to pinpoint where retrieval mattered most.",
+      "evidence_grade": "B",
+      "lens_id": "tooling-setups",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Pick the last five accepted agent-generated changes in your repo, reconstruct the original prompts, and turn them into a tiny versioned benchmark you can rerun on the next model or harness change."
+    }
+  ]
+}

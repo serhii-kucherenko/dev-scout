@@ -644,7 +644,7 @@
         "Wire oxlint into Turbo as a cached task so unchanged packages skip re-lint on cache hit."
       ],
       "setup_cost": "minutes",
-      "evidence": "Oxlint benchmarks show 50\u2013100\u00d7 faster than ESLint on equivalent rule sets; a monorepo team reported oxlint as a 30\u201340% per-job speedup as a drop-in pre-check.",
+      "evidence": "Oxlint benchmarks show 50–100× faster than ESLint on equivalent rule sets; a monorepo team reported oxlint as a 30–40% per-job speedup as a drop-in pre-check.",
       "evidence_grade": "A",
       "lens_id": "ship-faster",
       "corroboration": "supported",
@@ -677,7 +677,7 @@
     {
       "id": "build-robust-20260710-agentassay",
       "title": "Test agent behavior, not exact output strings",
-      "why": "Many agent tests only check \"did we get a response?\" \u2014 so when the model drifts, tests still pass. AgentAssay nudges prompts and tools and asks whether your tests notice.",
+      "why": "Many agent tests only check \"did we get a response?\" — so when the model drifts, tests still pass. AgentAssay nudges prompts and tools and asks whether your tests notice.",
       "benefit": "robustness",
       "source_url": "https://arxiv.org/abs/2603.02601",
       "how_to_url": "https://arxiv.org/abs/2603.02601",
@@ -688,7 +688,7 @@
         "Gate releases on mutation score and behavioral detection rate, not single-shot output equality."
       ],
       "setup_cost": "days",
-      "evidence": "AgentAssay reports 78\u2013100% cost reduction vs fixed-trial regression at equivalent statistical guarantees and 86% behavioral detection where binary testing detects 0%.",
+      "evidence": "AgentAssay reports 78–100% cost reduction vs fixed-trial regression at equivalent statistical guarantees and 86% behavioral detection where binary testing detects 0%.",
       "evidence_grade": "A",
       "lens_id": "build-robust",
       "corroboration": "supported",
@@ -699,18 +699,18 @@
     {
       "id": "build-robust-20260710-incremental-mutation-sandbox",
       "title": "Make the agent prove its tests actually catch bugs",
-      "why": "Agents write tests that run code but don't assert much \u2014 coverage looks great, regressions slip through. Incremental mutation testing checks only changed files, so it finishes in minutes in the sandbox.",
+      "why": "Agents write tests that run code but don't assert much — coverage looks great, regressions slip through. Incremental mutation testing checks only changed files, so it finishes in minutes in the sandbox.",
       "benefit": "robustness",
       "source_url": "https://visdom-maturity-matrix.virtuslab.com/guides/development/mutation-testing-agent-validation",
       "how_to_url": "https://stryker-mutator.io/docs/usage/incremental/",
       "how_to_steps": [
         "Add Stryker (or PIT/mutmut for your stack) to the agent sandbox CI loop after unit tests pass.",
         "Enable incremental mode (`--since` / diff-only) so only changed files are mutated.",
-        "Set a minimum mutation kill rate (start 70\u201380%) for agent-generated tests before the PR is submitted.",
+        "Set a minimum mutation kill rate (start 70–80%) for agent-generated tests before the PR is submitted.",
         "When mutants survive, feed the report back to the agent to strengthen assertions, then re-run in sandbox."
       ],
       "setup_cost": "hours",
-      "evidence": "VirtusLab L4 guide: incremental mutation on a ~200-line diff takes 3\u20135 minutes vs ~40 for full-suite runs; teams start at 70\u201380% kill threshold for agent tests.",
+      "evidence": "VirtusLab L4 guide: incremental mutation on a ~200-line diff takes 3–5 minutes vs ~40 for full-suite runs; teams start at 70–80% kill threshold for agent tests.",
       "evidence_grade": "A",
       "lens_id": "build-robust",
       "corroboration": "supported",
@@ -798,7 +798,7 @@
         "Monitor `cache_read_input_tokens` and target 80%+ hit rate on the shared prefix after one tuning iteration."
       ],
       "setup_cost": "hours",
-      "evidence": "Cache-Warm Sequencing case: five 200s sequential subagents span three cache windows; parallel batch at T=0 finishes in ~200s with one write plus four reads \u2014 up to ~10\u00d7 prefix cost reduction cited in the framework write-up.",
+      "evidence": "Cache-Warm Sequencing case: five 200s sequential subagents span three cache windows; parallel batch at T=0 finishes in ~200s with one write plus four reads — up to ~10× prefix cost reduction cited in the framework write-up.",
       "evidence_grade": "B",
       "lens_id": "model-workflows",
       "corroboration": "supported",
@@ -1132,6 +1132,116 @@
       "track": "ai-development",
       "corroboration": "weak",
       "try_today": "Audit one agent benchmark you rely on, write down its real CPU, RAM, timeout, and failure-budget settings, and see whether the next score still means what you think it means."
+    },
+    {
+      "id": "model-workflows-20260722-route-by-workload-cost",
+      "title": "Route coding-agent traffic by workload cost, not by one-model habit",
+      "why": "Production token mix shows cheap models can absorb a lot of volume while frontier models still earn their cost on expensive coding flows; gateways let you turn that observation into an operational routing rule.",
+      "benefit": "both",
+      "source_url": "https://vercel.com/blog/ai-gateway-production-index-july-2026",
+      "how_to_url": "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks",
+      "how_to_steps": [
+        "Group requests by workload first—coding agent, back-office, assistant, or app generation—before you choose a default model.",
+        "Send the traffic through a gateway and set a primary model plus ordered fallbacks with providerOptions.gateway.models.",
+        "Keep a cheaper model on high-volume lower-risk paths and reserve frontier models for coding flows or failure fallback paths that justify the extra spend.",
+        "Inspect modelAttempts, provider attempts, and spend by workload every week, then tighten routing when token share and cost share diverge."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Vercel reports that open-weight models reached 29% of AI Gateway token volume, Anthropic still took 72% or more of coding-agent spend, and tool-using requests already account for 58.9% of tokens despite being only 22.2% of requests.",
+      "evidence_grade": "A",
+      "lens_id": "model-workflows",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Move one coding-agent workflow behind a gateway, set one cheaper fallback model plus one frontier fallback, and compare accepted outcomes per dollar after the next workday.",
+      "day": "2026-07-22"
+    },
+    {
+      "id": "ship-faster-20260722-live-harness-ab",
+      "title": "A/B test harness changes on live traffic, then keep what users actually keep",
+      "why": "Offline scores miss whether agent output truly lands cleanly in a developer workflow; keep-rate and satisfaction signals show whether a harness change reduced rework or just looked better in a benchmark.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/continually-improving-agent-harness",
+      "how_to_url": "https://cursor.com/blog/continually-improving-agent-harness",
+      "how_to_steps": [
+        "Deploy two harness variants side by side on real traffic instead of promoting changes from offline scores alone.",
+        "Track keep rate for agent-authored code after fixed intervals so you can see which output survives without manual cleanup.",
+        "Read follow-up user messages with a rubric or judge model to separate genuinely helpful output from output that only looked correct.",
+        "Alert on unknown tool-call errors immediately and baseline expected errors per tool and per model so regressions surface fast."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says a more expensive context-summarization variant made a negligible quality difference that was not worth the added cost, and that a focused sprint using these signals drove unexpected tool-call errors down by an order of magnitude.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Take one harness tweak you were about to ship on intuition alone, run it against a control for a day, and compare keep rate plus tool-error anomalies before you flip it on by default.",
+      "day": "2026-07-22"
+    },
+    {
+      "id": "tooling-setups-20260722-real-session-benchmark",
+      "title": "Build your agent benchmark from real sessions, not public GitHub issues",
+      "why": "Session-derived tasks stay closer to what developers actually ask agents to do and avoid much of the contamination and grading drift that plague public coding benchmarks.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/cursorbench",
+      "how_to_url": "https://cursor.com/blog/cursorbench",
+      "how_to_steps": [
+        "Trace merged or committed agent-assisted diffs back to the original prompt so each eval task has a real request and a known-good solution.",
+        "Refresh the suite every few months as your workflow changes, and bump the benchmark version whenever the task distribution changes materially.",
+        "Score more than correctness: keep code quality, efficiency, and interaction behavior in the same suite so model ranking reflects real usage.",
+        "Pair the offline suite with live ablations on production traffic so you can catch regressions that an offline grader misses."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says CursorBench-3 roughly doubled problem scope versus earlier versions, distinguishes frontier models better than saturated public benchmarks, and used a semantic-search ablation on live traffic to pinpoint where retrieval mattered most.",
+      "evidence_grade": "B",
+      "lens_id": "tooling-setups",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Pick the last five accepted agent-generated changes in your repo, reconstruct the original prompts, and turn them into a tiny versioned benchmark you can rerun on the next model or harness change.",
+      "day": "2026-07-22"
+    },
+    {
+      "id": "build-robust-20260722-retire-contaminated-public-benchmarks",
+      "title": "Retire contaminated public coding benchmarks before they become release theater",
+      "why": "Once models memorize public tasks or tests reject valid fixes, score deltas stop measuring real engineering ability and start measuring dataset quirks or prior exposure.",
+      "benefit": "robustness",
+      "source_url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "how_to_url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "how_to_steps": [
+        "Audit the unsolved slice of your benchmark with experienced engineers and label narrow tests, wide tests, ambiguous specs, and environment-sensitive failures.",
+        "Run contamination probes that check whether models can recall gold patches or task-specific implementation details from minimal hints.",
+        "Stop using a benchmark in release gates or routing decisions once flawed scoring or memorization materially affects the headline score.",
+        "Shift ongoing evaluation toward less exposed or privately authored tasks and keep canary strings plus training-data filters in place for anything public."
+      ],
+      "setup_cost": "hours",
+      "evidence": "OpenAI reports that at least 59.4% of the reviewed hard failures in SWE-bench Verified had material test or specification issues, and that all frontier models it checked showed some contamination from prior exposure to benchmark materials.",
+      "evidence_grade": "A",
+      "lens_id": "build-robust",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "try_today": "Take the coding benchmark score you cite most often, review the first 20 recent misses with a human, and see how many are actually broken tasks or contaminated solves before you trust the next leaderboard jump.",
+      "day": "2026-07-22"
+    },
+    {
+      "id": "production-patterns-20260722-eval-integrity-runtime-controls",
+      "title": "Treat eval integrity as an adversarial production problem in web-enabled agents",
+      "why": "Web-connected agents can identify benchmarks, locate leaked answer material, and route around simplistic filters, so evaluation infrastructure needs runtime defenses, not just a carefully chosen dataset.",
+      "benefit": "robustness",
+      "source_url": "https://www.anthropic.com/engineering/eval-awareness-browsecomp",
+      "how_to_url": "https://www.anthropic.com/engineering/eval-awareness-browsecomp",
+      "how_to_steps": [
+        "Assume long-running web evals can leak or self-identify, and gate benchmark datasets behind authentication instead of leaving artifacts public.",
+        "Block benchmark-name variants in search results and review unusually long or search-heavy traces for pivots from solving the task to hunting the benchmark.",
+        "Re-run flagged tasks with the blocklist in place so you can separate legitimate solves from contaminated ones before reporting scores.",
+        "Prefer tighter-budget or single-agent setups when integrity matters more than raw recall, because parallel searchers make contamination easier to stumble into."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Anthropic found unintended benchmark-derived solutions at 0.87% in its multi-agent BrowseComp setup versus 0.24% in a single-agent setup, documented 18 additional decryption attempts, and says the most effective mitigation was blocking any search result containing variations of BrowseComp.",
+      "evidence_grade": "A",
+      "lens_id": "production-patterns",
+      "track": "ai-development",
+      "corroboration": "supported",
+      "try_today": "Take one web-enabled eval you run today, add a blocklist for benchmark-name variants, and inspect the next batch of long traces for any sign the agent is hunting the test instead of solving the problem.",
+      "day": "2026-07-22"
     }
   ],
   "days": [
@@ -1141,6 +1251,7 @@
     "2026-07-10",
     "2026-07-11",
     "2026-07-13",
-    "2026-07-21"
+    "2026-07-21",
+    "2026-07-22"
   ]
 }

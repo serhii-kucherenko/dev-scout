@@ -1,0 +1,55 @@
+To: kucherenko.web@gmail.com // pragma: allowlist secret
+Subject: Dev Scout 2026-07-22 — 5 new ways to ship faster / build safer
+
+Dev Scout — 2026-07-22
+
+Mission: ship faster & build more robust software with AI-assisted dev.
+
+Repo: https://github.com/serhii-kucherenko/dev-scout
+
+Quick review of previous email (2026-07-21):
+- Put your best model on planning and your cheap model on execution (speed) — https://cursor.com/blog/agent-swarm-model-economics
+- Break long cloud-agent jobs into short durable workflows with resumable state (robustness) — https://cursor.com/blog/cloud-agent-lessons
+- Build tool evaluations before you polish the prompt (both) — https://www.anthropic.com/engineering/writing-tools-for-agents
+- Default to the cheaper GPT-5.6 tiers and escalate only when the task earns it (both) — https://openai.com/index/gpt-5-6/
+- Treat CPU, RAM, and time limits as part of the benchmark, not background noise (robustness) — https://www.anthropic.com/engineering/infrastructure-noise
+
+Do not re-read those unless you still need to act on them.
+
+New since last brief: 5 (speed=3, robustness=5).
+Each tag is benefit · setup time · evidence grade — skip what doesn't fit your stack.
+
+--- Building AI systems (2) ---
+For teams shipping agents, LLM features, evals, or other AI products.
+
+1. Retire contaminated public coding benchmarks before they become release theater  [robustness · ~hours to set up · grade A]
+   Why it matters: Once models memorize public tasks or tests reject valid fixes, score deltas stop measuring real engineering ability and start measuring dataset quirks or prior exposure.
+   Do this next: Take the coding benchmark score you cite most often, review the first 20 recent misses with a human, and see how many are actually broken tasks or contaminated solves before you trust the next leaderboard jump.
+   Link: https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/
+
+2. Treat eval integrity as an adversarial production problem in web-enabled agents  [robustness · ~hours to set up · grade A]
+   Why it matters: Web-connected agents can identify benchmarks, locate leaked answer material, and route around simplistic filters, so evaluation infrastructure needs runtime defenses, not just a carefully chosen dataset.
+   Do this next: Take one web-enabled eval you run today, add a blocklist for benchmark-name variants, and inspect the next batch of long traces for any sign the agent is hunting the test instead of solving the problem.
+   Link: https://www.anthropic.com/engineering/eval-awareness-browsecomp
+
+
+--- Using AI to build software (3) ---
+For teams using Cursor, Codex, Claude Code, or other agents to write and ship application code.
+
+1. Route coding-agent traffic by workload cost, not by one-model habit  [both · ~hours to set up · grade A]
+   Why it matters: Production token mix shows cheap models can absorb a lot of volume while frontier models still earn their cost on expensive coding flows; gateways let you turn that observation into an operational routing rule.
+   Do this next: Move one coding-agent workflow behind a gateway, set one cheaper fallback model plus one frontier fallback, and compare accepted outcomes per dollar after the next workday.
+   Link: https://vercel.com/blog/ai-gateway-production-index-july-2026
+
+2. A/B test harness changes on live traffic, then keep what users actually keep  [both · ~hours to set up · grade A]
+   Why it matters: Offline scores miss whether agent output truly lands cleanly in a developer workflow; keep-rate and satisfaction signals show whether a harness change reduced rework or just looked better in a benchmark.
+   Do this next: Take one harness tweak you were about to ship on intuition alone, run it against a control for a day, and compare keep rate plus tool-error anomalies before you flip it on by default.
+   Link: https://cursor.com/blog/continually-improving-agent-harness
+
+3. Build your agent benchmark from real sessions, not public GitHub issues  [both · ~hours to set up · grade B]
+   Why it matters: Session-derived tasks stay closer to what developers actually ask agents to do and avoid much of the contamination and grading drift that plague public coding benchmarks.
+   Do this next: Pick the last five accepted agent-generated changes in your repo, reconstruct the original prompts, and turn them into a tiny versioned benchmark you can rerun on the next model or harness change.
+   Link: https://cursor.com/blog/cursorbench
+
+
+Full detail (all steps + evidence): runs/2026-07-22/05-report/daily-digest.md

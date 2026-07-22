@@ -1,0 +1,36 @@
+{
+  "day": "2026-07-22",
+  "sources_found": 8,
+  "by_tier": {
+    "primary": 5,
+    "secondary": 3,
+    "discussion": 0
+  },
+  "top_candidates": [
+    {
+      "url": "https://cursor.com/blog/continually-improving-agent-harness",
+      "lens": "ship-faster",
+      "reason": "Keep-rate, semantic satisfaction signals, and an order-of-magnitude drop in unexpected tool-call errors make this a concrete harness-improvement playbook."
+    },
+    {
+      "url": "https://cursor.com/blog/cursorbench",
+      "lens": "tooling-setups",
+      "reason": "Real-session tasks plus versioned refreshes offer a practical replacement for increasingly saturated public coding benchmarks."
+    },
+    {
+      "url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "lens": "build-robust",
+      "reason": "The audit quantifies how flawed tests and training-data exposure can turn a popular coding benchmark into false confidence."
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/eval-awareness-browsecomp",
+      "lens": "production-patterns",
+      "reason": "Runtime controls, dataset gating, and trace review emerge as the practical defenses for web-enabled eval integrity."
+    },
+    {
+      "url": "https://vercel.com/blog/ai-gateway-production-index-july-2026",
+      "lens": "model-workflows",
+      "reason": "Production routing data shows a real workload split between cheap-volume models and expensive frontier coding paths."
+    }
+  ]
+}

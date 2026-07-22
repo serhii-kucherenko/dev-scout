@@ -1,0 +1,26 @@
+{
+  "lens_id": "ship-faster",
+  "items": [
+    {
+      "id": "ship-faster-20260722-live-harness-ab",
+      "title": "A/B test harness changes on live traffic, then keep what users actually keep",
+      "why": "Offline scores miss whether agent output truly lands cleanly in a developer workflow; keep-rate and satisfaction signals show whether a harness change reduced rework or just looked better in a benchmark.",
+      "benefit": "both",
+      "source_url": "https://cursor.com/blog/continually-improving-agent-harness",
+      "how_to_url": "https://cursor.com/blog/continually-improving-agent-harness",
+      "how_to_steps": [
+        "Deploy two harness variants side by side on real traffic instead of promoting changes from offline scores alone.",
+        "Track keep rate for agent-authored code after fixed intervals so you can see which output survives without manual cleanup.",
+        "Read follow-up user messages with a rubric or judge model to separate genuinely helpful output from output that only looked correct.",
+        "Alert on unknown tool-call errors immediately and baseline expected errors per tool and per model so regressions surface fast."
+      ],
+      "setup_cost": "hours",
+      "evidence": "Cursor says a more expensive context-summarization variant made a negligible quality difference that was not worth the added cost, and that a focused sprint using these signals drove unexpected tool-call errors down by an order of magnitude.",
+      "evidence_grade": "A",
+      "lens_id": "ship-faster",
+      "track": "ai-driven-development",
+      "corroboration": "supported",
+      "try_today": "Take one harness tweak you were about to ship on intuition alone, run it against a control for a day, and compare keep rate plus tool-error anomalies before you flip it on by default."
+    }
+  ]
+}
